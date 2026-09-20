@@ -5,6 +5,7 @@ from app.api.health import router as health_router
 from app.api.crop import router as crop_router
 from app.api.soil import router as soil_router
 from app.api.weather import router as weather_router
+from app.api.mandi import router as mandi_router
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -28,6 +29,7 @@ app.include_router(health_router, prefix="/api", tags=["Health"])
 app.include_router(crop_router, prefix="/api", tags=["AI Crop Doctor"])
 app.include_router(soil_router, prefix="/api", tags=["Soil Health Intelligence"])
 app.include_router(weather_router, prefix="/api", tags=["Weather Intelligence"])
+app.include_router(mandi_router, prefix="/api", tags=["Mandi Price Intelligence"])
 
 @app.get("/", tags=["Root"])
 async def root():
@@ -42,9 +44,12 @@ async def root():
             "crop_analyze": "/api/crop/analyze [POST]",
             "soil_analyze": "/api/soil/analyze [POST]",
             "weather": "/api/weather [GET]",
-            "weather_search": "/api/weather/search [GET]"
+            "weather_search": "/api/weather/search [GET]",
+            "mandi_prices": "/api/mandi/prices [GET]",
+            "mandi_filters": "/api/mandi/filters [GET]"
         }
     }
+
 
 if __name__ == "__main__":
     import uvicorn

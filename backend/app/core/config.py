@@ -23,10 +23,14 @@ class Settings(BaseSettings):
     # AI API Keys (Future phases)
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
     
-    # External APIs (Future phases)
+    # External APIs
     WEATHER_API_URL: str = os.getenv("WEATHER_API_URL", "https://api.open-meteo.com/v1/forecast")
-    MANDI_API_URL: str = os.getenv("MANDI_API_URL", "")
+    MANDI_API_URL: str = os.getenv(
+        "MANDI_API_URL",
+        "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070"
+    )
     MANDI_API_KEY: str = os.getenv("MANDI_API_KEY", "")
+
 
     class Config:
         case_sensitive = True

@@ -61,11 +61,12 @@ Where can I sell my crop? (Mandi Prices)
 | **🌱 AI Crop Doctor** | Computer vision-based disease detection from leaf photos with confidence scoring and remedies using Gemini 1.5 Flash. | **Live & Operational** |
 | **🧪 Soil Health Intelligence** | Deterministic agronomic interpretation of pH, N, P, K, and Organic Matter based on standard ICAR benchmarks. | **Live & Operational** |
 | **🌦 Weather Intelligence** | Hyperlocal weather forecasts translated into farm activity recommendations, spray windows, and risk alerts via Open-Meteo. | **Live & Operational** |
-| **💰 Mandi Prices** | Official APMC market rates, price comparisons, and trend discovery (zero fabricated prices). | *Foundation Ready* |
+| **💰 Mandi Prices** | Official APMC market rates, price comparisons, and trend discovery from GOI OGD / AGMARKNET (zero fabricated prices). | **Live & Operational** |
 | **🏛️ Govt Schemes** | Curated Central/State agricultural schemes with eligibility, documents, and application links. | *Foundation Ready* |
 | **🌾 Location-Based Crop Guide** | Agro-climatic zone advice on sowing, pest mitigation, and harvest practices. | *Foundation Ready* |
 | **🌐 Multilingual Support** | Regional language interface & responses (English, Marathi, Hindi, Tamil, Telugu). | *Foundation Ready* |
 | **🤖 AI Farmer Assistant** | Context-aware conversational AI assistant tailored to farmer profile and field data. | *Foundation Ready* |
+
 
 ---
 
@@ -166,6 +167,44 @@ Content-Type: application/json
   * `60–79`: Good
   * `80–100`: Very Good
 
+## 💰 Mandi Price Intelligence Module Details
+
+### What It Does
+The Mandi Price Intelligence module allows farmers to track official wholesale market arrivals, minimum/maximum price spreads, and modal (typical) selling prices across APMC mandis. It eliminates market opacity by enabling farmers to benchmark and compare price quotations across neighboring districts before transporting harvested produce.
+
+### Official Data Source & Trust Principle
+* **Primary Authority:** Government of India Open Government Data (data.gov.in) & Directorate of Marketing & Inspection (DMI / AGMARKNET) under the Ministry of Agriculture & Farmers Welfare.
+* **Dataset:** *"Current Daily Price of Various Commodities from Various Markets (Mandi)"*.
+* **Zero Fabricated Prices Guarantee:** Every price quotation is strictly tagged:
+  * `Official Market Data`: Direct from live government data endpoints.
+  * `Demo Data — Not Live`: Clearly labeled development fallback used only when external APIs or credentials are unavailable during testing.
+  * `Market Data Unavailable`: Explicit status when no records exist.
+
+### Backend Architecture & Endpoints
+```text
+Frontend (Next.js)
+       ↓
+FastAPI Backend (GET /api/mandi/prices)
+       ↓
+mandi_service.py
+       ↓
+mandi_provider.py ───> Government of India OGD API (data.gov.in)
+       ↓
+Normalized Market Response & Factual Spread Summary
+```
+
+1. **Fetch Mandi Prices:**
+   ```http
+   GET /api/mandi/prices?commodity=Soybean&state=Maharashtra&district=Pune
+   ```
+2. **Fetch Filter Dropdown Choices:**
+   ```http
+   GET /api/mandi/filters
+   ```
+
+### Factual Market Comparison Policy
+KisanMitra presents neutral statistical summaries (e.g. *"Among the returned records, Pune APMC reported the highest modal price of ₹5,200/quintal"*). The platform **never uses subjective claims** like *"Best mandi"* or *"Sell here"* — all selling decisions remain entirely in the hands of the farmer.
+
 ---
 
 ## 🎨 Visual Identity & Design System
@@ -192,6 +231,7 @@ python -m uvicorn app.main:app --reload --port 8000
 Verify backend endpoints:
 * Health: [http://localhost:8000/api/health](http://localhost:8000/api/health)
 * Weather: [http://localhost:8000/api/weather](http://localhost:8000/api/weather)
+* Mandi Prices: [http://localhost:8000/api/mandi/prices](http://localhost:8000/api/mandi/prices)
 * Swagger UI Docs: [http://localhost:8000/docs](http://localhost:8000/docs)
 
 ### 2. Frontend Setup
@@ -211,9 +251,10 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 - [x] **Phase 3: AI Crop Doctor (Gemini 1.5 Flash Vision Integration)**
 - [x] **Phase 4: Soil Health Intelligence (Deterministic ICAR Engine)**
 - [x] **Phase 5: Weather Intelligence & Farm Alerts**
-- [ ] **Phase 6: Mandi & Real Market Price Discovery**
+- [x] **Phase 6: Mandi & Real Market Price Discovery**
 - [ ] **Phase 7: Government Schemes Directory**
 - [ ] **Phase 8: Location-Based Crop Guide**
 - [ ] **Phase 9: Multilingual AI Farmer Assistant**
 - [ ] **Phase 10: Final Deployment & Demo Presentation**
+
 

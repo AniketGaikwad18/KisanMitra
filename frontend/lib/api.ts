@@ -5,6 +5,9 @@ import {
   SoilAnalysisResponse,
   WeatherResponse,
   LocationSearchResult,
+  MandiQuery,
+  MandiPriceResponse,
+  MandiFilterOptions,
 } from "@/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -175,5 +178,40 @@ export async function searchWeatherLocations(
   );
 }
 
+/**
+ * Fetch APMC mandi market arrival and modal price records
+ */
+export async function getMandiPrices(
+  params?: MandiQuery
+): Promise<ApiResponse<MandiPriceResponse>> {
+  const queryParts: string[] = [];
+  if (params?.commodity) {
+    queryParts.push(`commodity=${encodeURIComponent(params.commodity)}`);
+  }
+  if (params?.state) {
+    queryParts.push(`state=${encodeURIComponent(params.state)}`);
+  }
+  if (params?.district) {
+    queryParts.push(`district=${encodeURIComponent(params.district)}`);
+  }
+  if (params?.market) {
+    queryParts.push(`market=${encodeURIComponent(params.market)}`);
+  }
+  if (params?.limit) {
+    queryParts.push(`limit=${encodeURIComponent(params.limit)}`);
+  }
+
+  const query = queryParts.length > 0 ? `?${queryParts.join("&")}` : "";
+  return fetchApi<MandiPriceResponse>(`/api/mandi/prices${query}`);
+}
+
+/**
+ * Fetch dropdown filter options for commodities, states, and districts
+ */
+export async function getMandiFilters(): Promise<ApiResponse<MandiFilterOptions>> {
+  return fetchApi<MandiFilterOptions>("/api/mandi/filters");
+}
+
 export { API_BASE_URL };
+
 

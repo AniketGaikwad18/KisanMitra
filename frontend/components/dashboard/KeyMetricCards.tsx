@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 
-import { getWeather } from "@/lib/api";
+import { getWeather, getMandiPrices } from "@/lib/api";
 
 export const KeyMetricCards: React.FC = () => {
   const [weatherStatus, setWeatherStatus] = useState<{
@@ -32,6 +32,27 @@ export const KeyMetricCards: React.FC = () => {
     isLoading: true,
     isUnavailable: false,
   });
+
+  const [mandiStatus, setMandiStatus] = useState<{
+    commodity: string;
+    market: string;
+    modalPrice: number | null;
+    unit: string;
+    isDemo: boolean;
+    dataStatus: string;
+    isUnavailable: boolean;
+    arrivalDate: string;
+  }>({
+    commodity: "Soybean",
+    market: "Pune APMC",
+    modalPrice: 5200,
+    unit: "₹/quintal",
+    isDemo: true,
+    dataStatus: "demo",
+    isUnavailable: false,
+    arrivalDate: "2026-09-20",
+  });
+
 
   const [cropStatus, setCropStatus] = useState<{
     crop: string;
@@ -112,11 +133,75 @@ export const KeyMetricCards: React.FC = () => {
 
     fetchLiveWeather();
 
+    // Fetch live Mandi price
+    const fetchLiveMandi = async () => {
+      try {
+        let comm = "Soybean";
+        let st = "Maharashtra";
+        let dist = "Pune";
+
+        const savedFilters = localStorage.getItem("kisanmitra_mandi_filters");
+        if (savedFilters) {
+          const parsed = JSON.parse(savedFilters);
+          if (parsed.commodity) comm = parsed.commodity;
+          if (parsed.state) st = parsed.state;
+          if (parsed.district) dist = parsed.district;
+        }
+
+        const res = await getMandiPrices({
+          commodity: comm,
+          state: st,
+          district: dist,
+          limit: 10,
+        });
+
+        if (!isMounted) return;
+
+        const data = res.data;
+        if (data && data.records && data.records.length > 0) {
+          const top = data.records[0];
+          setMandiStatus({
+            commodity: top.commodity,
+            market: top.market,
+            modalPrice: top.modal_price ?? top.max_price ?? 5200,
+            unit: top.unit,
+            isDemo: data.is_demo,
+            dataStatus: data.data_status,
+            isUnavailable: false,
+            arrivalDate: top.arrival_date || "Today",
+          });
+        } else if (data) {
+          setMandiStatus((prev) => ({
+            ...prev,
+            isUnavailable: false,
+            isDemo: data.is_demo,
+            dataStatus: data.data_status,
+          }));
+        } else {
+          setMandiStatus((prev) => ({
+            ...prev,
+            isUnavailable: true,
+          }));
+        }
+
+      } catch {
+        if (isMounted) {
+          setMandiStatus((prev) => ({
+            ...prev,
+            isUnavailable: true,
+          }));
+        }
+      }
+    };
+
+    fetchLiveMandi();
+
     try {
       // Hydrate crop scan
       const savedCrop = localStorage.getItem("kisanmitra_last_crop_check");
       if (savedCrop) {
         const parsed = JSON.parse(savedCrop);
+
         setCropStatus({
           crop: parsed.crop || "Soybean",
           condition: parsed.condition || "Healthy",
@@ -309,38 +394,63 @@ export const KeyMetricCards: React.FC = () => {
           </div>
         </div>
 
-        {/* CARD 4: MANDI */}
+        {/* CARD 4: MANDI (Live API Data & Trust Tag) */}
         <div className="bg-gradient-to-b from-[#FEFDF8] to-white rounded-2xl border border-brand-border p-5 shadow-card hover:border-brand-green/40 hover:shadow-elevated transition-all flex flex-col justify-between group relative overflow-hidden">
           <div>
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs font-bold uppercase tracking-wider text-brand-text-secondary">
                 Mandi Price
               </span>
-              <Badge variant="warning" size="sm" className="text-[10px] font-bold">
-                Demo data
-              </Badge>
+              {mandiStatus.isUnavailable ? (
+                <Badge variant="danger" size="sm" className="text-[10px] font-bold">
+                  Unavailable
+                </Badge>
+              ) : mandiStatus.isDemo ? (
+                <Badge variant="warning" size="sm" className="text-[10px] font-bold">
+                  Demo data
+                </Badge>
+              ) : (
+                <Badge variant="success" size="sm" className="text-[10px] font-bold">
+                  Official data
+                </Badge>
+              )}
             </div>
 
-            <div className="space-y-1">
-              <div className="text-sm font-bold text-brand-text-secondary">
-                Soybean (Pune APMC)
+            {mandiStatus.isUnavailable ? (
+              <div className="space-y-1 py-1">
+                <div className="text-lg font-bold text-brand-danger">
+                  Market data unavailable
+                </div>
+                <div className="text-xs text-brand-text-secondary">
+                  Unable to connect to market source
+                </div>
               </div>
-              <div className="flex items-baseline gap-1">
-                <span className="text-3xl font-black text-brand-text tracking-tight">
-                  ₹5,420
-                </span>
-                <span className="text-xs font-semibold text-brand-text-secondary">
-                  /quintal
-                </span>
+            ) : (
+              <div className="space-y-1">
+                <div className="text-sm font-bold text-brand-text-secondary truncate">
+                  {mandiStatus.commodity} ({mandiStatus.market})
+                </div>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-3xl font-black text-brand-text tracking-tight">
+                    {mandiStatus.modalPrice !== null
+                      ? `₹${mandiStatus.modalPrice.toLocaleString("en-IN")}`
+                      : "—"}
+                  </span>
+                  <span className="text-xs font-semibold text-brand-text-secondary">
+                    / {mandiStatus.unit.replace("₹/", "")}
+                  </span>
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="mt-3 pt-3 border-t border-brand-border/60 flex items-center justify-between text-xs text-brand-text-secondary">
               <span className="flex items-center gap-1">
-                <TrendingUp className="w-3.5 h-3.5 text-brand-green" />
-                Trend
+                <Coins className="w-3.5 h-3.5 text-brand-green" />
+                Modal quotation
               </span>
-              <span className="font-bold text-brand-green">+₹120 this week</span>
+              <span className="font-bold text-brand-text">
+                {mandiStatus.isUnavailable ? "—" : mandiStatus.arrivalDate}
+              </span>
             </div>
           </div>
 

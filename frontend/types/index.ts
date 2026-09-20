@@ -158,6 +158,64 @@ export interface FarmerProfile {
   avatarText?: string;
 }
 
+// Mandi Price Intelligence Types
+export interface MandiQuery {
+  commodity?: string | null;
+  state?: string | null;
+  district?: string | null;
+  market?: string | null;
+  limit?: number;
+}
+
+export interface MandiPriceRecord {
+  market: string;
+  district: string;
+  state: string;
+  commodity: string;
+  variety?: string | null;
+  grade?: string | null;
+  min_price?: number | null;
+  max_price?: number | null;
+  modal_price?: number | null;
+  unit: string;
+  arrival_date?: string | null;
+  reported_at?: string | null;
+}
+
+export interface MandiSource {
+  name: string;
+  url: string;
+  description: string;
+}
+
+export interface MandiSummary {
+  total_records: number;
+  min_price_found?: number | null;
+  max_price_found?: number | null;
+  highest_modal_market?: string | null;
+  highest_modal_price?: number | null;
+  lowest_modal_market?: string | null;
+  lowest_modal_price?: number | null;
+  average_modal_price?: number | null;
+}
+
+export interface MandiPriceResponse {
+  query: MandiQuery;
+  data_status: "official" | "demo" | "unavailable" | string;
+  is_demo: boolean;
+  source: MandiSource;
+  updated_at: string;
+  summary: MandiSummary;
+  records: MandiPriceRecord[];
+}
+
+export interface MandiFilterOptions {
+  commodities: string[];
+  states: string[];
+  districts_by_state: Record<string, string[]>;
+  markets_by_district: Record<string, string[]>;
+}
+
 export interface MandiDemoData {
   commodity: string;
   price: string;
@@ -165,6 +223,7 @@ export interface MandiDemoData {
   market: string;
   isDemo: boolean;
 }
+
 
 export interface FarmAlertItem {
   id: string;
