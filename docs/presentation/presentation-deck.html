@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KisanMitra — HACKDAY 1.0 Pitch Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brand-yellow: #F4D35E;
+      --brand-green: #587A4C;
+      --brand-green-dark: #3E5A34;
+      --brand-bg: #FAF9F4;
+      --brand-surface: #FFFFFF;
+      --brand-text: #1F2933;
+      --brand-muted: #667085;
+      --brand-border: #E5E1D8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--brand-bg);
+      color: var(--brand-text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+      padding: 20px;
+    }
+
+    .deck-container {
+      width: 100%;
+      max-width: 1100px;
+      height: 640px;
+      background: var(--brand-surface);
+      border: 1px solid var(--brand-border);
+      border-radius: 24px;
+      box-shadow: 0 12px 40px rgba(31, 41, 51, 0.08);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide-header {
+      padding: 16px 32px;
+      border-bottom: 1px solid var(--brand-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #FDFAF2;
+    }
+
+    .brand-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--brand-text);
+    }
+
+    .brand-badge span.green {
+      color: var(--brand-green);
+    }
+
+    .hackathon-tag {
+      background: rgba(244, 211, 94, 0.3);
+      border: 1px solid rgba(232, 194, 56, 0.6);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #7D6008;
+    }
+
+    .slide-viewport {
+      flex: 1;
+      padding: 32px 48px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .slide {
+      display: none;
+      height: 100%;
+      flex-direction: column;
+      justify-content: space-between;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1.slide-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--brand-text);
+      line-height: 1.25;
+      margin-bottom: 6px;
+    }
+
+    h2.slide-subtitle {
+      font-size: 15px;
+      color: var(--brand-green);
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .card {
+      background: var(--brand-bg);
+      border: 1px solid var(--brand-border);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--brand-text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-desc {
+      font-size: 12px;
+      color: var(--brand-muted);
+      line-height: 1.4;
+    }
+
+    .highlight-banner {
+      background: linear-gradient(135deg, #FFF9E6, #F4FAF0);
+      border: 1px solid #E8DEB5;
+      border-radius: 16px;
+      padding: 14px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--brand-text);
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .flow-chain {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: #F8F6ED;
+      padding: 14px 18px;
+      border-radius: 16px;
+      border: 1px solid var(--brand-border);
+      margin-top: 10px;
+    }
+
+    .flow-node {
+      background: #FFFFFF;
+      border: 1px solid var(--brand-border);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--brand-text);
+      text-align: center;
+      flex: 1;
+    }
+
+    .flow-arrow {
+      font-size: 16px;
+      color: var(--brand-green);
+      font-weight: bold;
+    }
+
+    .footer-bar {
+      padding: 12px 32px;
+      border-top: 1px solid var(--brand-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #FFFFFF;
+    }
+
+    .slide-counter {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--brand-muted);
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    button.btn {
+      background: var(--brand-surface);
+      border: 1px solid var(--brand-border);
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--brand-text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    button.btn:hover {
+      background: var(--brand-yellow);
+      border-color: #E2BF42;
+    }
+
+    button.btn-primary {
+      background: var(--brand-green);
+      color: #FFFFFF;
+      border-color: var(--brand-green);
+    }
+
+    button.btn-primary:hover {
+      background: var(--brand-green-dark);
+    }
+
+    .speaker-notes {
+      display: none;
+      position: absolute;
+      bottom: 60px;
+      left: 32px;
+      right: 32px;
+      background: rgba(31, 41, 51, 0.95);
+      color: #FFFFFF;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      z-index: 100;
+    }
+
+    .speaker-notes.visible {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<div class="deck-container">
+  <!-- Header -->
+  <div class="slide-header">
+    <div class="brand-badge">
+      <span>🌾</span> Kisan<span class="green">Mitra</span>
+    </div>
+    <div class="hackathon-tag">HACKDAY 1.0 — Tech for a Better Tomorrow</div>
+  </div>
+
+  <!-- Slide Viewport -->
+  <div class="slide-viewport">
+
+    <!-- SLIDE 1: Problem Statement -->
+    <div class="slide active" id="slide-1">
+      <div>
+        <h1 class="slide-title">“Farmers Don't Lack Information. They Lack Connected Information.”</h1>
+        <h2 class="slide-subtitle">The Fragmented Agricultural Decision Bottleneck</h2>
+        
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-title">🌿 Crop Disease Silo</div>
+            <div class="card-desc">Visual leaf symptoms misdiagnosed without agronomist access, leading to ineffective chemical costs.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">🧪 Soil Complexity</div>
+            <div class="card-desc">Lab numbers (pH, NPK) are disconnected from crop-specific split fertilization schedules.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">🌦 Raw Weather Numbers</div>
+            <div class="card-desc">Weather apps show degrees and rain % without farm spray windows or irrigation warnings.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">💰 Opaque Mandi Rates</div>
+            <div class="card-desc">Lack of multi-market wholesale price discovery forces distress selling to middlemen.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">🏛️ Dispersed Schemes</div>
+            <div class="card-desc">Valuable government insurance (PMFBY) and subsidies remain unclaimed across scattered portals.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">🌐 Language Barriers</div>
+            <div class="card-desc">Digital farm tools alienate non-English regional farmers across vernacular states.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="highlight-banner">
+        <span>⚠️</span>
+        <div><strong>Core Problem:</strong> Fragmented Information ➔ Difficult Decisions ➔ Delayed / Costly Action. <em>“The challenge isn't access to information. It's turning scattered information into one clear farming decision.”</em></div>
+      </div>
+      <div class="speaker-notes" id="notes-1">
+        🎙️ <strong>Speaker Note:</strong> Indian agriculture doesn't suffer from a lack of data—it suffers from disconnected data. When a farmer must make a daily decision, information is scattered across six different places, causing delay, misdiagnosis, and crop loss.
+      </div>
+    </div>
+
+    <!-- SLIDE 2: Proposed Solution -->
+    <div class="slide" id="slide-2">
+      <div>
+        <h1 class="slide-title">KisanMitra: Smarter Decisions. Healthier Farms.</h1>
+        <h2 class="slide-subtitle">One platform connecting the information behind everyday farming decisions.</h2>
+
+        <div class="flow-chain">
+          <div class="flow-node">👨‍🌾 Farmer Question</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node">📍 Active Farm Data</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node">⚙️ AI + Agronomic Logic</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node" style="background:#E3EFE0; color:#32482B;">✅ Grounded Guidance</div>
+        </div>
+
+        <div class="grid-4" style="margin-top:16px;">
+          <div class="card">
+            <div class="card-title">🌿 AI Crop Doctor</div>
+            <div class="card-desc">Gemini 1.5 Flash Vision for instant, safe disease diagnosis.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">🧪 Soil Health</div>
+            <div class="card-desc">Deterministic ICAR benchmark scoring engine (0–100).</div>
+          </div>
+          <div class="card">
+            <div class="card-title">🌦 Weather Advisory</div>
+            <div class="card-desc">Open-Meteo hyperlocal forecasts & spray suitability index.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">💰 Mandi Discovery</div>
+            <div class="card-desc">Official APMC prices from data.gov.in (Zero fake prices).</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="highlight-banner">
+        <span>🤖</span>
+        <div><strong>Conversational Hero:</strong> Context-Aware AI Assistant reasons over all active farm parameters in <strong>5 Indian Languages</strong> (English, Marathi, Hindi, Tamil, Telugu).</div>
+      </div>
+      <div class="speaker-notes" id="notes-2">
+        🎙️ <strong>Speaker Note:</strong> KisanMitra is a connected decision-support engine. We combine computer vision, deterministic ICAR soil scoring, hyperlocal weather spray windows, official APMC prices, and a context-aware assistant in 5 languages.
+      </div>
+    </div>
+
+    <!-- SLIDE 3: Target Users -->
+    <div class="slide" id="slide-3">
+      <div>
+        <h1 class="slide-title">Who We Build For</h1>
+        <h2 class="slide-subtitle">Empowering Smallholder Farmers & Agricultural Organizations</h2>
+
+        <div class="grid-3" style="margin-top:20px;">
+          <div class="card" style="border:2px solid var(--brand-green); background:#F4FAF0;">
+            <div style="font-size:11px; font-weight:800; text-transform:uppercase; color:var(--brand-green);">Primary User</div>
+            <div class="card-title" style="font-size:18px;">👨‍🌾 Individual Farmers</div>
+            <div class="card-desc" style="font-size:13px; margin-top:6px;">Smallholder and marginal farmers who need immediate, actionable, contextual field guidance in their native mother tongue.</div>
+          </div>
+
+          <div class="card">
+            <div style="font-size:11px; font-weight:800; text-transform:uppercase; color:var(--brand-muted);">Secondary User</div>
+            <div class="card-title" style="font-size:18px;">🌾 FPOs & Cooperatives</div>
+            <div class="card-desc" style="font-size:13px; margin-top:6px;">Farmer Producer Organizations requiring shared agronomic intelligence and market price discovery across hundreds of member farms.</div>
+          </div>
+
+          <div class="card">
+            <div style="font-size:11px; font-weight:800; text-transform:uppercase; color:var(--brand-muted);">Ecosystem User</div>
+            <div class="card-title" style="font-size:18px;">🏛️ Institutions & Agri-Techs</div>
+            <div class="card-desc" style="font-size:13px; margin-top:6px;">Agricultural universities, state extension programs, and NGOs delivering verified scheme distribution and advisory programs.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="highlight-banner">
+        <span>🎯</span>
+        <div><strong>Farmer-First Inclusivity:</strong> 100% translation key parity across English, Marathi, Hindi, Tamil, and Telugu without app barriers.</div>
+      </div>
+      <div class="speaker-notes" id="notes-3">
+        🎙️ <strong>Speaker Note:</strong> Our primary focus is the individual smallholder farmer. Secondarily, our modular architecture serves FPOs and agricultural institutions to deliver shared agronomic intelligence across rural clusters.
+      </div>
+    </div>
+
+    <!-- SLIDE 4: Technical Approach -->
+    <div class="slide" id="slide-4">
+      <div>
+        <h1 class="slide-title">How KisanMitra Works</h1>
+        <h2 class="slide-subtitle">“AI for reasoning; deterministic science for explainability and trust.”</h2>
+
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-title">🖥️ Frontend Layer</div>
+            <div class="card-desc"><strong>Next.js 14 App Router, React 18, TypeScript, Tailwind CSS.</strong> Fast SSR/CSR, client context persistence, native Unicode fonts.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">⚡ Backend Gateway</div>
+            <div class="card-desc"><strong>FastAPI (Python 3.11), Pydantic v2.</strong> Async API routers, strict runtime validation, backend-only secret isolation.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">🧠 Intelligence Core</div>
+            <div class="card-desc"><strong>Gemini 1.5 Flash + ICAR Models.</strong> Multimodal leaf vision, hybrid RAG knowledge retrieval, deterministic spray engine.</div>
+          </div>
+        </div>
+
+        <div class="flow-chain" style="margin-top:14px;">
+          <div class="flow-node">Next.js Client</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node">FastAPI Router</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node">Context & RAG Engine</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node" style="background:#E3EFE0;">Gemini 1.5 Flash / ICAR</div>
+        </div>
+      </div>
+
+      <div class="highlight-banner">
+        <span>🛡️</span>
+        <div><strong>Robust Architecture:</strong> Zero frontend secrets, prompt-injection defense markers, and automated offline fallback generators.</div>
+      </div>
+      <div class="speaker-notes" id="notes-4">
+        🎙️ <strong>Speaker Note:</strong> We use Gemini for vision and reasoning, but deterministic ICAR agronomic rules for soil scoring and spray windows. Zero API keys touch the frontend, and every response is grounded in real farm context.
+      </div>
+    </div>
+
+    <!-- SLIDE 5: Market & Business Potential -->
+    <div class="slide" id="slide-5">
+      <div>
+        <h1 class="slide-title">From Farmer Utility to a Scalable Platform</h1>
+        <h2 class="slide-subtitle">A Progressive Ecosystem Business Model</h2>
+
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-title">🌱 B2C (Farmers)</div>
+            <div class="card-desc">Free grassroots utility building community trust, with optional premium satellite monitoring and crop insurance assistance.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">🌾 B2B (FPOs)</div>
+            <div class="card-desc">Subscription-based dashboards for Farmer Producer Organizations for bulk mandi price comparisons and cluster crop tracking.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">🏛️ Institutional (SaaS)</div>
+            <div class="card-desc">Enterprise advisory tools for agricultural universities, state extension initiatives, and supply-chain partners.</div>
+          </div>
+        </div>
+
+        <div class="flow-chain" style="margin-top:14px;">
+          <div class="flow-node">Individual Farmers</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node">FPOs & Collectives</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node">Agri-Enterprises</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node" style="background:#FDF9E7; color:#7D6008;">Platform Ecosystem</div>
+        </div>
+      </div>
+
+      <div class="highlight-banner">
+        <span>📈</span>
+        <div><strong>Scalability Pathway:</strong> Starts as a trusted farmer tool; grows into an institutional agricultural intelligence layer.</div>
+      </div>
+      <div class="speaker-notes" id="notes-5">
+        🎙️ <strong>Speaker Note:</strong> KisanMitra starts as a high-utility free platform for farmers. As we scale, our business model expands into B2B group dashboards for FPOs, institutional SaaS for state programs, and enterprise data intelligence.
+      </div>
+    </div>
+
+    <!-- SLIDE 6: Scalability & Future -->
+    <div class="slide" id="slide-6">
+      <div>
+        <h1 class="slide-title">Building the Connected Farm</h1>
+        <h2 class="slide-subtitle">The Evolution from Decision Support to Autonomous Farm Intelligence</h2>
+
+        <div class="grid-3">
+          <div class="card">
+            <div style="font-weight:800; font-size:12px; color:var(--brand-green); text-transform:uppercase;">Stage 1 — Today</div>
+            <div class="card-title">Decision Support</div>
+            <div class="card-desc">• 8 integrated modules<br/>• Vision crop diagnostics<br/>• ICAR soil engine<br/>• APMC mandi rates<br/>• 5 Indian languages</div>
+          </div>
+
+          <div class="card">
+            <div style="font-weight:800; font-size:12px; color:var(--brand-muted); text-transform:uppercase;">Stage 2 — Next</div>
+            <div class="card-title">Real-Time Intelligence</div>
+            <div class="card-desc">• Voice-first regional AI<br/>• Automated farm alerts<br/>• IoT soil moisture sensors<br/>• Direct KVK agronomist connect</div>
+          </div>
+
+          <div class="card">
+            <div style="font-weight:800; font-size:12px; color:#7D6008; text-transform:uppercase;">Stage 3 — Future</div>
+            <div class="card-title">Predictive Agriculture</div>
+            <div class="card-desc">• Satellite NDVI remote sensing<br/>• Predictive pest cycle modeling<br/>• FPO collective bargaining<br/>• Climate-resilient farm digital twins</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="highlight-banner">
+        <span>🌐</span>
+        <div><strong>Long-Term Vision:</strong> Transforming reactive farming into predictive, connected, and climate-resilient agriculture.</div>
+      </div>
+      <div class="speaker-notes" id="notes-6">
+        🎙️ <strong>Speaker Note:</strong> Today, KisanMitra unifies 8 essential tools. Tomorrow, we evolve into a fully connected farm platform: adding voice-first interactions, IoT soil probe telemetry, satellite NDVI remote sensing, and predictive pest forecasting.
+      </div>
+    </div>
+
+    <!-- SLIDE 7: If We Had More Time -->
+    <div class="slide" id="slide-7">
+      <div>
+        <h1 class="slide-title">If We Had More Time</h1>
+        <h2 class="slide-subtitle">What would we build next with additional time and resources?</h2>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">🎙️ 1. Voice-First Regional Assistant</div>
+            <div class="card-desc">Indic voice-in / voice-out interaction (IndicWhisper / Bhashini) for elderly & non-literate farmers.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">🛰️ 2. Satellite (NDVI) + IoT Telemetry</div>
+            <div class="card-desc">Live Sentinel-2 vegetation health mapping combined with on-field moisture probe telemetry.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">🔮 3. Predictive Crop Risk & Pest Cycles</div>
+            <div class="card-desc">Correlating regional weather anomalies with historical pest outbreak cycles 7 days in advance.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">👨‍🔬 4. 1-Click Expert & KVK Connect</div>
+            <div class="card-desc">Live audio/video consultation escalation to certified Krishi Vigyan Kendra scientists.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="highlight-banner" style="background:#F3F7F1; border-color:#C7DEC1;">
+        <span style="font-size:20px;">🌾</span>
+        <div style="font-size:15px; color:#22311D;"><strong>Closing Statement:</strong> <em>“KisanMitra is not just an AI farming app. It is a connected decision layer for agriculture.”</em></div>
+      </div>
+      <div class="speaker-notes" id="notes-7">
+        🎙️ <strong>Speaker Note:</strong> If we had more time, our top priority is voice-first Indic AI so any farmer can speak naturally in their dialect, followed by satellite NDVI sensing and direct KVK scientist escalation. Thank you!
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer Navigation -->
+  <div class="footer-bar">
+    <div class="slide-counter" id="slide-counter">Slide 1 of 7</div>
+    <div class="nav-buttons">
+      <button class="btn" id="notes-toggle" onclick="toggleNotes()">🎙️ Speaker Notes [S]</button>
+      <button class="btn" id="prev-btn" onclick="prevSlide()">◀ Previous</button>
+      <button class="btn btn-primary" id="next-btn" onclick="nextSlide()">Next ▶</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentSlide = 1;
+  const totalSlides = 7;
+
+  function showSlide(n) {
+    document.querySelectorAll('.slide').forEach((s, idx) => {
+      s.classList.toggle('active', idx === n - 1);
+    });
+    document.getElementById('slide-counter').textContent = `Slide ${n} of ${totalSlides}`;
+    document.getElementById('prev-btn').disabled = (n === 1);
+    document.getElementById('next-btn').textContent = (n === totalSlides) ? 'Finish 🏁' : 'Next ▶';
+  }
+
+  function nextSlide() {
+    if (currentSlide < totalSlides) {
+      currentSlide++;
+      showSlide(currentSlide);
+    }
+  }
+
+  function prevSlide() {
+    if (currentSlide > 1) {
+      currentSlide--;
+      showSlide(currentSlide);
+    }
+  }
+
+  function toggleNotes() {
+    const activeNote = document.getElementById(`notes-${currentSlide}`);
+    if (activeNote) {
+      activeNote.classList.toggle('visible');
+    }
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+      nextSlide();
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      prevSlide();
+    } else if (e.key.toLowerCase() === 's') {
+      toggleNotes();
+    }
+  });
+
+  showSlide(1);
+</script>
+
+</body>
+</html>
