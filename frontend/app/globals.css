@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --brand-yellow: #F4D35E;
+    --brand-green: #587A4C;
+    --brand-bg: #FAF9F4;
+    --brand-surface: #FFFFFF;
+    --brand-text: #1F2933;
+    --brand-muted: #667085;
+    --brand-border: #E5E1D8;
+    --brand-danger: #C94C4C;
+    --brand-warning: #D89B28;
+  }
+
+  body {
+    background-color: var(--brand-bg);
+    color: var(--brand-text);
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Accessible focus rings */
+  :focus-visible {
+    outline: 2px solid #587A4C;
+    outline-offset: 2px;
+  }
+}
+
+/* Custom agricultural touches */
+.pattern-wheat {
+  background-color: #FAF9F4;
+  background-image: radial-gradient(#E5E1D8 0.75px, transparent 0.75px);
+  background-size: 16px 16px;
+}
+
+.glow-warm {
+  box-shadow: 0 4px 20px -2px rgba(244, 211, 94, 0.25);
+}
