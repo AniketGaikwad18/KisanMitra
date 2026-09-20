@@ -1,4 +1,9 @@
-import { HealthResponse, CropAnalysisResult } from "@/types";
+import {
+  HealthResponse,
+  CropAnalysisResult,
+  SoilAnalysisRequest,
+  SoilAnalysisResponse,
+} from "@/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -84,7 +89,6 @@ export async function analyzeCropImage(
     const response = await fetch(url, {
       method: "POST",
       body: formData,
-      // Note: do NOT set Content-Type header manually so the browser sets the multipart boundary
     });
 
     const status = response.status;
@@ -118,6 +122,18 @@ export async function analyzeCropImage(
       status: 0,
     };
   }
+}
+
+/**
+ * Submit soil test parameters for deterministic health intelligence assessment
+ */
+export async function analyzeSoil(
+  payload: SoilAnalysisRequest
+): Promise<ApiResponse<SoilAnalysisResponse>> {
+  return fetchApi<SoilAnalysisResponse>("/api/soil/analyze", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
 }
 
 export { API_BASE_URL };

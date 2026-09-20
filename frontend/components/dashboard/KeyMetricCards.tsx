@@ -27,11 +27,22 @@ export const KeyMetricCards: React.FC = () => {
     isRecent: false,
   });
 
+  const [soilStatus, setSoilStatus] = useState<{
+    score: number;
+    rating: string;
+    isRecent: boolean;
+  }>({
+    score: 72,
+    rating: "Good",
+    isRecent: false,
+  });
+
   useEffect(() => {
     try {
-      const saved = localStorage.getItem("kisanmitra_last_crop_check");
-      if (saved) {
-        const parsed = JSON.parse(saved);
+      // Hydrate crop scan
+      const savedCrop = localStorage.getItem("kisanmitra_last_crop_check");
+      if (savedCrop) {
+        const parsed = JSON.parse(savedCrop);
         setCropStatus({
           crop: parsed.crop || "Soybean",
           condition: parsed.condition || "Healthy",
@@ -39,8 +50,19 @@ export const KeyMetricCards: React.FC = () => {
           isRecent: true,
         });
       }
+
+      // Hydrate soil assessment
+      const savedSoil = localStorage.getItem("kisanmitra_last_soil_check");
+      if (savedSoil) {
+        const parsedSoil = JSON.parse(savedSoil);
+        setSoilStatus({
+          score: parsedSoil.score || 72,
+          rating: parsedSoil.rating || "Good",
+          isRecent: true,
+        });
+      }
     } catch {
-      // Ignore
+      // Ignore storage errors
     }
   }, []);
 
@@ -99,7 +121,7 @@ export const KeyMetricCards: React.FC = () => {
           </div>
         </div>
 
-        {/* CARD 2: SOIL HEALTH */}
+        {/* CARD 2: SOIL HEALTH (Dynamic Hydration) */}
         <div className="bg-gradient-to-b from-[#FDFBF7] to-white rounded-2xl border border-brand-border p-5 shadow-card hover:border-brand-green/40 hover:shadow-elevated transition-all flex flex-col justify-between group">
           <div>
             <div className="flex items-center justify-between mb-3">
@@ -114,7 +136,7 @@ export const KeyMetricCards: React.FC = () => {
             <div className="space-y-1">
               <div className="flex items-baseline gap-1.5">
                 <span className="text-3xl font-black text-brand-text tracking-tight">
-                  72
+                  {soilStatus.score}
                 </span>
                 <span className="text-sm font-semibold text-brand-text-secondary">
                   / 100
@@ -122,7 +144,7 @@ export const KeyMetricCards: React.FC = () => {
               </div>
               <div className="text-sm font-bold text-brand-green flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4" />
-                Good
+                {soilStatus.rating}
               </div>
             </div>
 
@@ -131,12 +153,14 @@ export const KeyMetricCards: React.FC = () => {
               <div className="w-full bg-brand-border/60 h-2 rounded-full overflow-hidden">
                 <div
                   className="bg-brand-green h-2 rounded-full transition-all duration-500"
-                  style={{ width: "72%" }}
+                  style={{ width: `${soilStatus.score}%` }}
                 />
               </div>
               <div className="flex justify-between text-[11px] text-brand-text-secondary mt-1">
                 <span>Last analysis</span>
-                <span className="font-semibold text-brand-text">2 days ago</span>
+                <span className="font-semibold text-brand-text">
+                  {soilStatus.isRecent ? "Recently assessed" : "2 days ago"}
+                </span>
               </div>
             </div>
           </div>
@@ -152,7 +176,7 @@ export const KeyMetricCards: React.FC = () => {
           </div>
         </div>
 
-        {/* CARD 3: CROP HEALTH (Dynamic AI Scan Sync) */}
+        {/* CARD 3: CROP HEALTH */}
         <div className="bg-gradient-to-b from-[#F5FBF3] to-white rounded-2xl border border-brand-border p-5 shadow-card hover:border-brand-green/40 hover:shadow-elevated transition-all flex flex-col justify-between group">
           <div>
             <div className="flex items-center justify-between mb-3">

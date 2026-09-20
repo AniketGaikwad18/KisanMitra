@@ -17,7 +17,7 @@
 The core philosophy:
 > *"If farmers are better supported today, they can help create a better tomorrow for everyone."*
 
-Farmers are central to food security and society, yet many vital farming decisions require information from scattered, fragmented sources. KisanMitra brings crop health diagnostics, soil insights, weather intelligence, official mandi prices, and government schemes together into a unified, farmer-friendly, and accessible platform.
+Farmers are central to food security and society, yet many vital farming decisions require information from scattered, fragmented sources. KisanMitra brings crop health diagnostics, soil intelligence, weather forecasts, official mandi prices, and government schemes together into a unified, farmer-friendly, and accessible platform.
 
 ---
 
@@ -39,7 +39,7 @@ Indian farmers routinely make high-stakes agricultural decisions with fragmented
 ```text
 What should I grow? (Crop Guide)
         ↓
-Is my soil suitable? (Soil Health)
+Is my soil suitable? (Soil Health Intelligence)
         ↓
 How should I manage my crop? (Agronomy Handbook)
         ↓
@@ -54,13 +54,13 @@ Where can I sell my crop? (Mandi Prices)
 
 ---
 
-## 🌟 Planned Features & Modules
+## 🌟 Modules & Features
 
 | Module | Description | Status |
 | :--- | :--- | :--- |
-| **🌱 AI Crop Doctor** | Computer vision-based disease detection from leaf photos with confidence scoring and remedies. | *Foundation Ready* |
-| **🧪 Soil Health** | NPK, pH, and soil property evaluation combined with target crop needs for balanced nutrient advice. | *Foundation Ready* |
-| **🌦 Weather Intelligence** | Hyperlocal weather forecasts translated into farm activity recommendations. | *Foundation Ready* |
+| **🌱 AI Crop Doctor** | Computer vision-based disease detection from leaf photos with confidence scoring and remedies using Gemini 1.5 Flash. | **Live & Operational** |
+| **🧪 Soil Health Intelligence** | Deterministic agronomic interpretation of pH, N, P, K, and Organic Matter based on standard ICAR benchmarks. | **Live & Operational** |
+| **🌦 Weather Intelligence** | Hyperlocal weather forecasts translated into farm activity recommendations and spray windows. | *Foundation Ready* |
 | **💰 Mandi Prices** | Official APMC market rates, price comparisons, and trend discovery (zero fabricated prices). | *Foundation Ready* |
 | **🏛️ Govt Schemes** | Curated Central/State agricultural schemes with eligibility, documents, and application links. | *Foundation Ready* |
 | **🌾 Location-Based Crop Guide** | Agro-climatic zone advice on sowing, pest mitigation, and harvest practices. | *Foundation Ready* |
@@ -69,11 +69,57 @@ Where can I sell my crop? (Mandi Prices)
 
 ---
 
+## 🧪 Soil Health Intelligence Module Details
+
+### What It Does
+The Soil Health Intelligence module provides an instant, transparent agronomic interpretation of routine soil testing parameters. It evaluates pH balance, available macronutrients (N, P, K), and optional organic carbon to generate an **Advisory Soil Health Score (0–100)**, parameter classifications, key observations, safe non-prescriptive recommendations, and crop-specific context.
+
+### Input Parameters
+* **Soil pH** (`0.0 – 14.0`, Required) — Evaluates soil reaction (acidic, neutral, alkaline).
+* **Available Nitrogen (N)** (`kg/ha`, Required) — Classified as Low (<280), Medium (280–560), High (>560).
+* **Available Phosphorus (P)** (`kg/ha`, Required) — Classified as Low (<10), Medium (10–25), High (>25).
+* **Available Potassium (K)** (`kg/ha`, Required) — Classified as Low (<140), Medium (140–280), High (>280).
+* **Organic Matter / Carbon** (`%`, Optional) — Low (<0.50%), Medium (0.50–0.75%), High (>0.75%).
+* **Target Crop** (Dropdown, Optional) — E.g., Soybean, Wheat, Rice, Cotton, Maize, Sugarcane, Tomato, Onion.
+* **Farm Location** (Optional, Default: *Pune, Maharashtra*).
+
+### API Endpoint
+```http
+POST /api/soil/analyze
+Content-Type: application/json
+
+{
+  "ph": 6.5,
+  "nitrogen": 280,
+  "phosphorus": 22,
+  "potassium": 210,
+  "organic_matter": 1.8,
+  "crop": "Soybean",
+  "location": "Pune, Maharashtra"
+}
+```
+
+### Scoring Concept
+* **Explainable Composite Weighting:**
+  * *With Organic Matter:* pH (30%) + N (25%) + P (20%) + K (20%) + OM (5%).
+  * *Without Organic Matter:* pH (32%) + N (28%) + P (20%) + K (20%) (Score is normalized cleanly so farmers are not penalized if OM is omitted).
+* **Rating Bands:**
+  * `0–39`: Needs Attention
+  * `40–59`: Fair
+  * `60–79`: Good
+  * `80–100`: Very Good
+
+### Future Soil-Report Extraction
+The frontend includes an upload zone supporting PDF, JPG, and PNG documents. Automated OCR document parsing and field extraction are designed to plug directly into this module in a future enhancement phase.
+
+### ⚠️ Important Advisory Notice & Limitations
+> **Advisory Assessment Only:** This module provides decision-support guidance based on standard ICAR Indian agricultural interpretation benchmarks. It is **not a certified soil testing laboratory report** and does not provide exact chemical prescription dosages. Actual nutrient requirements depend on soil texture, regional rainfall, target yield, and localized agricultural university recommendations.
+
+---
+
 ## 🎨 Visual Identity & Design System
 
-KisanMitra uses a bespoke agricultural design system prioritizing high readability, touch-friendly UI, and warm aesthetics:
-
-* **Primary Brand Yellow:** `#F4D35E` — Used for primary CTAs, active navigations, and key indicators.
+* **Primary Brand Yellow:** `#F4D35E` — Key CTAs, active navigations, and indicators.
 * **Background Canvas:** `#FAF9F4` — Warm cream tone preventing eye strain.
 * **Surface White:** `#FFFFFF` — Crisp card surfaces with subtle borders.
 * **Agricultural Green:** `#587A4C` — Organic, trustworthy nature green.
@@ -83,165 +129,38 @@ KisanMitra uses a bespoke agricultural design system prioritizing high readabili
 
 ---
 
-## 🏗️ Architecture
-
-A clean, modular-monolith architecture optimized for speed, reliability, and maintainability:
-
-```text
-┌────────────────────────────────────────────────────────┐
-│               Next.js 14 Frontend                      │
-│     (App Router, TypeScript, Tailwind CSS)             │
-└──────────────────────────┬─────────────────────────────┘
-                           │ REST API
-                           ▼
-┌────────────────────────────────────────────────────────┐
-│               FastAPI Backend (Python)                 │
-│      ├── Health & System Endpoints                     │
-│      ├── Crop Diagnosis Service (Placeholder)          │
-│      ├── Soil Analysis Service (Placeholder)           │
-│      ├── Weather Intelligence Service (Placeholder)    │
-│      ├── Mandi Pricing Service (Placeholder)           │
-│      ├── Schemes Service (Placeholder)                 │
-│      └── AI Assistant Service (Placeholder)            │
-└──────────────────────────┬─────────────────────────────┘
-                           │
-             ┌─────────────┴─────────────┐
-             ▼                           ▼
-┌──────────────────────────┐ ┌──────────────────────────┐
-│   External Public APIs   │ │  Supabase / PostgreSQL   │
-│ (Open-Meteo, Data.gov.in)│ │  (Database & Storage)    │
-└──────────────────────────┘ └──────────────────────────┘
-```
-
----
-
-## 📁 Project Structure
-
-```text
-KisanMitra/
-├── frontend/
-│   ├── app/
-│   │   ├── layout.tsx            # Global HTML & fonts
-│   │   ├── page.tsx              # Landing page
-│   │   ├── globals.css           # Tailwind & brand tokens
-│   │   ├── dashboard/page.tsx    # Dashboard shell
-│   │   ├── crop-doctor/page.tsx  # Crop Doctor portal
-│   │   ├── soil/page.tsx         # Soil Health portal
-│   │   ├── weather/page.tsx      # Weather Intelligence
-│   │   ├── mandi/page.tsx        # Mandi Prices
-│   │   ├── schemes/page.tsx      # Government Schemes
-│   │   ├── crop-guide/page.tsx   # Crop Guide
-│   │   └── assistant/page.tsx    # AI Assistant
-│   ├── components/
-│   │   ├── layout/               # Navbar, Sidebar, AppShell
-│   │   ├── ui/                   # Button, Card, Badge, Alert, PageHeader, States
-│   │   └── dashboard/            # SummaryCard, QuickActions, FarmAlerts, Health
-│   ├── lib/
-│   │   └── api.ts                # API client with health checker
-│   ├── types/                    # TypeScript interfaces
-│   ├── tailwind.config.ts        # Custom brand palette
-│   └── package.json
-│
-├── backend/
-│   ├── app/
-│   │   ├── api/
-│   │   │   └── health.py         # GET /api/health
-│   │   ├── core/
-│   │   │   └── config.py         # Pydantic Settings & CORS
-│   │   ├── schemas/
-│   │   │   └── health.py         # Pydantic models
-│   │   ├── services/             # Modular service placeholders
-│   │   └── main.py               # FastAPI entry point
-│   └── requirements.txt
-│
-├── .env.example                  # Environment configuration template
-├── .gitignore
-└── README.md
-```
-
----
-
 ## 🚀 Local Development Setup
 
-### 1. Prerequisites
-* **Node.js**: v18+ (Tested on v22.23.1)
-* **Python**: 3.10+ (Tested on 3.11.15)
-
-### 2. Backend Setup
-
+### 1. Backend Setup
 ```bash
-# Navigate to backend
 cd backend
-
-# Install dependencies
 pip install -r requirements.txt
-
-# Start FastAPI dev server
-uvicorn app.main:app --reload --port 8000
+python -m uvicorn app.main:app --reload --port 8000
 ```
 
-Verify backend health:
+Verify backend endpoints:
+* Health: [http://localhost:8000/api/health](http://localhost:8000/api/health)
+* Swagger UI Docs: [http://localhost:8000/docs](http://localhost:8000/docs)
+
+### 2. Frontend Setup
 ```bash
-curl http://localhost:8000/api/health
-# Response: {"status":"ok","service":"kisanmitra-api"}
-```
-
-API Documentation:
-* Swagger UI: [http://localhost:8000/docs](http://localhost:8000/docs)
-* ReDoc: [http://localhost:8000/redoc](http://localhost:8000/redoc)
-
-### 3. Frontend Setup
-
-```bash
-# Navigate to frontend
 cd frontend
-
-# Install dependencies
 npm install
-
-# Start Next.js dev server
 npm run dev
 ```
-
 Open [http://localhost:3000](http://localhost:3000) in your browser.
-
----
-
-## 🔑 Environment Variables
-
-Copy `.env.example` to `.env` or set environment variables:
-
-```ini
-# Frontend
-NEXT_PUBLIC_API_URL=http://localhost:8000
-
-# Backend / Supabase
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_ANON_KEY=your-supabase-anon-key
-SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
-
-# AI Intelligence
-GEMINI_API_KEY=your-gemini-api-key
-
-# Weather
-WEATHER_API_URL=https://api.open-meteo.com/v1/forecast
-
-# Mandi Data
-MANDI_API_URL=https://api.data.gov.in/resource
-MANDI_API_KEY=your-data-gov-in-api-key
-```
 
 ---
 
 ## 🗺️ Phased Roadmap (Hackday 1.0)
 
 - [x] **Phase 1: Project Foundation + Architecture + Design System**
-- [ ] **Phase 2: AI Crop Doctor (Vision Diagnosis & Remedies)**
-- [ ] **Phase 3: Soil Health & Nutrient Analysis**
-- [ ] **Phase 4: Weather Intelligence & Farm Alerts**
-- [ ] **Phase 5: Mandi & Real Market Price Discovery**
-- [ ] **Phase 6: Government Schemes Directory**
-- [ ] **Phase 7: Location-Based Crop Guide**
-- [ ] **Phase 8: Multilingual AI Farmer Assistant**
-- [ ] **Phase 9: Full End-to-End Testing & Integration**
+- [x] **Phase 2: UI/UX Refinement & Complete Farmer Dashboard**
+- [x] **Phase 3: AI Crop Doctor (Gemini 1.5 Flash Vision Integration)**
+- [x] **Phase 4: Soil Health Intelligence (Deterministic ICAR Engine)**
+- [ ] **Phase 5: Weather Intelligence & Farm Alerts**
+- [ ] **Phase 6: Mandi & Real Market Price Discovery**
+- [ ] **Phase 7: Government Schemes Directory**
+- [ ] **Phase 8: Location-Based Crop Guide**
+- [ ] **Phase 9: Multilingual AI Farmer Assistant**
 - [ ] **Phase 10: Final Deployment & Demo Presentation**

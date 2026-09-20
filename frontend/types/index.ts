@@ -20,6 +20,52 @@ export interface CropAnalysisResult {
   error?: string | null;
 }
 
+export interface SoilAnalysisRequest {
+  ph: number;
+  nitrogen: number;
+  phosphorus: number;
+  potassium: number;
+  organic_matter?: number | null;
+  crop?: string;
+  location?: string;
+}
+
+export interface SoilParameterResult {
+  value: number;
+  unit: string;
+  status: string;
+  severity: "normal" | "moderate" | "warning" | string;
+  rating_score: number;
+}
+
+export interface SoilParameters {
+  ph: SoilParameterResult;
+  nitrogen: SoilParameterResult;
+  phosphorus: SoilParameterResult;
+  potassium: SoilParameterResult;
+  organic_matter?: SoilParameterResult | null;
+}
+
+export interface CropContext {
+  crop_name: string;
+  suitable_ph_range: string;
+  is_ph_suitable: boolean;
+  primary_focus: string;
+  soil_notes: string;
+  considerations: string[];
+}
+
+export interface SoilAnalysisResponse {
+  overall_score: number;
+  rating: "Needs Attention" | "Fair" | "Good" | "Very Good" | string;
+  parameters: SoilParameters;
+  observations: string[];
+  recommendations: string[];
+  crop_context?: CropContext | null;
+  data_quality_notes: string[];
+  disclaimer: string;
+}
+
 export interface NavItem {
   name: string;
   href: string;
