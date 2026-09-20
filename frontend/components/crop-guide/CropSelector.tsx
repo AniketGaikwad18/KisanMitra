@@ -3,6 +3,7 @@
 import React from "react";
 import { Sprout } from "lucide-react";
 import { CropSummary } from "@/types";
+import { useTranslation } from "@/lib/i18n";
 
 interface CropSelectorProps {
   crops: CropSummary[];
@@ -26,12 +27,14 @@ export const CropSelector: React.FC<CropSelectorProps> = ({
   selectedCropId,
   onSelectCrop,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="bg-brand-surface rounded-2xl border border-brand-border p-3 sm:p-4 shadow-subtle mb-6">
       <div className="flex items-center gap-2 mb-2.5 px-1">
         <Sprout className="w-4 h-4 text-brand-green" />
         <span className="text-xs font-bold uppercase tracking-wider text-brand-text-secondary">
-          Select Crop Profile
+          {t("cropGuide.selectCrop")}
         </span>
       </div>
 

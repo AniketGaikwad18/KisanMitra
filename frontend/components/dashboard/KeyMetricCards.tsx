@@ -13,10 +13,12 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
-
 import { getWeather, getMandiPrices } from "@/lib/api";
+import { useTranslation } from "@/lib/i18n";
 
 export const KeyMetricCards: React.FC = () => {
+  const { t, formatNumber } = useTranslation();
+
   const [weatherStatus, setWeatherStatus] = useState<{
     temperature: number | null;
     condition: string;
@@ -52,7 +54,6 @@ export const KeyMetricCards: React.FC = () => {
     isUnavailable: false,
     arrivalDate: "2026-09-20",
   });
-
 
   const [cropStatus, setCropStatus] = useState<{
     crop: string;
@@ -234,10 +235,10 @@ export const KeyMetricCards: React.FC = () => {
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 className="text-xl font-extrabold text-brand-text tracking-tight">
-            Key Farm Indicators
+            {t("dashboard.overview")}
           </h2>
           <p className="text-xs text-brand-text-secondary">
-            Essential data streams summarized at a glance
+            {t("dashboard.subtitle")}
           </p>
         </div>
       </div>
@@ -248,7 +249,7 @@ export const KeyMetricCards: React.FC = () => {
           <div>
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs font-bold uppercase tracking-wider text-brand-text-secondary">
-                Weather ({weatherStatus.locationName})
+                {t("dashboard.weatherCardTitle")} ({weatherStatus.locationName})
               </span>
               <div className="p-2 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 group-hover:scale-105 transition-transform">
                 <CloudSun className="w-5 h-5" />
@@ -258,16 +259,16 @@ export const KeyMetricCards: React.FC = () => {
             {weatherStatus.isUnavailable ? (
               <div className="space-y-1 py-1">
                 <div className="text-lg font-bold text-brand-danger">
-                  Weather unavailable
+                  {t("weather.alertsTitle")}
                 </div>
                 <div className="text-xs text-brand-text-secondary">
-                  Unable to connect to live provider
+                  {t("common.error")}
                 </div>
               </div>
             ) : (
               <div className="space-y-1">
                 <div className="text-3xl font-black text-brand-text tracking-tight">
-                  {weatherStatus.temperature !== null ? `${weatherStatus.temperature}°C` : "..."}
+                  {weatherStatus.temperature !== null ? `${formatNumber(weatherStatus.temperature)}°C` : "..."}
                 </div>
                 <div className="text-sm font-bold text-brand-green truncate" title={weatherStatus.condition}>
                   {weatherStatus.condition}
@@ -278,12 +279,12 @@ export const KeyMetricCards: React.FC = () => {
             <div className="mt-3 pt-3 border-t border-brand-border/60 flex items-center justify-between text-xs text-brand-text-secondary">
               <span className="flex items-center gap-1">
                 <Droplets className="w-3.5 h-3.5 text-blue-500" />
-                Rain probability
+                {t("weather.rainProbability")}
               </span>
               <span className="font-bold text-brand-text">
                 {weatherStatus.isUnavailable
                   ? "—"
-                  : `${weatherStatus.rainProbability ?? 0}%`}
+                  : `${formatNumber(weatherStatus.rainProbability ?? 0)}%`}
               </span>
             </div>
           </div>
@@ -293,7 +294,7 @@ export const KeyMetricCards: React.FC = () => {
               href="/weather"
               className="inline-flex items-center gap-1 text-xs font-bold text-brand-green hover:underline group-hover:translate-x-0.5 transition-transform"
             >
-              <span>View forecast</span>
+              <span>{t("dashboard.checkWeatherTitle")}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
@@ -304,7 +305,7 @@ export const KeyMetricCards: React.FC = () => {
           <div>
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs font-bold uppercase tracking-wider text-brand-text-secondary">
-                Soil Health
+                {t("dashboard.soilCardTitle")}
               </span>
               <div className="p-2 rounded-xl bg-brand-green/10 text-brand-green border border-brand-green/20 group-hover:scale-105 transition-transform">
                 <FlaskConical className="w-5 h-5" />
@@ -314,7 +315,7 @@ export const KeyMetricCards: React.FC = () => {
             <div className="space-y-1">
               <div className="flex items-baseline gap-1.5">
                 <span className="text-3xl font-black text-brand-text tracking-tight">
-                  {soilStatus.score}
+                  {formatNumber(soilStatus.score)}
                 </span>
                 <span className="text-sm font-semibold text-brand-text-secondary">
                   / 100
@@ -335,9 +336,9 @@ export const KeyMetricCards: React.FC = () => {
                 />
               </div>
               <div className="flex justify-between text-[11px] text-brand-text-secondary mt-1">
-                <span>Last analysis</span>
+                <span>{t("common.disclaimer")}</span>
                 <span className="font-semibold text-brand-text">
-                  {soilStatus.isRecent ? "Recently assessed" : "2 days ago"}
+                  {soilStatus.isRecent ? t("common.verified") : t("weather.today")}
                 </span>
               </div>
             </div>
@@ -348,7 +349,7 @@ export const KeyMetricCards: React.FC = () => {
               href="/soil"
               className="inline-flex items-center gap-1 text-xs font-bold text-brand-green hover:underline group-hover:translate-x-0.5 transition-transform"
             >
-              <span>View soil</span>
+              <span>{t("dashboard.analyzeSoilTitle")}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
@@ -359,7 +360,7 @@ export const KeyMetricCards: React.FC = () => {
           <div>
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs font-bold uppercase tracking-wider text-brand-text-secondary">
-                Crop Health
+                {t("dashboard.cropDoctorCardTitle")}
               </span>
               <div className="p-2 rounded-xl bg-brand-yellow/30 text-brand-green border border-brand-yellow/50 group-hover:scale-105 transition-transform">
                 <Sprout className="w-5 h-5" />
@@ -376,9 +377,9 @@ export const KeyMetricCards: React.FC = () => {
             </div>
 
             <div className="mt-3 pt-3 border-t border-brand-border/60 flex items-center justify-between text-xs text-brand-text-secondary">
-              <span>Last checked</span>
+              <span>{t("common.disclaimer")}</span>
               <span className="font-bold text-brand-text">
-                {cropStatus.isRecent ? "Recently scanned" : "Today"}
+                {cropStatus.isRecent ? t("common.verified") : t("weather.today")}
               </span>
             </div>
           </div>
@@ -388,7 +389,7 @@ export const KeyMetricCards: React.FC = () => {
               href="/crop-doctor"
               className="inline-flex items-center gap-1 text-xs font-bold text-brand-green hover:underline group-hover:translate-x-0.5 transition-transform"
             >
-              <span>Check crop</span>
+              <span>{t("dashboard.checkCropTitle")}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
@@ -399,19 +400,19 @@ export const KeyMetricCards: React.FC = () => {
           <div>
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs font-bold uppercase tracking-wider text-brand-text-secondary">
-                Mandi Price
+                {t("dashboard.mandiCardTitle")}
               </span>
               {mandiStatus.isUnavailable ? (
                 <Badge variant="danger" size="sm" className="text-[10px] font-bold">
-                  Unavailable
+                  {t("mandi.statusUnavailable")}
                 </Badge>
               ) : mandiStatus.isDemo ? (
                 <Badge variant="warning" size="sm" className="text-[10px] font-bold">
-                  Demo data
+                  {t("mandi.statusDemo")}
                 </Badge>
               ) : (
                 <Badge variant="success" size="sm" className="text-[10px] font-bold">
-                  Official data
+                  {t("mandi.statusOfficial")}
                 </Badge>
               )}
             </div>
@@ -419,10 +420,10 @@ export const KeyMetricCards: React.FC = () => {
             {mandiStatus.isUnavailable ? (
               <div className="space-y-1 py-1">
                 <div className="text-lg font-bold text-brand-danger">
-                  Market data unavailable
+                  {t("mandi.statusUnavailable")}
                 </div>
                 <div className="text-xs text-brand-text-secondary">
-                  Unable to connect to market source
+                  {t("common.error")}
                 </div>
               </div>
             ) : (
@@ -433,7 +434,7 @@ export const KeyMetricCards: React.FC = () => {
                 <div className="flex items-baseline gap-1">
                   <span className="text-3xl font-black text-brand-text tracking-tight">
                     {mandiStatus.modalPrice !== null
-                      ? `₹${mandiStatus.modalPrice.toLocaleString("en-IN")}`
+                      ? `₹${formatNumber(mandiStatus.modalPrice)}`
                       : "—"}
                   </span>
                   <span className="text-xs font-semibold text-brand-text-secondary">
@@ -446,7 +447,7 @@ export const KeyMetricCards: React.FC = () => {
             <div className="mt-3 pt-3 border-t border-brand-border/60 flex items-center justify-between text-xs text-brand-text-secondary">
               <span className="flex items-center gap-1">
                 <Coins className="w-3.5 h-3.5 text-brand-green" />
-                Modal quotation
+                {t("mandi.modalPrice")}
               </span>
               <span className="font-bold text-brand-text">
                 {mandiStatus.isUnavailable ? "—" : mandiStatus.arrivalDate}
@@ -459,7 +460,7 @@ export const KeyMetricCards: React.FC = () => {
               href="/mandi"
               className="inline-flex items-center gap-1 text-xs font-bold text-brand-green hover:underline group-hover:translate-x-0.5 transition-transform"
             >
-              <span>View markets</span>
+              <span>{t("dashboard.checkMandiTitle")}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>

@@ -280,6 +280,56 @@ The Crop Guide serves as an educational decision-support handbook for 8 major In
 
 ---
 
+## 🌐 Multilingual Farmer Experience (Phase 8)
+
+### What It Does
+KisanMitra is built from the ground up for Indian growers with first-class regional language support. Farmers can seamlessly toggle the entire user interface across 5 major languages without page reload or loss of active state:
+1. **English** (`en`) — English
+2. **Marathi** (`mr`) — मराठी
+3. **Hindi** (`hi`) — हिन्दी
+4. **Tamil** (`ta`) — தமிழ்
+5. **Telugu** (`te`) — తెలుగు
+
+### Core i18n Architecture
+* **Directory Structure:**
+  ```text
+  frontend/lib/i18n/
+  ├── config.ts              # Language definitions, native names, locale mapping, storage key
+  ├── types.ts               # TranslationDictionary & I18nContextType interfaces
+  ├── I18nProvider.tsx       # React Context provider, localStorage persistence, fallback & Intl formatters
+  ├── useTranslation.ts      # Custom hook exposing t(), formatNumber(), formatDate(), setLanguage()
+  ├── validateTranslations.ts# Automated validation tool ensuring 100% key parity across dictionaries
+  └── translations/
+      ├── en.ts              # Canonical source dictionary (271 keys)
+      ├── mr.ts              # Natural, farmer-friendly Marathi translations (271 keys)
+      ├── hi.ts              # Natural, farmer-friendly Hindi translations (271 keys)
+      ├── ta.ts              # Natural, farmer-friendly Tamil translations (271 keys)
+      └── te.ts              # Natural, farmer-friendly Telugu translations (271 keys)
+  ```
+* **Language Persistence:**
+  * Stored in `localStorage` under key `kisanmitra_language`.
+  * Safe hydration on client mount preventing Next.js SSR mismatches.
+  * Automatically sets `document.documentElement.lang`.
+* **Zero-Crash Fallback System:**
+  * If any key is missing or blank in the active language dictionary, the system immediately falls back to canonical English (`en.ts`).
+  * If a key is undefined in both, it safely returns the fallback string or key name without ever crashing the application.
+* **Locale-Aware Formatting:**
+  * Uses browser `Intl.NumberFormat` with regional locales (`en-IN`, `mr-IN`, `hi-IN`, `ta-IN`, `te-IN`).
+  * Prices remain strictly formatted in Indian Rupees (₹) with regional numbering systems (e.g. Devanagari numerals in Marathi).
+* **Script & Font Support:**
+  * Devanagari (Marathi, Hindi), Tamil, and Telugu scripts are supported with optimized Google Fonts (`Noto Sans Devanagari`, `Noto Sans Tamil`, `Noto Sans Telugu`, `Outfit`, `Inter`).
+* **Static UI vs. Dynamic Content Distinction:**
+  * **Static UI**: Headers, navigation, badges, button actions, alerts, error states, and disclaimers are fully translated.
+  * **Official Entities & Schemes**: Official legal and government scheme names (e.g. `PM-KISAN`, `PMFBY`) remain recognizable in their canonical forms.
+  * **Dynamic AI Vision Outputs**: Model-generated diagnostic descriptions remain intact to preserve the Gemini Vision contract.
+
+### How to Add a New Language in 3 Steps
+1. Add language metadata (code, name, nativeName, locale) to `frontend/lib/i18n/config.ts`.
+2. Create `frontend/lib/i18n/translations/[code].ts` mirroring all 271 keys from `en.ts`.
+3. Register the new dictionary in `frontend/lib/i18n/I18nProvider.tsx` and run `npx tsx test-i18n.ts` to verify 100% key parity.
+
+---
+
 ## 🎨 Visual Identity & Design System
 
 * **Primary Brand Yellow:** `#F4D35E` — Key CTAs, active navigations, and indicators.
@@ -317,6 +367,15 @@ npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+### 3. Run i18n Translation & Backend Tests
+```bash
+# Validate translation keys and parity across all 5 languages:
+cd frontend && npx tsx test-i18n.ts
+
+# Run backend regression test suite:
+cd backend && python -m pytest tests/
+```
+
 ---
 
 ## 🗺️ Phased Roadmap (Hackday 1.0)
@@ -328,5 +387,6 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 - [x] **Phase 5: Weather Intelligence & Farm Alerts**
 - [x] **Phase 6: Mandi & Real Market Price Discovery**
 - [x] **Phase 7: Government Schemes & Location-Based Crop Guide**
-- [ ] **Phase 8: Multilingual AI Farmer Assistant**
-- [ ] **Phase 9: Final Deployment & Demo Presentation**
+- [x] **Phase 8: Multilingual Farmer Experience (English, Marathi, Hindi, Tamil, Telugu)**
+- [ ] **Phase 9: AI Farmer Assistant (Context-Aware Conversational Agronomy)**
+- [ ] **Phase 10: Final Polish, Verification & Deployment**

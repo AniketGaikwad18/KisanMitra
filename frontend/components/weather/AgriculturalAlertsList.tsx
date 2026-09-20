@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { AgriculturalAlert } from "@/types";
 import { Badge } from "@/components/ui/Badge";
+import { useTranslation } from "@/lib/i18n";
 
 interface AgriculturalAlertsListProps {
   alerts: AgriculturalAlert[];
@@ -22,6 +23,8 @@ interface AgriculturalAlertsListProps {
 export const AgriculturalAlertsList: React.FC<AgriculturalAlertsListProps> = ({
   alerts,
 }) => {
+  const { t, formatNumber } = useTranslation();
+
   const getAlertIcon = (type: string) => {
     switch (type) {
       case "rain":
@@ -42,14 +45,14 @@ export const AgriculturalAlertsList: React.FC<AgriculturalAlertsListProps> = ({
   const getSeverityBadge = (severity: string) => {
     switch (severity.toLowerCase()) {
       case "high":
-        return <Badge variant="danger" size="sm">High Severity</Badge>;
+        return <Badge variant="danger" size="sm">{t("weather.sprayUnfavorable")}</Badge>;
       case "moderate":
-        return <Badge variant="warning" size="sm">Moderate</Badge>;
+        return <Badge variant="warning" size="sm">{t("weather.sprayCaution")}</Badge>;
       case "low":
-        return <Badge variant="brand" size="sm">Low Risk</Badge>;
+        return <Badge variant="brand" size="sm">{t("weather.sprayFavorable")}</Badge>;
       case "info":
       default:
-        return <Badge variant="neutral" size="sm">Advisory</Badge>;
+        return <Badge variant="neutral" size="sm">{t("common.disclaimer")}</Badge>;
     }
   };
 
@@ -77,15 +80,15 @@ export const AgriculturalAlertsList: React.FC<AgriculturalAlertsListProps> = ({
           </div>
           <div>
             <h3 className="text-base font-extrabold text-brand-text">
-              Farm Weather Alerts
+              {t("weather.alertsTitle")}
             </h3>
             <p className="text-xs text-brand-text-secondary">
-              Proactive advisory warnings based on current meteorological thresholds
+              {t("weather.subtitle")}
             </p>
           </div>
         </div>
         <span className="text-xs font-bold text-brand-text-secondary">
-          {alerts.length} {alerts.length === 1 ? "Active Warning" : "Active Warnings"}
+          {formatNumber(alerts.length)} {alerts.length === 1 ? t("weather.alertsTitle") : t("weather.alertsTitle")}
         </span>
       </div>
 
@@ -124,10 +127,10 @@ export const AgriculturalAlertsList: React.FC<AgriculturalAlertsListProps> = ({
             <ShieldCheck className="w-6 h-6" />
           </div>
           <h4 className="text-sm font-bold text-brand-text mb-1">
-            No Severe Weather Alerts
+            {t("common.verified")}
           </h4>
           <p className="text-xs text-brand-text-secondary max-w-md">
-            No adverse weather risks (heavy rain, extreme heat, or gale winds) are currently detected for your location. Normal field operations can proceed.
+            {t("weather.sprayAdviceTitle")}
           </p>
         </div>
       )}

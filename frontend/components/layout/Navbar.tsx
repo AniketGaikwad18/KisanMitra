@@ -15,22 +15,23 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
+import { useTranslation, SupportedLanguage } from "@/lib/i18n";
 
 interface NavbarProps {
   onToggleSidebar?: () => void;
   isSidebarOpen?: boolean;
 }
 
-const pageTitles: Record<string, { title: string; category: string }> = {
-  "/": { title: "Home", category: "KisanMitra" },
-  "/dashboard": { title: "Dashboard", category: "Farm Overview" },
-  "/crop-doctor": { title: "Crop Doctor", category: "Plant Health" },
-  "/soil": { title: "Soil Health", category: "Agronomy" },
-  "/weather": { title: "Weather Intelligence", category: "Forecast" },
-  "/mandi": { title: "Mandi Prices", category: "Market Rates" },
-  "/schemes": { title: "Government Schemes", category: "Support" },
-  "/crop-guide": { title: "Crop Guide", category: "Advisory" },
-  "/assistant": { title: "AI Assistant", category: "Advisory" },
+const pageKeyMap: Record<string, { titleKey: string; categoryKey: string }> = {
+  "/": { titleKey: "nav.home", categoryKey: "common.brandTagline" },
+  "/dashboard": { titleKey: "nav.dashboard", categoryKey: "nav.categoryOverview" },
+  "/crop-doctor": { titleKey: "nav.cropDoctor", categoryKey: "nav.categoryPlantHealth" },
+  "/soil": { titleKey: "nav.soilHealth", categoryKey: "nav.categoryAgronomy" },
+  "/weather": { titleKey: "nav.weather", categoryKey: "nav.categoryForecast" },
+  "/mandi": { titleKey: "nav.mandi", categoryKey: "nav.categoryMarketRates" },
+  "/schemes": { titleKey: "nav.schemes", categoryKey: "nav.categorySupport" },
+  "/crop-guide": { titleKey: "nav.cropGuide", categoryKey: "nav.categoryAdvisory" },
+  "/assistant": { titleKey: "nav.assistant", categoryKey: "nav.categoryAdvisory" },
 };
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -38,41 +39,33 @@ export const Navbar: React.FC<NavbarProps> = ({
   isSidebarOpen,
 }) => {
   const pathname = usePathname() || "/";
-  const [selectedLang, setSelectedLang] = useState("EN");
+  const { language, setLanguage, t, languages, currentLanguageInfo } = useTranslation();
   const [showLangMenu, setShowLangMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
 
-  const currentPage = pageTitles[pathname] || {
-    title: "KisanMitra",
-    category: "Farm Support",
+  const pageInfo = pageKeyMap[pathname] || {
+    titleKey: "nav.dashboard",
+    categoryKey: "nav.categoryOverview",
   };
-
-  const languages = [
-    { code: "EN", label: "English" },
-    { code: "MR", label: "मराठी (Marathi)" },
-    { code: "HI", label: "हिन्दी (Hindi)" },
-    { code: "TA", label: "தமிழ் (Tamil)" },
-    { code: "TE", label: "తెలుగు (Telugu)" },
-  ];
 
   const demoNotifications = [
     {
       id: "1",
-      title: "Rain Expected Tomorrow",
-      desc: "72% probability of showers in Pune region.",
+      title: t("dashboard.weatherAlert"),
+      desc: t("dashboard.weatherAlertDesc"),
       time: "2h ago",
       type: "weather",
     },
     {
       id: "2",
-      title: "Soil Nitrogen Check",
-      desc: "Review nutrient recommendations for Soybean.",
+      title: t("soil.title"),
+      desc: t("dashboard.farmInsightsSub"),
       time: "Yesterday",
       type: "soil",
     },
     {
       id: "3",
-      title: "Mandi Price Update",
+      title: t("mandi.title"),
       desc: "Soybean traded at ₹5,420/q in Pune APMC (Demo).",
       time: "2d ago",
       type: "market",
@@ -105,7 +98,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   </span>
                 </div>
                 <span className="text-[10px] text-brand-text-secondary hidden sm:inline-block font-medium">
-                  Smarter Decisions. Healthier Farms.
+                  {t("common.brandTagline")}
                 </span>
               </div>
             </Link>
@@ -114,11 +107,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             {pathname !== "/" && (
               <div className="hidden md:flex items-center gap-2 pl-4 border-l border-brand-border">
                 <span className="text-xs font-semibold text-brand-text-secondary uppercase tracking-wider">
-                  {currentPage.category}
+                  {t(pageInfo.categoryKey)}
                 </span>
                 <span className="text-xs text-brand-text-secondary">/</span>
                 <span className="text-sm font-bold text-brand-text">
-                  {currentPage.title}
+                  {t(pageInfo.titleKey)}
                 </span>
               </div>
             )}
@@ -135,8 +128,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                   setShowLangMenu(false);
                 }}
                 className="relative p-2 rounded-xl border border-brand-border bg-brand-bg hover:bg-brand-yellow/20 text-brand-text transition-colors"
-                aria-label="View notifications"
-                title="Notifications"
+                aria-label={t("nav.notifications")}
+                title={t("nav.notifications")}
               >
                 <Bell className="w-4 h-4 text-brand-green" />
                 <span className="absolute -top-1 -right-1 w-4 h-4 bg-brand-danger text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white">
@@ -150,11 +143,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <div className="flex items-center gap-1.5">
                       <Bell className="w-4 h-4 text-brand-green" />
                       <span className="text-xs font-bold text-brand-text uppercase tracking-wider">
-                        Farm Notifications
+                        {t("nav.farmNotifications")}
                       </span>
                     </div>
                     <Badge variant="warning" size="sm" className="text-[10px]">
-                      Demo
+                      {t("common.demo")}
                     </Badge>
                   </div>
 
@@ -181,7 +174,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       onClick={() => setShowNotifications(false)}
                       className="text-xs font-bold text-brand-green hover:underline"
                     >
-                      View all in Dashboard →
+                      {t("dashboard.overview")} →
                     </Link>
                   </div>
                 </div>
@@ -199,34 +192,35 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-brand-border bg-brand-bg hover:bg-brand-yellow/20 text-brand-text text-xs sm:text-sm font-semibold transition-colors"
                 aria-expanded={showLangMenu}
                 aria-haspopup="true"
-                title="Select Language"
+                aria-label={t("nav.selectLanguage")}
+                title={t("nav.selectLanguage")}
               >
                 <Globe className="w-4 h-4 text-brand-green" />
-                <span>{selectedLang}</span>
+                <span>{currentLanguageInfo.nativeName}</span>
                 <ChevronDown className="w-3.5 h-3.5 text-brand-text-secondary" />
               </button>
 
               {showLangMenu && (
                 <div className="absolute right-0 mt-2 w-48 bg-brand-surface rounded-2xl border border-brand-border shadow-elevated py-2 z-50 animate-in fade-in slide-in-from-top-1">
                   <div className="px-3.5 py-1 text-[10px] font-bold uppercase tracking-wider text-brand-text-secondary border-b border-brand-border/60">
-                    Language Selection
+                    {t("nav.selectLanguage")}
                   </div>
                   {languages.map((lang) => (
                     <button
                       key={lang.code}
                       type="button"
                       onClick={() => {
-                        setSelectedLang(lang.code);
+                        setLanguage(lang.code as SupportedLanguage);
                         setShowLangMenu(false);
                       }}
                       className={`w-full text-left px-3.5 py-2 text-xs sm:text-sm flex items-center justify-between hover:bg-brand-bg transition-colors ${
-                        selectedLang === lang.code
+                        language === lang.code
                           ? "bg-brand-yellow/25 text-brand-text font-bold"
                           : "text-brand-text"
                       }`}
                     >
-                      <span>{lang.label}</span>
-                      {selectedLang === lang.code && (
+                      <span>{lang.nativeName} ({lang.name})</span>
+                      {language === lang.code && (
                         <CheckCircle2 className="w-3.5 h-3.5 text-brand-green" />
                       )}
                     </button>
@@ -249,7 +243,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   Farmer
                 </span>
                 <span className="text-[10px] text-brand-text-secondary leading-tight">
-                  📍 Pune, MH
+                  📍 {t("dashboard.locationPune")}
                 </span>
               </div>
             </Link>

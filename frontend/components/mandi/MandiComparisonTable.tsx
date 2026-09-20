@@ -14,6 +14,7 @@ import {
 import { MandiPriceRecord, MandiSummary } from "@/types";
 import { PriceRangeVisualizer } from "./PriceRangeVisualizer";
 import { Badge } from "@/components/ui/Badge";
+import { useTranslation } from "@/lib/i18n";
 
 interface MandiComparisonTableProps {
   records: MandiPriceRecord[];
@@ -27,6 +28,7 @@ export const MandiComparisonTable: React.FC<MandiComparisonTableProps> = ({
   records,
   summary,
 }) => {
+  const { t, formatNumber } = useTranslation();
   const [sortField, setSortField] = useState<SortField>("modal_price");
   const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
 
@@ -69,10 +71,10 @@ export const MandiComparisonTable: React.FC<MandiComparisonTableProps> = ({
           </div>
           <div>
             <h3 className="text-base font-extrabold text-brand-text">
-              APMC Market Price Comparison
+              {t("mandi.comparisonTitle")}
             </h3>
             <p className="text-xs text-brand-text-secondary">
-              Comparing {records.length} reported market {records.length === 1 ? "record" : "records"} across nearby mandis
+              {t("mandi.comparingMarkets", { count: records.length.toString() })}
             </p>
           </div>
         </div>
@@ -81,7 +83,7 @@ export const MandiComparisonTable: React.FC<MandiComparisonTableProps> = ({
           <div className="text-xs text-brand-text-secondary bg-neutral-50 px-3 py-1.5 rounded-xl border border-brand-border/60 flex items-center gap-1.5">
             <Info className="w-3.5 h-3.5 text-brand-green flex-shrink-0" />
             <span>
-              Highest reported modal: <strong className="text-brand-text font-bold">₹{summary.highest_modal_price.toLocaleString("en-IN")}</strong> ({summary.highest_modal_market})
+              {t("mandi.highestModal")}: <strong className="text-brand-text font-bold">₹{formatNumber(summary.highest_modal_price)}</strong> ({summary.highest_modal_market})
             </span>
           </div>
         )}
@@ -97,17 +99,17 @@ export const MandiComparisonTable: React.FC<MandiComparisonTableProps> = ({
                 className="py-3 px-3 cursor-pointer hover:text-brand-text transition-colors rounded-l-lg"
               >
                 <div className="flex items-center gap-1">
-                  <span>Market / Mandi</span>
+                  <span>{t("mandi.marketMandi")}</span>
                   <ArrowUpDown className="w-3 h-3" />
                 </div>
               </th>
-              <th className="py-3 px-3">Variety / Grade</th>
+              <th className="py-3 px-3">{t("mandi.varietyGrade")}</th>
               <th
                 onClick={() => handleSort("min_price")}
                 className="py-3 px-3 cursor-pointer hover:text-brand-text transition-colors"
               >
                 <div className="flex items-center gap-1">
-                  <span>Min Price</span>
+                  <span>{t("mandi.minPrice")}</span>
                   <ArrowUpDown className="w-3 h-3" />
                 </div>
               </th>
@@ -116,7 +118,7 @@ export const MandiComparisonTable: React.FC<MandiComparisonTableProps> = ({
                 className="py-3 px-3 cursor-pointer hover:text-brand-text transition-colors"
               >
                 <div className="flex items-center gap-1">
-                  <span>Modal Price</span>
+                  <span>{t("mandi.modalPrice")}</span>
                   <ArrowUpDown className="w-3 h-3 text-brand-green" />
                 </div>
               </th>
@@ -125,17 +127,17 @@ export const MandiComparisonTable: React.FC<MandiComparisonTableProps> = ({
                 className="py-3 px-3 cursor-pointer hover:text-brand-text transition-colors"
               >
                 <div className="flex items-center gap-1">
-                  <span>Max Price</span>
+                  <span>{t("mandi.maxPrice")}</span>
                   <ArrowUpDown className="w-3 h-3" />
                 </div>
               </th>
-              <th className="py-3 px-3 w-40">Price Spectrum</th>
+              <th className="py-3 px-3 w-40">{t("mandi.priceSpectrum")}</th>
               <th
                 onClick={() => handleSort("arrival_date")}
                 className="py-3 px-3 cursor-pointer hover:text-brand-text transition-colors rounded-r-lg"
               >
                 <div className="flex items-center gap-1">
-                  <span>Date</span>
+                  <span>{t("mandi.date")}</span>
                   <ArrowUpDown className="w-3 h-3" />
                 </div>
               </th>
@@ -160,7 +162,7 @@ export const MandiComparisonTable: React.FC<MandiComparisonTableProps> = ({
                       <span>{item.market}</span>
                       {isHighest && (
                         <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-brand-green/10 text-brand-green border border-brand-green/20">
-                          Highest Modal
+                          {t("mandi.highestModalBadge")}
                         </span>
                       )}
                     </div>
@@ -171,14 +173,14 @@ export const MandiComparisonTable: React.FC<MandiComparisonTableProps> = ({
 
                   {/* Variety / Grade */}
                   <td className="py-3.5 px-3 text-xs text-brand-text-secondary">
-                    {item.variety || "General"}
+                    {item.variety || t("mandi.general")}
                     {item.grade ? ` (${item.grade})` : ""}
                   </td>
 
                   {/* Min Price */}
                   <td className="py-3.5 px-3 font-semibold text-brand-text text-xs">
                     {item.min_price !== null && item.min_price !== undefined
-                      ? `₹${item.min_price.toLocaleString("en-IN")}`
+                      ? `₹${formatNumber(item.min_price)}`
                       : "—"}
                   </td>
 
@@ -186,7 +188,7 @@ export const MandiComparisonTable: React.FC<MandiComparisonTableProps> = ({
                   <td className="py-3.5 px-3">
                     <span className="text-base font-black text-brand-green block">
                       {item.modal_price !== null && item.modal_price !== undefined
-                        ? `₹${item.modal_price.toLocaleString("en-IN")}`
+                        ? `₹${formatNumber(item.modal_price)}`
                         : "—"}
                     </span>
                     <span className="text-[10px] text-brand-text-secondary">
@@ -197,7 +199,7 @@ export const MandiComparisonTable: React.FC<MandiComparisonTableProps> = ({
                   {/* Max Price */}
                   <td className="py-3.5 px-3 font-semibold text-brand-text text-xs">
                     {item.max_price !== null && item.max_price !== undefined
-                      ? `₹${item.max_price.toLocaleString("en-IN")}`
+                      ? `₹${formatNumber(item.max_price)}`
                       : "—"}
                   </td>
 
@@ -244,7 +246,7 @@ export const MandiComparisonTable: React.FC<MandiComparisonTableProps> = ({
                     <span>{item.market}</span>
                     {isHighest && (
                       <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-brand-green/10 text-brand-green border border-brand-green/20">
-                        Highest Modal
+                        {t("mandi.highestModalBadge")}
                       </span>
                     )}
                   </h4>
@@ -256,7 +258,7 @@ export const MandiComparisonTable: React.FC<MandiComparisonTableProps> = ({
                 <div className="text-right">
                   <span className="text-lg font-black text-brand-green block">
                     {item.modal_price !== null && item.modal_price !== undefined
-                      ? `₹${item.modal_price.toLocaleString("en-IN")}`
+                      ? `₹${formatNumber(item.modal_price)}`
                       : "—"}
                   </span>
                   <span className="text-[10px] text-brand-text-secondary">
@@ -267,18 +269,18 @@ export const MandiComparisonTable: React.FC<MandiComparisonTableProps> = ({
 
               <div className="grid grid-cols-2 gap-2 text-xs py-2 border-y border-brand-border/60 my-2">
                 <div>
-                  <span className="text-[10px] text-brand-text-secondary block">Min Price</span>
+                  <span className="text-[10px] text-brand-text-secondary block">{t("mandi.minPrice")}</span>
                   <span className="font-bold text-brand-text">
                     {item.min_price !== null && item.min_price !== undefined
-                      ? `₹${item.min_price.toLocaleString("en-IN")}`
+                      ? `₹${formatNumber(item.min_price)}`
                       : "—"}
                   </span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-brand-text-secondary block">Max Price</span>
+                  <span className="text-[10px] text-brand-text-secondary block">{t("mandi.maxPrice")}</span>
                   <span className="font-bold text-brand-text">
                     {item.max_price !== null && item.max_price !== undefined
-                      ? `₹${item.max_price.toLocaleString("en-IN")}`
+                      ? `₹${formatNumber(item.max_price)}`
                       : "—"}
                   </span>
                 </div>
@@ -292,8 +294,8 @@ export const MandiComparisonTable: React.FC<MandiComparisonTableProps> = ({
               />
 
               <div className="mt-2 text-[10px] text-brand-text-secondary flex justify-between">
-                <span>Variety: {item.variety || "FAQ"}</span>
-                <span>Reported: {item.arrival_date || "Today"}</span>
+                <span>{t("mandi.variety")}: {item.variety || "FAQ"}</span>
+                <span>{t("mandi.reported")}: {item.arrival_date || t("mandi.today")}</span>
               </div>
             </div>
           );

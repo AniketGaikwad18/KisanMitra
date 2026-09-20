@@ -30,6 +30,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { CropSelector } from "@/components/crop-guide/CropSelector";
 import { CropSectionCard } from "@/components/crop-guide/CropSectionCard";
 import { PestsAndDiseasesList } from "@/components/crop-guide/PestsAndDiseasesList";
+import { useTranslation } from "@/lib/i18n";
 
 const PRESET_LOCATIONS = [
   "Pune, Maharashtra",
@@ -43,6 +44,7 @@ const PRESET_LOCATIONS = [
 ];
 
 function CropGuideContent() {
+  const { t } = useTranslation();
   const searchParams = useSearchParams();
   const initialCropParam = searchParams.get("crop") || "soybean";
   const initialLocationParam = searchParams.get("location") || "Pune, Maharashtra";
@@ -113,12 +115,12 @@ function CropGuideContent() {
     <AppShell>
       {/* Header */}
       <PageHeader
-        title="Crop Guide"
-        description="Practical crop information for better farm decisions."
+        title={t("cropGuide.title")}
+        description={t("cropGuide.subtitle")}
         badge={
           <Badge variant="success" className="flex items-center gap-1">
             <Compass className="w-3.5 h-3.5" />
-            Agronomic Decision Support
+            {t("cropGuide.decisionSupport")}
           </Badge>
         }
       />
@@ -127,7 +129,7 @@ function CropGuideContent() {
       <div className="mb-6 p-4 rounded-2xl bg-brand-yellow/20 border border-brand-yellow/50 flex items-start gap-3">
         <AlertTriangle className="w-5 h-5 text-amber-700 flex-shrink-0 mt-0.5" />
         <div className="text-xs sm:text-sm text-brand-text leading-relaxed">
-          <strong className="font-bold">Educational Notice:</strong> This guide provides general scientific agronomy recommendations curated from ICAR and State Agricultural University research. It is designed to support farm planning, not substitute for a certified local agricultural extension officer.
+          {t("cropGuide.educationalNotice")}
         </div>
       </div>
 
@@ -147,7 +149,7 @@ function CropGuideContent() {
         <div className="flex items-center gap-2">
           <MapPin className="w-4 h-4 text-brand-green flex-shrink-0" />
           <span className="text-xs font-bold text-brand-text-secondary uppercase tracking-wider">
-            Location Context:
+            {t("cropGuide.locationContext")}:
           </span>
         </div>
 
@@ -168,17 +170,17 @@ function CropGuideContent() {
 
       {/* Main Guide Content */}
       {isLoadingGuide ? (
-        <LoadingState message={`Loading agronomic guide for ${selectedCropId}...`} />
+        <LoadingState message={t("cropGuide.loadingGuide", { crop: selectedCropId })} />
       ) : error ? (
         <ErrorState
-          title="Guide Unavailable"
+          title={t("cropGuide.guideUnavailable")}
           message={error}
           onRetry={() => fetchGuide(selectedCropId, location)}
         />
       ) : !guideData ? (
         <EmptyState
-          title="No Crop Selected"
-          description="Please choose a crop profile from the list above."
+          title={t("cropGuide.noCropSelected")}
+          description={t("cropGuide.chooseCropProfile")}
         />
       ) : (
         <div className="space-y-6 mb-10">
@@ -211,7 +213,7 @@ function CropGuideContent() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* 🌱 Soil Conditions */}
             <CropSectionCard
-              title="🌱 Soil & pH Requirements"
+              title={t("cropGuide.soilPh")}
               icon={Layers}
               iconColor="text-emerald-700"
               iconBg="bg-emerald-500/10"
@@ -219,7 +221,7 @@ function CropGuideContent() {
               <div className="space-y-4">
                 <div className="p-3.5 rounded-xl bg-emerald-500/5 border border-emerald-500/20 flex items-center justify-between">
                   <span className="text-xs font-bold text-emerald-900">
-                    Optimal Soil pH:
+                    {t("cropGuide.optimalPh")}
                   </span>
                   <span className="text-sm font-black text-emerald-800 px-2.5 py-0.5 rounded-md bg-emerald-100 border border-emerald-200">
                     {guideData.soil.preferred_ph}
@@ -228,7 +230,7 @@ function CropGuideContent() {
 
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-brand-text-secondary block mb-1.5">
-                    Suitable Soil Types:
+                    {t("cropGuide.suitableSoilTypes")}
                   </span>
                   <div className="flex flex-wrap gap-1.5">
                     {guideData.soil.soil_type.map((st, idx) => (
@@ -244,7 +246,7 @@ function CropGuideContent() {
 
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-brand-text-secondary block mb-1">
-                    Drainage & Texture:
+                    {t("cropGuide.drainageTexture")}
                   </span>
                   <p className="text-xs sm:text-sm text-brand-text leading-relaxed">
                     {guideData.soil.drainage}
@@ -255,7 +257,7 @@ function CropGuideContent() {
 
             {/* 🌾 Sowing & Planting */}
             <CropSectionCard
-              title="🌾 Sowing & Planting Guidance"
+              title={t("cropGuide.sowingPlanting")}
               icon={Calendar}
               iconColor="text-amber-700"
               iconBg="bg-amber-500/10"
@@ -263,7 +265,7 @@ function CropGuideContent() {
               <div className="space-y-4">
                 <div className="p-3.5 rounded-xl bg-amber-500/5 border border-amber-500/20">
                   <span className="text-xs font-bold text-amber-900 block mb-0.5">
-                    General Sowing Window:
+                    {t("cropGuide.sowingWindow")}
                   </span>
                   <span className="text-sm font-bold text-amber-800">
                     {guideData.sowing.general_window}
@@ -272,7 +274,7 @@ function CropGuideContent() {
 
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-brand-text-secondary block mb-1.5">
-                    Sowing Practices & Seed Prep:
+                    {t("cropGuide.sowingPractices")}
                   </span>
                   <div className="space-y-2">
                     {guideData.sowing.notes.map((note, idx) => (
@@ -291,7 +293,7 @@ function CropGuideContent() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* 💧 Water Management */}
             <CropSectionCard
-              title="💧 Water & Irrigation Considerations"
+              title={t("cropGuide.waterManagement")}
               icon={Droplets}
               iconColor="text-blue-700"
               iconBg="bg-blue-500/10"
@@ -299,7 +301,7 @@ function CropGuideContent() {
               <div className="space-y-4">
                 <div className="p-3.5 rounded-xl bg-blue-500/5 border border-blue-500/20">
                   <span className="text-xs font-bold text-blue-900 block mb-0.5">
-                    Water Requirements:
+                    {t("cropGuide.waterRequirements")}
                   </span>
                   <span className="text-sm font-medium text-blue-950">
                     {guideData.water.requirements}
@@ -308,7 +310,7 @@ function CropGuideContent() {
 
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-brand-text-secondary block mb-1.5">
-                    Critical Irrigation Stages:
+                    {t("cropGuide.criticalStages")}
                   </span>
                   <div className="space-y-2">
                     {guideData.water.notes.map((note, idx) => (
@@ -324,14 +326,14 @@ function CropGuideContent() {
 
             {/* 🧪 Nutrient Management */}
             <CropSectionCard
-              title="🧪 Nutrient & Fertility Management"
+              title={t("cropGuide.nutrientManagement")}
               icon={FlaskConical}
               iconColor="text-purple-700"
               iconBg="bg-purple-500/10"
             >
               <div className="space-y-4">
                 <p className="text-xs text-brand-text-secondary leading-relaxed">
-                  Balanced fertilization ensures strong root development and grain/fruit filling.
+                  {t("cropGuide.nutrientSubtitle")}
                 </p>
 
                 <div className="space-y-2.5">
@@ -357,10 +359,10 @@ function CropGuideContent() {
               </div>
               <div>
                 <h3 className="text-lg font-bold text-brand-text">
-                  🐛 Common Pests, Diseases & Integrated Management (IPM)
+                  {t("cropGuide.pestsDiseases")}
                 </h3>
                 <p className="text-xs text-brand-text-secondary">
-                  Early detection and cultural/biological practices prevent crop losses.
+                  {t("cropGuide.pestsSubtitle")}
                 </p>
               </div>
             </div>
@@ -372,7 +374,7 @@ function CropGuideContent() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* 🛡 Preventive Practices */}
             <CropSectionCard
-              title="🛡 Agronomic Preventive Practices"
+              title={t("cropGuide.preventivePractices")}
               icon={ShieldCheck}
               iconColor="text-emerald-700"
               iconBg="bg-emerald-500/10"
@@ -389,7 +391,7 @@ function CropGuideContent() {
 
             {/* 🌾 Harvest Guidance */}
             <CropSectionCard
-              title="🌾 Harvest & Post-Harvest Guidance"
+              title={t("cropGuide.harvestGuidance")}
               icon={Wheat}
               iconColor="text-amber-700"
               iconBg="bg-amber-500/10"
@@ -398,7 +400,7 @@ function CropGuideContent() {
                 {guideData.harvest.maturity_signs && (
                   <div className="p-3.5 rounded-xl bg-amber-500/5 border border-amber-500/20">
                     <span className="text-xs font-bold text-amber-900 block mb-0.5">
-                      Maturity Indicators:
+                      {t("cropGuide.maturityIndicators")}
                     </span>
                     <p className="text-xs sm:text-sm text-brand-text leading-relaxed">
                       {guideData.harvest.maturity_signs}
@@ -409,7 +411,7 @@ function CropGuideContent() {
                 {guideData.harvest.general_guidance && (
                   <div>
                     <span className="text-xs font-bold uppercase tracking-wider text-brand-text-secondary block mb-1">
-                      Harvesting Methods:
+                      {t("cropGuide.harvestMethods")}
                     </span>
                     <p className="text-xs sm:text-sm text-brand-text leading-relaxed">
                       {guideData.harvest.general_guidance}
@@ -420,7 +422,7 @@ function CropGuideContent() {
                 {guideData.harvest.post_harvest && (
                   <div className="pt-2 border-t border-brand-border/60">
                     <span className="text-xs font-bold uppercase tracking-wider text-brand-text-secondary block mb-1">
-                      Post-Harvest & Storage:
+                      {t("cropGuide.postHarvestStorage")}
                     </span>
                     <p className="text-xs sm:text-sm text-brand-text leading-relaxed">
                       {guideData.harvest.post_harvest}
@@ -436,7 +438,7 @@ function CropGuideContent() {
             <div>
               <div className="flex items-center gap-2 text-xs font-bold text-brand-text-secondary uppercase tracking-wider mb-1">
                 <BookOpen className="w-4 h-4 text-brand-green" />
-                <span>Agricultural Knowledge Sources</span>
+                <span>{t("cropGuide.sources")}</span>
               </div>
               <div className="flex flex-wrap gap-2 mt-1">
                 {guideData.sources.map((src, idx) => (
@@ -452,7 +454,7 @@ function CropGuideContent() {
 
             <div className="text-right sm:max-w-xs">
               <span className="text-[11px] font-semibold text-brand-text-muted">
-                Curated scientific agronomy references. Always confirm local micro-conditions with your Krishi Vigyan Kendra (KVK).
+                {t("cropGuide.sourcesAdvisory")}
               </span>
             </div>
           </div>
@@ -463,11 +465,12 @@ function CropGuideContent() {
 }
 
 export default function CropGuidePage() {
+  const { t } = useTranslation();
   return (
     <Suspense
       fallback={
         <AppShell>
-          <LoadingState message="Loading crop guide..." />
+          <LoadingState message={t("cropGuide.loadingGuide", { crop: "" })} />
         </AppShell>
       }
     >

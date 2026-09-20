@@ -1,9 +1,14 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { Sprout, MapPin, Sun, CheckCircle2, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
+import { useTranslation } from "@/lib/i18n";
 
 export const CropOverviewCard: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="bg-brand-surface rounded-2xl border border-brand-border p-5 sm:p-6 shadow-card flex flex-col justify-between">
       <div>
@@ -13,45 +18,59 @@ export const CropOverviewCard: React.FC = () => {
               <Sprout className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-lg font-extrabold text-brand-text">Your Crop</h3>
-              <p className="text-[11px] text-brand-text-secondary">Primary active field</p>
+              <h3 className="text-lg font-extrabold text-brand-text">
+                {t("dashboard.activeCropProfile")}
+              </h3>
+              <p className="text-[11px] text-brand-text-secondary">
+                {t("dashboard.activeField")}
+              </p>
             </div>
           </div>
           <Badge variant="brand" size="sm">
-            Active Crop
+            {t("common.verified")}
           </Badge>
         </div>
 
         {/* Crop Profile Information */}
         <div className="space-y-3.5">
           <div className="flex items-center justify-between p-3 rounded-xl bg-brand-bg border border-brand-border/60">
-            <span className="text-xs font-semibold text-brand-text-secondary">Crop Name:</span>
-            <span className="text-sm font-bold text-brand-text">Soybean (JS 335)</span>
+            <span className="text-xs font-semibold text-brand-text-secondary">
+              {t("cropGuide.selectCrop")}:
+            </span>
+            <span className="text-sm font-bold text-brand-text">
+              {t("dashboard.cropName")}
+            </span>
           </div>
 
           <div className="grid grid-cols-2 gap-2.5 text-xs">
             <div className="p-2.5 rounded-xl bg-brand-bg/70 border border-brand-border/50">
-              <span className="text-[11px] text-brand-text-secondary block">Growing Season</span>
+              <span className="text-[11px] text-brand-text-secondary block">
+                {t("dashboard.growingSeason")}
+              </span>
               <span className="font-bold text-brand-text mt-0.5 flex items-center gap-1">
                 <Sun className="w-3.5 h-3.5 text-amber-500" />
-                Kharif
+                {t("dashboard.seasonKharif")}
               </span>
             </div>
 
             <div className="p-2.5 rounded-xl bg-brand-bg/70 border border-brand-border/50">
-              <span className="text-[11px] text-brand-text-secondary block">Location</span>
+              <span className="text-[11px] text-brand-text-secondary block">
+                {t("soil.locationLabel")}
+              </span>
               <span className="font-bold text-brand-text mt-0.5 flex items-center gap-1">
                 <MapPin className="w-3.5 h-3.5 text-brand-green" />
-                Pune, MH
+                {t("dashboard.locationPune")}
               </span>
             </div>
           </div>
 
           <div className="flex items-center justify-between p-3 rounded-xl bg-brand-green/5 border border-brand-green/20">
-            <span className="text-xs font-semibold text-brand-text-secondary">Crop Health Status:</span>
+            <span className="text-xs font-semibold text-brand-text-secondary">
+              {t("dashboard.cropHealthStatus")}:
+            </span>
             <span className="text-xs font-bold text-brand-green flex items-center gap-1">
               <CheckCircle2 className="w-4 h-4 text-brand-green" />
-              Good (Healthy)
+              {t("dashboard.statusGood")}
             </span>
           </div>
         </div>
@@ -62,7 +81,7 @@ export const CropOverviewCard: React.FC = () => {
           href="/crop-guide"
           className="w-full inline-flex items-center justify-center gap-1.5 text-xs font-bold text-brand-green hover:underline py-1.5 rounded-lg hover:bg-brand-bg transition-colors"
         >
-          <span>View localized crop advisory</span>
+          <span>{t("dashboard.viewAdvisory")}</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </Link>
       </div>

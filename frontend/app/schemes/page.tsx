@@ -13,8 +13,10 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { SchemeCard } from "@/components/schemes/SchemeCard";
 import { SchemeDetailModal } from "@/components/schemes/SchemeDetailModal";
 import { SchemeFilterBar } from "@/components/schemes/SchemeFilterBar";
+import { useTranslation } from "@/lib/i18n";
 
 export default function SchemesPage() {
+  const { t } = useTranslation();
   const [schemes, setSchemes] = useState<SchemeSummary[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
   const [availableCategories, setAvailableCategories] = useState<string[]>([]);
@@ -108,12 +110,12 @@ export default function SchemesPage() {
     <AppShell>
       {/* Page Header */}
       <PageHeader
-        title="Government Schemes"
-        description="Find agricultural support available through official government programs."
+        title={t("schemes.title")}
+        description={t("schemes.subtitle")}
         badge={
           <Badge variant="success" className="flex items-center gap-1">
             <Landmark className="w-3.5 h-3.5" />
-            Verified Government Portals
+            {t("schemes.verifiedPortals")}
           </Badge>
         }
       />
@@ -122,7 +124,7 @@ export default function SchemesPage() {
       <div className="mb-6 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-start gap-3">
         <ShieldAlert className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
         <div className="text-xs sm:text-sm text-amber-900 leading-relaxed">
-          <strong className="font-bold">Trust Advisory:</strong> Scheme information can change. Always verify eligibility and application details on the official government website before applying. All schemes listed below link directly to official Central and State Government departments.
+          {t("schemes.trustAdvisory")}
         </div>
       </div>
 
@@ -143,22 +145,22 @@ export default function SchemesPage() {
 
       {/* Content Area */}
       {isLoading ? (
-        <LoadingState message="Loading official government schemes..." />
+        <LoadingState message={t("schemes.loading")} />
       ) : error ? (
         <ErrorState
-          title="Information Unavailable"
+          title={t("schemes.unavailable")}
           message={error}
           onRetry={() => fetchSchemes(selectedCategory, selectedState, searchQuery)}
         />
       ) : schemes.length === 0 ? (
         <EmptyState
-          title="No Schemes Found"
+          title={t("schemes.noSchemes")}
           description={
             searchQuery || selectedCategory || selectedState
-              ? "No government schemes matched your search or filters. Try adjusting your query or reset the filters."
-              : "No schemes currently available in the database."
+              ? t("schemes.noSchemesDesc")
+              : t("schemes.noSchemesDb")
           }
-          actionLabel="Reset All Filters"
+          actionLabel={t("schemes.resetAll")}
           onAction={handleResetFilters}
         />
       ) : (

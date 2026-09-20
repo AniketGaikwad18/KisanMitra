@@ -4,6 +4,7 @@ import React from "react";
 import { Landmark, ExternalLink, Users, FileText, ChevronRight, CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { SchemeSummary } from "@/types";
+import { useTranslation } from "@/lib/i18n";
 
 interface SchemeCardProps {
   scheme: SchemeSummary;
@@ -23,6 +24,7 @@ const CATEGORY_COLORS: Record<string, "success" | "brand" | "warning" | "neutral
 };
 
 export const SchemeCard: React.FC<SchemeCardProps> = ({ scheme, onSelect }) => {
+  const { t } = useTranslation();
   const badgeVariant = CATEGORY_COLORS[scheme.category] || "neutral";
 
   return (
@@ -56,7 +58,7 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({ scheme, onSelect }) => {
           <div className="mb-4">
             <div className="flex items-center gap-1.5 text-xs text-brand-text-muted mb-1.5 font-medium">
               <Users className="w-3.5 h-3.5 text-brand-green" />
-              <span>Target Group:</span>
+              <span>{t("schemes.targetGroup")}:</span>
             </div>
             <div className="flex flex-wrap gap-1.5">
               {scheme.target_group.map((tg, idx) => (
@@ -87,7 +89,7 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({ scheme, onSelect }) => {
           }}
           className="inline-flex items-center gap-1 text-xs font-bold text-brand-green group-hover:text-brand-green-dark transition-colors py-1 px-2.5 rounded-lg group-hover:bg-brand-green/10"
         >
-          <span>View Details</span>
+          <span>{t("schemes.viewDetails")}</span>
           <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
         </button>
       </div>

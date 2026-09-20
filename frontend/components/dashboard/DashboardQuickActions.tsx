@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import {
@@ -9,42 +11,45 @@ import {
   Landmark,
   ArrowRight,
 } from "lucide-react";
+import { useTranslation } from "@/lib/i18n";
 
 export const DashboardQuickActions: React.FC = () => {
+  const { t } = useTranslation();
+
   const actions = [
     {
-      label: "Check Crop",
-      subtitle: "AI leaf photo diagnosis",
+      label: t("dashboard.checkCropTitle"),
+      subtitle: t("dashboard.checkCropSub"),
       href: "/crop-doctor",
       icon: <Stethoscope className="w-6 h-6 text-brand-green" />,
     },
     {
-      label: "Analyze Soil",
-      subtitle: "NPK & nutrient test",
+      label: t("dashboard.analyzeSoilTitle"),
+      subtitle: t("dashboard.analyzeSoilSub"),
       href: "/soil",
       icon: <FlaskConical className="w-6 h-6 text-brand-green" />,
     },
     {
-      label: "Check Weather",
-      subtitle: "Forecast & spray advisory",
+      label: t("dashboard.checkWeatherTitle"),
+      subtitle: t("dashboard.checkWeatherSub"),
       href: "/weather",
       icon: <CloudSun className="w-6 h-6 text-brand-green" />,
     },
     {
-      label: "Check Mandi",
-      subtitle: "Live APMC market rates",
+      label: t("dashboard.checkMandiTitle"),
+      subtitle: t("dashboard.checkMandiSub"),
       href: "/mandi",
       icon: <Coins className="w-6 h-6 text-brand-green" />,
     },
     {
-      label: "Crop Guide",
-      subtitle: "Agronomic decision support",
+      label: t("dashboard.cropGuideTitle"),
+      subtitle: t("dashboard.cropGuideSub"),
       href: "/crop-guide",
       icon: <Compass className="w-6 h-6 text-brand-green" />,
     },
     {
-      label: "Govt Schemes",
-      subtitle: "Verified subsidies & loans",
+      label: t("dashboard.schemesTitle"),
+      subtitle: t("dashboard.schemesSub"),
       href: "/schemes",
       icon: <Landmark className="w-6 h-6 text-brand-green" />,
     },
@@ -54,10 +59,10 @@ export const DashboardQuickActions: React.FC = () => {
     <div className="mb-8">
       <div className="mb-4">
         <h2 className="text-xl font-extrabold text-brand-text tracking-tight">
-          What would you like to do?
+          {t("dashboard.quickActionsTitle")}
         </h2>
         <p className="text-xs text-brand-text-secondary">
-          Quickly launch your primary agricultural workflows
+          {t("dashboard.quickActionsSub")}
         </p>
       </div>
 
@@ -80,7 +85,7 @@ export const DashboardQuickActions: React.FC = () => {
               </div>
 
               <div className="mt-4 pt-3 border-t border-brand-border/40 flex items-center justify-between text-xs font-bold text-brand-green">
-                <span>Start action</span>
+                <span>{t("common.startAction")}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </div>
             </div>

@@ -5,18 +5,21 @@ import { Calendar, Droplets, Wind, CloudRain } from "lucide-react";
 import { ForecastDay } from "@/types";
 import { WeatherIcon } from "./WeatherIcon";
 import { Badge } from "@/components/ui/Badge";
+import { useTranslation } from "@/lib/i18n";
 
 interface ForecastTimelineProps {
   forecast: ForecastDay[];
 }
 
 export const ForecastTimeline: React.FC<ForecastTimelineProps> = ({ forecast }) => {
-  const formatDate = (dateStr: string) => {
+  const { t, formatNumber, formatDate } = useTranslation();
+
+  const renderDate = (dateStr: string) => {
     try {
       const parts = dateStr.split("-");
       if (parts.length === 3) {
         const date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-        return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+        return formatDate(date, { month: "short", day: "numeric" });
       }
       return dateStr;
     } catch {
@@ -34,15 +37,15 @@ export const ForecastTimeline: React.FC<ForecastTimelineProps> = ({ forecast }) 
           </div>
           <div>
             <h3 className="text-base font-extrabold text-brand-text">
-              7-Day Agricultural Forecast
+              {t("weather.forecastTitle")}
             </h3>
             <p className="text-xs text-brand-text-secondary">
-              Plan planting, weeding, spraying, and harvesting schedules
+              {t("weather.subtitle")}
             </p>
           </div>
         </div>
         <Badge variant="outline" size="sm">
-          Multi-Day Outlook
+          {t("common.verified")}
         </Badge>
       </div>
 
@@ -62,10 +65,10 @@ export const ForecastTimeline: React.FC<ForecastTimelineProps> = ({ forecast }) 
               {/* Day & Date Header */}
               <div className="text-center pb-2 border-b border-brand-border/60">
                 <span className="text-xs font-black text-brand-text block">
-                  {isToday ? "Today" : day.day_name}
+                  {isToday ? t("weather.today") : day.day_name}
                 </span>
                 <span className="text-[10px] text-brand-text-secondary font-medium block">
-                  {formatDate(day.date)}
+                  {renderDate(day.date)}
                 </span>
               </div>
 
@@ -84,13 +87,13 @@ export const ForecastTimeline: React.FC<ForecastTimelineProps> = ({ forecast }) 
               {/* Temperatures */}
               <div className="flex items-center justify-center gap-2 py-1.5 bg-neutral-50 rounded-lg text-xs font-bold my-1">
                 <span className="text-brand-text">
-                  {Math.round(day.max_temperature)}°
+                  {formatNumber(Math.round(day.max_temperature))}°
                 </span>
                 <span className="text-brand-text-secondary/70 font-normal">
                   /
                 </span>
                 <span className="text-brand-text-secondary font-medium">
-                  {Math.round(day.min_temperature)}°
+                  {formatNumber(Math.round(day.min_temperature))}°
                 </span>
               </div>
 
@@ -99,10 +102,10 @@ export const ForecastTimeline: React.FC<ForecastTimelineProps> = ({ forecast }) 
                 <div className="flex items-center justify-between">
                   <span className="flex items-center gap-1">
                     <Droplets className="w-3 h-3 text-blue-500" />
-                    <span>Rain</span>
+                    <span>{t("weather.precipitation")}</span>
                   </span>
                   <span className={`font-bold ${day.rain_probability > 50 ? "text-blue-600 font-black" : "text-brand-text"}`}>
-                    {day.rain_probability}%
+                    {formatNumber(day.rain_probability)}%
                   </span>
                 </div>
 
@@ -110,19 +113,19 @@ export const ForecastTimeline: React.FC<ForecastTimelineProps> = ({ forecast }) 
                   <div className="flex items-center justify-between text-blue-600 font-semibold">
                     <span className="flex items-center gap-1">
                       <CloudRain className="w-3 h-3" />
-                      <span>Amount</span>
+                      <span>{t("weather.precipitation")}</span>
                     </span>
-                    <span>{day.rainfall}mm</span>
+                    <span>{formatNumber(day.rainfall)}mm</span>
                   </div>
                 )}
 
                 <div className="flex items-center justify-between">
                   <span className="flex items-center gap-1">
                     <Wind className="w-3 h-3 text-sky-500" />
-                    <span>Wind</span>
+                    <span>{t("weather.windSpeed")}</span>
                   </span>
                   <span className="font-semibold text-brand-text">
-                    {Math.round(day.wind_speed)}k
+                    {formatNumber(Math.round(day.wind_speed))}k
                   </span>
                 </div>
               </div>

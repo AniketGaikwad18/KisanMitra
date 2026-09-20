@@ -13,12 +13,14 @@ import {
 } from "lucide-react";
 import { FarmOutlook } from "@/types";
 import { Badge } from "@/components/ui/Badge";
+import { useTranslation } from "@/lib/i18n";
 
 interface FarmOutlookCardProps {
   outlook: FarmOutlook;
 }
 
 export const FarmOutlookCard: React.FC<FarmOutlookCardProps> = ({ outlook }) => {
+  const { t } = useTranslation();
   const { summary, spray_suitability, spray_recommendation, irrigation_advice } = outlook;
 
   const getSprayConfig = (suitability: string) => {
@@ -29,7 +31,7 @@ export const FarmOutlookCard: React.FC<FarmOutlookCardProps> = ({ outlook }) => 
           badgeVariant: "success" as const,
           bgColor: "bg-emerald-50/80 border-emerald-200",
           textColor: "text-emerald-800",
-          title: "Good Window for Spraying",
+          title: t("weather.sprayFavorable"),
         };
       case "Caution":
         return {
@@ -37,7 +39,7 @@ export const FarmOutlookCard: React.FC<FarmOutlookCardProps> = ({ outlook }) => 
           badgeVariant: "warning" as const,
           bgColor: "bg-amber-50/80 border-amber-200",
           textColor: "text-amber-800",
-          title: "Spray with Caution",
+          title: t("weather.sprayCaution"),
         };
       case "Unfavorable":
         return {
@@ -45,7 +47,7 @@ export const FarmOutlookCard: React.FC<FarmOutlookCardProps> = ({ outlook }) => 
           badgeVariant: "danger" as const,
           bgColor: "bg-red-50/80 border-red-200",
           textColor: "text-red-800",
-          title: "Avoid Spraying Today",
+          title: t("weather.sprayUnfavorable"),
         };
       default:
         return {
@@ -53,7 +55,7 @@ export const FarmOutlookCard: React.FC<FarmOutlookCardProps> = ({ outlook }) => 
           badgeVariant: "neutral" as const,
           bgColor: "bg-slate-50 border-slate-200",
           textColor: "text-slate-800",
-          title: "Moderate Conditions",
+          title: suitability,
         };
     }
   };
@@ -70,15 +72,15 @@ export const FarmOutlookCard: React.FC<FarmOutlookCardProps> = ({ outlook }) => 
           </div>
           <div>
             <h3 className="text-base font-extrabold text-brand-text">
-              Today&apos;s Farm Outlook
+              {t("weather.farmOutlookTitle")}
             </h3>
             <p className="text-xs text-brand-text-secondary">
-              Translating meteorological patterns into actionable farm decisions
+              {t("weather.subtitle")}
             </p>
           </div>
         </div>
         <Badge variant="brand" size="sm">
-          Farm Impact
+          {t("common.verified")}
         </Badge>
       </div>
 
@@ -87,7 +89,7 @@ export const FarmOutlookCard: React.FC<FarmOutlookCardProps> = ({ outlook }) => 
         <Lightbulb className="w-5 h-5 text-brand-green flex-shrink-0 mt-0.5" />
         <div className="text-sm text-brand-text leading-relaxed">
           <strong className="block text-xs uppercase tracking-wider text-brand-text-secondary mb-1">
-            General Agricultural Assessment
+            {t("common.trustNotice")}
           </strong>
           {summary}
         </div>
@@ -102,7 +104,7 @@ export const FarmOutlookCard: React.FC<FarmOutlookCardProps> = ({ outlook }) => 
               <div className="flex items-center gap-2">
                 <SprayCan className="w-4 h-4 text-brand-text" />
                 <span className="text-xs font-bold uppercase tracking-wider text-brand-text">
-                  Spray Suitability
+                  {t("weather.spraySuitability")}
                 </span>
               </div>
               <Badge variant={sprayConfig.badgeVariant} size="sm">
@@ -126,11 +128,11 @@ export const FarmOutlookCard: React.FC<FarmOutlookCardProps> = ({ outlook }) => 
               <div className="flex items-center gap-2">
                 <Droplet className="w-4 h-4 text-blue-700" />
                 <span className="text-xs font-bold uppercase tracking-wider text-brand-text">
-                  Irrigation Guidance
+                  {t("weather.irrigationAdviceTitle")}
                 </span>
               </div>
               <Badge variant="brand" size="sm">
-                Advisory
+                {t("common.disclaimer")}
               </Badge>
             </div>
             <p className="text-xs text-brand-text leading-relaxed font-medium">
@@ -139,7 +141,7 @@ export const FarmOutlookCard: React.FC<FarmOutlookCardProps> = ({ outlook }) => 
           </div>
           <div className="mt-3 pt-2 border-t border-blue-200/60 flex items-center gap-1.5 text-[11px] text-blue-700 font-medium">
             <CheckCircle2 className="w-4 h-4" />
-            <span>Water balance consideration</span>
+            <span>{t("cropGuide.waterManagement")}</span>
           </div>
         </div>
       </div>

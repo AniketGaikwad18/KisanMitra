@@ -1,9 +1,13 @@
+"use client";
+
 import React from "react";
 import { Sprout, CheckCircle2, MapPin, Calendar, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
+import { useTranslation } from "@/lib/i18n";
 
 export const FarmStatusBanner: React.FC = () => {
-  const currentDate = new Date().toLocaleDateString("en-IN", {
+  const { t, formatDate } = useTranslation();
+  const currentDate = formatDate(new Date(), {
     weekday: "long",
     day: "numeric",
     month: "long",
@@ -17,11 +21,11 @@ export const FarmStatusBanner: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <h1 className="text-2xl sm:text-3xl font-extrabold text-brand-text tracking-tight">
-              Good morning, Farmer 👋
+              {t("dashboard.greeting")} 👋
             </h1>
           </div>
           <p className="text-sm sm:text-base text-brand-text-secondary leading-relaxed">
-            Here&apos;s what you should know about your farm today.
+            {t("dashboard.subtitle")}
           </p>
 
           <div className="flex items-center gap-3 text-xs sm:text-sm text-brand-text-secondary mt-2.5 flex-wrap">
@@ -45,18 +49,18 @@ export const FarmStatusBanner: React.FC = () => {
 
           <div className="space-y-0.5 text-xs">
             <div className="text-[11px] font-extrabold uppercase tracking-wider text-brand-text-secondary">
-              Your Farm Today
+              {t("dashboard.activeCropProfile")}
             </div>
             <div className="flex items-center gap-2">
               <span className="font-bold text-brand-text text-sm">Crop: Soybean</span>
               <Badge variant="success" size="sm" className="gap-1 font-bold">
                 <CheckCircle2 className="w-3 h-3" />
-                Good
+                {t("dashboard.statusGood")}
               </Badge>
             </div>
             <div className="text-[11px] text-brand-text-secondary flex items-center gap-1">
               <Clock className="w-3 h-3" />
-              Last updated: Today
+              {t("weather.today")}
             </div>
           </div>
         </div>

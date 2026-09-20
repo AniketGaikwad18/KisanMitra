@@ -13,6 +13,7 @@ import { SoilScoreGauge } from "@/components/soil/SoilScoreGauge";
 import { ParameterCard } from "@/components/soil/ParameterCard";
 import { analyzeSoil } from "@/lib/api";
 import { SoilAnalysisRequest, SoilAnalysisResponse } from "@/types";
+import { useTranslation } from "@/lib/i18n";
 import {
   FlaskConical,
   Sliders,
@@ -33,6 +34,8 @@ import {
 } from "lucide-react";
 
 export default function SoilHealthPage() {
+  const { t, formatNumber } = useTranslation();
+
   // Form State
   const [ph, setPh] = useState<string>("6.5");
   const [nitrogen, setNitrogen] = useState<string>("280");
@@ -175,17 +178,17 @@ export default function SoilHealthPage() {
   return (
     <AppShell>
       <PageHeader
-        title="Soil Health"
-        description="Understand your soil before making farm decisions."
+        title={t("soil.title")}
+        description={t("soil.subtitle")}
         icon={<FlaskConical className="w-6 h-6 text-brand-green" />}
-        badge={<Badge variant="success">Agronomy Engine</Badge>}
+        badge={<Badge variant="success">{t("nav.categoryAgronomy")}</Badge>}
       />
 
       {/* Informational Message */}
       <div className="mb-6 p-3.5 rounded-xl bg-brand-green/10 border border-brand-green/20 flex items-center gap-3 text-xs sm:text-sm text-brand-text">
         <Info className="w-4 h-4 text-brand-green flex-shrink-0" />
         <span>
-          Enter values from your latest soil test report for a quick advisory assessment.
+          <strong>{t("common.trustNotice")}:</strong> {t("soil.formSub")}
         </span>
       </div>
 
@@ -199,11 +202,11 @@ export default function SoilHealthPage() {
                   <div className="flex items-center gap-2">
                     <Sliders className="w-5 h-5 text-brand-green" />
                     <h2 className="text-lg font-bold text-brand-text">
-                      Soil Test Parameters
+                      {t("soil.formTitle")}
                     </h2>
                   </div>
                   <span className="text-xs text-brand-text-secondary">
-                    * Required fields
+                    * {t("soil.formSub")}
                   </span>
                 </div>
 
@@ -215,7 +218,7 @@ export default function SoilHealthPage() {
                       htmlFor="ph-input"
                       className="block text-xs font-bold text-brand-text mb-1.5"
                     >
-                      Soil pH <span className="text-brand-danger">*</span>
+                      {t("soil.phLabel")} <span className="text-brand-danger">*</span>
                     </label>
                     <div className="relative rounded-xl shadow-sm">
                       <input
@@ -244,7 +247,7 @@ export default function SoilHealthPage() {
                       </p>
                     )}
                     <span className="text-[11px] text-brand-text-secondary block mt-1">
-                      Standard scale: 0.0 to 14.0 (Neutral is ~7.0)
+                      {t("soil.phHelp")}
                     </span>
                   </div>
 
@@ -254,7 +257,7 @@ export default function SoilHealthPage() {
                       htmlFor="nitrogen-input"
                       className="block text-xs font-bold text-brand-text mb-1.5"
                     >
-                      Available Nitrogen (N) <span className="text-brand-danger">*</span>
+                      {t("soil.nitrogenLabel")} <span className="text-brand-danger">*</span>
                     </label>
                     <div className="relative rounded-xl shadow-sm">
                       <input
@@ -273,7 +276,7 @@ export default function SoilHealthPage() {
                         required
                       />
                       <span className="absolute inset-y-0 right-0 flex items-center pr-3.5 text-xs font-bold text-brand-text-secondary pointer-events-none">
-                        kg/ha
+                        {t("soil.nitrogenUnit")}
                       </span>
                     </div>
                     {formErrors.nitrogen && (
@@ -292,7 +295,7 @@ export default function SoilHealthPage() {
                       htmlFor="phosphorus-input"
                       className="block text-xs font-bold text-brand-text mb-1.5"
                     >
-                      Available Phosphorus (P) <span className="text-brand-danger">*</span>
+                      {t("soil.phosphorusLabel")} <span className="text-brand-danger">*</span>
                     </label>
                     <div className="relative rounded-xl shadow-sm">
                       <input
@@ -311,7 +314,7 @@ export default function SoilHealthPage() {
                         required
                       />
                       <span className="absolute inset-y-0 right-0 flex items-center pr-3.5 text-xs font-bold text-brand-text-secondary pointer-events-none">
-                        kg/ha
+                        {t("soil.phosphorusUnit")}
                       </span>
                     </div>
                     {formErrors.phosphorus && (
@@ -330,7 +333,7 @@ export default function SoilHealthPage() {
                       htmlFor="potassium-input"
                       className="block text-xs font-bold text-brand-text mb-1.5"
                     >
-                      Available Potassium (K) <span className="text-brand-danger">*</span>
+                      {t("soil.potassiumLabel")} <span className="text-brand-danger">*</span>
                     </label>
                     <div className="relative rounded-xl shadow-sm">
                       <input
@@ -349,7 +352,7 @@ export default function SoilHealthPage() {
                         required
                       />
                       <span className="absolute inset-y-0 right-0 flex items-center pr-3.5 text-xs font-bold text-brand-text-secondary pointer-events-none">
-                        kg/ha
+                        {t("soil.potassiumUnit")}
                       </span>
                     </div>
                     {formErrors.potassium && (
@@ -368,7 +371,7 @@ export default function SoilHealthPage() {
                       htmlFor="om-input"
                       className="block text-xs font-bold text-brand-text mb-1.5"
                     >
-                      Organic Carbon / Matter <span className="text-brand-text-secondary text-[11px] font-normal">(Optional)</span>
+                      {t("soil.organicMatterLabel")} <span className="text-brand-text-secondary text-[11px] font-normal">{t("soil.organicMatterOptional")}</span>
                     </label>
                     <div className="relative rounded-xl shadow-sm">
                       <input
@@ -406,7 +409,7 @@ export default function SoilHealthPage() {
                       htmlFor="crop-select"
                       className="block text-xs font-bold text-brand-text mb-1.5"
                     >
-                      Target Crop
+                      {t("soil.cropLabel")}
                     </label>
                     <select
                       id="crop-select"
@@ -421,7 +424,7 @@ export default function SoilHealthPage() {
                       ))}
                     </select>
                     <span className="text-[11px] text-brand-text-secondary block mt-1">
-                      Used for crop-specific pH range and nutrient guidance
+                      {t("cropGuide.subtitle")}
                     </span>
                   </div>
                 </div>
@@ -432,7 +435,7 @@ export default function SoilHealthPage() {
                     htmlFor="location-input"
                     className="block text-xs font-bold text-brand-text mb-1.5"
                   >
-                    Farm Location
+                    {t("soil.locationLabel")}
                   </label>
                   <div className="relative rounded-xl shadow-sm">
                     <input
@@ -456,7 +459,7 @@ export default function SoilHealthPage() {
                     className="font-bold shadow-md glow-warm w-full sm:w-auto"
                     leftIcon={<FlaskConical className="w-5 h-5 text-brand-text" />}
                   >
-                    Analyze Soil
+                    {t("soil.analyzeButton")}
                   </Button>
                 </div>
               </Card>
@@ -468,21 +471,21 @@ export default function SoilHealthPage() {
                 <div className="flex items-center gap-2">
                   <FileText className="w-5 h-5 text-brand-green" />
                   <h3 className="text-base font-bold text-brand-text">
-                    Have a soil report?
+                    {t("schemes.requiredDocuments")}
                   </h3>
                 </div>
                 <Badge variant="warning" size="sm" className="text-[10px] font-bold">
-                  Future Capability
+                  {t("common.demo")}
                 </Badge>
               </div>
 
               <div className="p-6 rounded-xl border-2 border-dashed border-brand-border bg-brand-bg/50 text-center flex flex-col items-center justify-center">
                 <Upload className="w-8 h-8 text-brand-green mb-2 opacity-70" />
                 <h4 className="text-sm font-bold text-brand-text">
-                  Upload soil report (PDF / JPG / PNG)
+                  {t("cropDoctor.uploadTitle")} (PDF / JPG / PNG)
                 </h4>
                 <p className="text-xs text-brand-text-secondary mt-1 max-w-sm">
-                  Automatic soil report extraction and OCR parsing will be enabled in a future phase.
+                  {t("common.trustNotice")}: {t("common.curatedGovt")}
                 </p>
 
                 <div className="mt-3">
@@ -493,7 +496,7 @@ export default function SoilHealthPage() {
                     disabled
                     className="cursor-not-allowed opacity-60 text-xs"
                   >
-                    Upload Report (Coming Soon)
+                    {t("cropDoctor.chooseImage")}
                   </Button>
                 </div>
               </div>
@@ -504,16 +507,16 @@ export default function SoilHealthPage() {
         {/* 3. ANALYZING LOADING STATE */}
         {status === "analyzing" && (
           <LoadingState
-            message="Analyzing your soil..."
-            description="Calculating advisory fertility scores, pH classifications, and crop nutrient recommendations."
+            message={t("soil.analyzingButton")}
+            description={t("soil.subtitle")}
           />
         )}
 
         {/* 4. ERROR STATE */}
         {status === "error" && (
           <ErrorState
-            title="Analysis Could Not Proceed"
-            message={apiError || "We couldn't analyze these values. Please check your soil-test numbers and try again."}
+            title={t("common.error")}
+            message={apiError || t("common.error")}
             onRetry={handleReset}
           />
         )}
@@ -531,17 +534,17 @@ export default function SoilHealthPage() {
             <div>
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-base font-bold text-brand-text">
-                  Assessed Soil Parameters
+                  {t("soil.formTitle")}
                 </h3>
                 <span className="text-xs text-brand-text-secondary">
-                  Based on ICAR soil testing benchmarks
+                  {t("soil.scoreSub")}
                 </span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* pH Card */}
                 <ParameterCard
-                  label="Soil pH"
+                  label={t("soil.phLabel")}
                   chemicalSymbol="pH"
                   result={result.parameters.ph}
                   description="Acidity/alkalinity balance for nutrient availability"
@@ -549,7 +552,7 @@ export default function SoilHealthPage() {
 
                 {/* Nitrogen Card */}
                 <ParameterCard
-                  label="Nitrogen"
+                  label={t("soil.nitrogenLabel")}
                   chemicalSymbol="N"
                   result={result.parameters.nitrogen}
                   description="Vital for foliage growth and chlorophyll development"
@@ -557,7 +560,7 @@ export default function SoilHealthPage() {
 
                 {/* Phosphorus Card */}
                 <ParameterCard
-                  label="Phosphorus"
+                  label={t("soil.phosphorusLabel")}
                   chemicalSymbol="P"
                   result={result.parameters.phosphorus}
                   description="Essential for root establishment and energy transfer"
@@ -565,7 +568,7 @@ export default function SoilHealthPage() {
 
                 {/* Potassium Card */}
                 <ParameterCard
-                  label="Potassium"
+                  label={t("soil.potassiumLabel")}
                   chemicalSymbol="K"
                   result={result.parameters.potassium}
                   description="Key for disease resistance and moisture regulation"
@@ -576,7 +579,7 @@ export default function SoilHealthPage() {
               {result.parameters.organic_matter && (
                 <div className="mt-4 max-w-sm">
                   <ParameterCard
-                    label="Organic Matter"
+                    label={t("soil.organicMatterLabel")}
                     chemicalSymbol="OC"
                     result={result.parameters.organic_matter}
                     description="Improves soil microbial activity and moisture holding"
@@ -593,7 +596,7 @@ export default function SoilHealthPage() {
                   <div className="flex items-center gap-2 mb-3 pb-2 border-b border-brand-border">
                     <CheckCircle2 className="w-5 h-5 text-brand-green" />
                     <h3 className="text-base font-bold text-brand-text">
-                      Key Observations
+                      {t("soil.observationsTitle")}
                     </h3>
                   </div>
 
@@ -608,7 +611,7 @@ export default function SoilHealthPage() {
                 </div>
 
                 <div className="mt-4 pt-3 border-t border-brand-border/60 text-[11px] text-brand-text-secondary">
-                  Assessed against benchmark soil test interpretation scales.
+                  {t("common.trustAdvisory")}: {t("common.curatedGovt")}
                 </div>
               </Card>
 
@@ -618,7 +621,7 @@ export default function SoilHealthPage() {
                   <div className="flex items-center gap-2 mb-3 pb-2 border-b border-brand-border">
                     <Lightbulb className="w-5 h-5 text-amber-600" />
                     <h3 className="text-base font-bold text-brand-text">
-                      What You Can Consider
+                      {t("soil.recommendationsTitle")}
                     </h3>
                   </div>
 
@@ -635,7 +638,7 @@ export default function SoilHealthPage() {
                 </div>
 
                 <div className="mt-4 pt-3 border-t border-brand-border/60 text-[11px] text-brand-text-secondary">
-                  General agronomic guidance. Confirm exact plans with local authorities.
+                  {t("common.trustAdvisory")}: {t("soil.disclaimer")}
                 </div>
               </Card>
             </div>
@@ -647,21 +650,21 @@ export default function SoilHealthPage() {
                   <div className="flex items-center gap-2">
                     <Leaf className="w-5 h-5 text-brand-green" />
                     <h3 className="text-base font-bold text-brand-text">
-                      Crop Context: {result.crop_context.crop_name}
+                      {t("soil.cropContextTitle")}: {result.crop_context.crop_name}
                     </h3>
                   </div>
                   <Badge
                     variant={result.crop_context.is_ph_suitable ? "success" : "warning"}
                     size="sm"
                   >
-                    {result.crop_context.is_ph_suitable ? "pH Suitable" : "pH Caution"}
+                    {result.crop_context.is_ph_suitable ? t("common.verified") : t("weather.sprayCaution")}
                   </Badge>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm">
                   <div className="p-3.5 rounded-xl bg-brand-bg/70 border border-brand-border/60 space-y-1">
                     <span className="text-[11px] font-bold text-brand-text-secondary uppercase tracking-wider block">
-                      Suitable pH Range
+                      {t("cropGuide.optimalPh")}
                     </span>
                     <span className="font-extrabold text-brand-text text-sm">
                       {result.crop_context.suitable_ph_range}
@@ -673,7 +676,7 @@ export default function SoilHealthPage() {
 
                   <div className="p-3.5 rounded-xl bg-brand-bg/70 border border-brand-border/60 space-y-1">
                     <span className="text-[11px] font-bold text-brand-text-secondary uppercase tracking-wider block">
-                      Nutrient Priority Focus
+                      {t("cropGuide.nutrientManagement")}
                     </span>
                     <span className="font-extrabold text-brand-green text-sm">
                       {result.crop_context.primary_focus}
@@ -693,12 +696,12 @@ export default function SoilHealthPage() {
               <div className="flex items-center gap-2">
                 <ShieldAlert className="w-5 h-5 text-brand-warning flex-shrink-0" />
                 <h4 className="text-sm font-bold text-brand-text">
-                  Important Data Quality &amp; Responsible Use Notice
+                  {t("common.trustAdvisory")}
                 </h4>
               </div>
 
               <p className="text-xs text-brand-text-secondary leading-relaxed">
-                This assessment is based only on the values you entered. Soil interpretation can vary depending on soil type, target crop, regional rainfall, extraction method, and sampling depth. For high-stakes farming decisions, use a certified laboratory soil test certificate and consult an agricultural extension officer.
+                {t("soil.disclaimer")}
               </p>
 
               {result.data_quality_notes && result.data_quality_notes.length > 0 && (
@@ -719,7 +722,7 @@ export default function SoilHealthPage() {
                 leftIcon={<RotateCcw className="w-4 h-4" />}
                 className="font-bold"
               >
-                Edit / Test Another Sample
+                {t("common.retry")}
               </Button>
             </div>
           </div>

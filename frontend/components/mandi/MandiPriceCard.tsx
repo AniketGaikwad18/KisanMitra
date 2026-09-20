@@ -6,6 +6,7 @@ import { MandiPriceRecord, MandiSummary } from "@/types";
 import { DataStatusBadge } from "./DataStatusBadge";
 import { PriceRangeVisualizer } from "./PriceRangeVisualizer";
 import { Badge } from "@/components/ui/Badge";
+import { useTranslation } from "@/lib/i18n";
 
 interface MandiPriceCardProps {
   primaryRecord: MandiPriceRecord;
@@ -20,6 +21,7 @@ export const MandiPriceCard: React.FC<MandiPriceCardProps> = ({
   isDemo,
   summary,
 }) => {
+  const { t, formatNumber } = useTranslation();
   const {
     commodity,
     variety,
@@ -41,7 +43,7 @@ export const MandiPriceCard: React.FC<MandiPriceCardProps> = ({
         <div>
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-xs font-extrabold uppercase tracking-wider text-brand-green">
-              Reported Market Arrival
+              {t("mandi.title")}
             </span>
             <DataStatusBadge status={dataStatus} isDemo={isDemo} />
           </div>
@@ -58,11 +60,11 @@ export const MandiPriceCard: React.FC<MandiPriceCardProps> = ({
 
         <div className="text-right">
           <span className="text-[11px] text-brand-text-secondary block">
-            Arrival Date
+            {t("mandi.reportedDate")}
           </span>
           <div className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-text bg-white px-2.5 py-1 rounded-lg border border-brand-border shadow-2xs">
             <Calendar className="w-3.5 h-3.5 text-brand-green" />
-            <span>{arrival_date || "Latest reported"}</span>
+            <span>{arrival_date || t("weather.today")}</span>
           </div>
         </div>
       </div>
@@ -72,12 +74,12 @@ export const MandiPriceCard: React.FC<MandiPriceCardProps> = ({
         {/* Modal Price Highlight */}
         <div className="md:col-span-6 space-y-1">
           <span className="text-xs font-bold text-brand-text-secondary uppercase tracking-wider block">
-            Modal (Typical) Market Price
+            {t("mandi.modalPrice")}
           </span>
           <div className="flex items-baseline gap-2">
             <span className="text-4xl sm:text-5xl font-black text-brand-text tracking-tight">
               {modal_price !== null && modal_price !== undefined
-                ? `₹${modal_price.toLocaleString("en-IN")}`
+                ? `₹${formatNumber(modal_price)}`
                 : "N/A"}
             </span>
             <span className="text-sm font-bold text-brand-text-secondary">
@@ -102,29 +104,29 @@ export const MandiPriceCard: React.FC<MandiPriceCardProps> = ({
         <div className="md:col-span-6 grid grid-cols-2 gap-3">
           <div className="p-3.5 rounded-xl bg-blue-50/70 border border-blue-100 flex flex-col justify-between">
             <span className="text-[11px] font-bold text-blue-700 uppercase tracking-wider">
-              Minimum Price
+              {t("mandi.minPrice")}
             </span>
             <div className="text-xl font-black text-brand-text mt-1">
               {min_price !== null && min_price !== undefined
-                ? `₹${min_price.toLocaleString("en-IN")}`
+                ? `₹${formatNumber(min_price)}`
                 : "—"}
             </div>
             <span className="text-[10px] text-brand-text-secondary mt-0.5">
-              Lower trading bound
+              {t("mandi.minPrice")}
             </span>
           </div>
 
           <div className="p-3.5 rounded-xl bg-emerald-50/70 border border-emerald-100 flex flex-col justify-between">
             <span className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider">
-              Maximum Price
+              {t("mandi.maxPrice")}
             </span>
             <div className="text-xl font-black text-brand-text mt-1">
               {max_price !== null && max_price !== undefined
-                ? `₹${max_price.toLocaleString("en-IN")}`
+                ? `₹${formatNumber(max_price)}`
                 : "—"}
             </div>
             <span className="text-[10px] text-brand-text-secondary mt-0.5">
-              Upper trading bound
+              {t("mandi.maxPrice")}
             </span>
           </div>
         </div>

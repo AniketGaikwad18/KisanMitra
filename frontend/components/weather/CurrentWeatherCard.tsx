@@ -18,6 +18,7 @@ import { WeatherResponse } from "@/types";
 import { WeatherIcon } from "./WeatherIcon";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { useTranslation } from "@/lib/i18n";
 
 interface CurrentWeatherCardProps {
   weather: WeatherResponse;
@@ -32,6 +33,7 @@ export const CurrentWeatherCard: React.FC<CurrentWeatherCardProps> = ({
   onRefresh,
   onChangeLocation,
 }) => {
+  const { t, formatNumber } = useTranslation();
   const { current, today, location, updated_at, is_demo } = weather;
 
   // Format timestamp
@@ -64,12 +66,12 @@ export const CurrentWeatherCard: React.FC<CurrentWeatherCardProps> = ({
               )}
               {is_demo && (
                 <Badge variant="warning" size="sm">
-                  Offline Demo
+                  {t("common.demo")}
                 </Badge>
               )}
             </div>
             <p className="text-[11px] text-brand-text-secondary">
-              Coordinates: {location.latitude.toFixed(2)}°N, {location.longitude.toFixed(2)}°E
+              {t("weather.locationLabel")}: {formatNumber(Number(location.latitude.toFixed(2)))}°N, {formatNumber(Number(location.longitude.toFixed(2)))}°E
             </p>
           </div>
         </div>
@@ -80,7 +82,7 @@ export const CurrentWeatherCard: React.FC<CurrentWeatherCardProps> = ({
             className="text-xs font-bold text-brand-green hover:underline px-3 py-1.5 rounded-lg bg-brand-green/10 border border-brand-green/20 hover:bg-brand-green/20 transition-all flex items-center gap-1.5"
           >
             <Compass className="w-3.5 h-3.5" />
-            <span>Change location</span>
+            <span>{t("weather.changeLocation")}</span>
           </button>
 
           <Button
@@ -89,7 +91,7 @@ export const CurrentWeatherCard: React.FC<CurrentWeatherCardProps> = ({
             onClick={onRefresh}
             disabled={isLoading}
             className="text-xs h-8 px-2.5"
-            title="Refresh weather data"
+            title={t("weather.refreshWeather")}
           >
             <RefreshCw
               className={`w-3.5 h-3.5 text-brand-green ${
@@ -116,7 +118,7 @@ export const CurrentWeatherCard: React.FC<CurrentWeatherCardProps> = ({
           <div>
             <div className="flex items-baseline gap-2">
               <span className="text-5xl md:text-6xl font-black text-brand-text tracking-tight">
-                {Math.round(current.temperature)}°
+                {formatNumber(Math.round(current.temperature))}°
               </span>
               <span className="text-2xl font-bold text-brand-text-secondary">
                 C
@@ -128,7 +130,7 @@ export const CurrentWeatherCard: React.FC<CurrentWeatherCardProps> = ({
             </div>
 
             <div className="text-xs font-semibold text-brand-text-secondary mt-0.5">
-              Feels like {Math.round(current.feels_like)}°C • High: {Math.round(today.max_temperature)}° / Low: {Math.round(today.min_temperature)}°
+              {t("weather.feelsLike")} {formatNumber(Math.round(current.feels_like))}°C • High: {formatNumber(Math.round(today.max_temperature))}° / Low: {formatNumber(Math.round(today.min_temperature))}°
             </div>
           </div>
         </div>
@@ -138,61 +140,61 @@ export const CurrentWeatherCard: React.FC<CurrentWeatherCardProps> = ({
           {/* Rain Probability */}
           <div className="p-3 rounded-xl bg-blue-50/70 border border-blue-100 flex flex-col justify-between">
             <div className="flex items-center justify-between text-blue-600 mb-1">
-              <span className="text-[11px] font-bold uppercase tracking-wider">Rain Prob.</span>
+              <span className="text-[11px] font-bold uppercase tracking-wider">{t("weather.rainProbability")}</span>
               <Droplets className="w-4 h-4" />
             </div>
             <div className="text-lg font-black text-brand-text">
-              {today.rain_probability}%
+              {formatNumber(today.rain_probability)}%
             </div>
             <span className="text-[10px] text-brand-text-secondary">
-              {today.rainfall > 0 ? `${today.rainfall} mm expected` : "No heavy precipitation"}
+              {today.rainfall > 0 ? `${formatNumber(today.rainfall)} mm` : t("weather.today")}
             </span>
           </div>
 
           {/* Humidity */}
           <div className="p-3 rounded-xl bg-emerald-50/70 border border-emerald-100 flex flex-col justify-between">
             <div className="flex items-center justify-between text-emerald-600 mb-1">
-              <span className="text-[11px] font-bold uppercase tracking-wider">Humidity</span>
+              <span className="text-[11px] font-bold uppercase tracking-wider">{t("weather.humidity")}</span>
               <Droplets className="w-4 h-4" />
             </div>
             <div className="text-lg font-black text-brand-text">
-              {current.humidity}%
+              {formatNumber(current.humidity)}%
             </div>
             <span className="text-[10px] text-brand-text-secondary">
-              {current.humidity > 80 ? "High humidity" : current.humidity < 40 ? "Dry atmosphere" : "Moderate moisture"}
+              {current.humidity > 80 ? "High" : current.humidity < 40 ? "Low" : "Normal"}
             </span>
           </div>
 
           {/* Wind Speed */}
           <div className="p-3 rounded-xl bg-sky-50/70 border border-sky-100 flex flex-col justify-between">
             <div className="flex items-center justify-between text-sky-600 mb-1">
-              <span className="text-[11px] font-bold uppercase tracking-wider">Wind</span>
+              <span className="text-[11px] font-bold uppercase tracking-wider">{t("weather.windSpeed")}</span>
               <Wind className="w-4 h-4" />
             </div>
             <div className="text-lg font-black text-brand-text">
-              {current.wind_speed} <span className="text-xs font-normal">km/h</span>
+              {formatNumber(current.wind_speed)} <span className="text-xs font-normal">km/h</span>
             </div>
             <span className="text-[10px] text-brand-text-secondary">
-              {current.wind_speed <= 15 ? "Gentle breeze" : "Breezy conditions"}
+              {current.wind_speed <= 15 ? "Gentle" : "Breezy"}
             </span>
           </div>
 
           {/* Precipitation Amount */}
           <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex flex-col justify-between">
             <div className="flex items-center justify-between text-slate-600 mb-1">
-              <span className="text-[11px] font-bold uppercase tracking-wider">Rainfall</span>
+              <span className="text-[11px] font-bold uppercase tracking-wider">{t("weather.precipitation")}</span>
               <CloudRain className="w-4 h-4" />
             </div>
             <div className="text-lg font-black text-brand-text">
-              {today.rainfall} <span className="text-xs font-normal">mm</span>
+              {formatNumber(today.rainfall)} <span className="text-xs font-normal">mm</span>
             </div>
-            <span className="text-[10px] text-brand-text-secondary">Today total</span>
+            <span className="text-[10px] text-brand-text-secondary">{t("weather.today")}</span>
           </div>
 
           {/* Sunrise / Sunset */}
           <div className="p-3 rounded-xl bg-amber-50/60 border border-amber-100 flex flex-col justify-between col-span-2 sm:col-span-2">
             <div className="flex items-center justify-between text-amber-700 mb-1">
-              <span className="text-[11px] font-bold uppercase tracking-wider">Sun Hours</span>
+              <span className="text-[11px] font-bold uppercase tracking-wider">{t("dashboard.growingSeason")}</span>
               <Sun className="w-4 h-4" />
             </div>
             <div className="flex items-center justify-between text-xs font-bold text-brand-text">
@@ -206,7 +208,7 @@ export const CurrentWeatherCard: React.FC<CurrentWeatherCardProps> = ({
               </span>
             </div>
             <span className="text-[10px] text-brand-text-secondary mt-0.5">
-              UV Index: {today.uv_index_max ? today.uv_index_max : "Moderate"}
+              UV Index: {today.uv_index_max ? formatNumber(today.uv_index_max) : "Moderate"}
             </span>
           </div>
         </div>
@@ -216,9 +218,9 @@ export const CurrentWeatherCard: React.FC<CurrentWeatherCardProps> = ({
       <div className="pt-3 border-t border-brand-border/60 flex items-center justify-between text-xs text-brand-text-secondary">
         <span className="flex items-center gap-1.5">
           <Clock className="w-3.5 h-3.5 text-brand-green" />
-          <span>Updated at: <strong className="text-brand-text">{formatTime(updated_at)}</strong></span>
+          <span>{t("weather.title")}: <strong className="text-brand-text">{formatTime(updated_at)}</strong></span>
         </span>
-        <span className="text-[11px]">Source: Open-Meteo & Agricultural Engine</span>
+        <span className="text-[11px]">{t("common.curatedGovt")}</span>
       </div>
     </div>
   );

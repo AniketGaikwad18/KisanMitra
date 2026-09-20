@@ -1,33 +1,38 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { CloudRain, FlaskConical, Sprout, ArrowRight, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
+import { useTranslation } from "@/lib/i18n";
 
 export const FarmInsights: React.FC = () => {
+  const { t } = useTranslation();
+
   const insights = [
     {
       id: "weather-insight",
       icon: <CloudRain className="w-5 h-5 text-blue-600" />,
-      category: "🌧 Weather",
-      text: "Rain may affect upcoming farm activities.",
+      category: "🌧 " + t("nav.weather"),
+      text: t("dashboard.weatherAlertDesc"),
       href: "/weather",
-      actionText: "View forecast",
+      actionText: t("dashboard.checkWeatherTitle"),
     },
     {
       id: "soil-insight",
       icon: <FlaskConical className="w-5 h-5 text-amber-600" />,
-      category: "🧪 Soil",
-      text: "Your soil information is available for analysis.",
+      category: "🧪 " + t("nav.soilHealth"),
+      text: t("soil.subtitle"),
       href: "/soil",
-      actionText: "Check nutrients",
+      actionText: t("dashboard.analyzeSoilTitle"),
     },
     {
       id: "crop-insight",
       icon: <Sprout className="w-5 h-5 text-brand-green" />,
-      category: "🌱 Crop",
-      text: "Run a crop health check to monitor your plant.",
+      category: "🌱 " + t("nav.cropDoctor"),
+      text: t("cropDoctor.subtitle"),
       href: "/crop-doctor",
-      actionText: "Run scan",
+      actionText: t("dashboard.checkCropTitle"),
     },
   ];
 
@@ -40,12 +45,16 @@ export const FarmInsights: React.FC = () => {
               <Sparkles className="w-5 h-5 text-brand-green" />
             </div>
             <div>
-              <h3 className="text-lg font-extrabold text-brand-text">Farm Insights</h3>
-              <p className="text-[11px] text-brand-text-secondary">Actionable advisory suggestions</p>
+              <h3 className="text-lg font-extrabold text-brand-text">
+                {t("dashboard.farmInsightsTitle")}
+              </h3>
+              <p className="text-[11px] text-brand-text-secondary">
+                {t("dashboard.farmInsightsSub")}
+              </p>
             </div>
           </div>
           <Badge variant="warning" size="sm" className="text-[10px]">
-            Demo Insights
+            {t("common.demo")}
           </Badge>
         </div>
 
@@ -82,7 +91,7 @@ export const FarmInsights: React.FC = () => {
       </div>
 
       <div className="mt-5 pt-3 border-t border-brand-border/60 text-[11px] text-brand-text-secondary">
-        Insights update dynamically based on farm profile and weather events.
+        {t("common.trustAdvisory")}: {t("common.curatedGovt")}
       </div>
     </div>
   );

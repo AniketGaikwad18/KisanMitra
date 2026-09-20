@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { useTranslation } from "@/lib/i18n";
 
 export interface SidebarProps {
   isOpen?: boolean;
@@ -27,56 +28,65 @@ export interface SidebarProps {
 export const navigationItems = [
   {
     name: "Dashboard",
+    labelKey: "nav.dashboard",
     href: "/dashboard",
     icon: LayoutDashboard,
-    badge: undefined,
+    badgeKey: undefined,
   },
   {
     name: "Crop Doctor",
+    labelKey: "nav.cropDoctor",
     href: "/crop-doctor",
     icon: Stethoscope,
-    badge: "AI Vision",
+    badgeKey: "nav.aiVisionBadge",
   },
   {
     name: "Soil Health",
+    labelKey: "nav.soilHealth",
     href: "/soil",
     icon: FlaskConical,
-    badge: undefined,
+    badgeKey: undefined,
   },
   {
     name: "Weather",
+    labelKey: "nav.weather",
     href: "/weather",
     icon: CloudSun,
-    badge: undefined,
+    badgeKey: undefined,
   },
   {
     name: "Mandi",
+    labelKey: "nav.mandi",
     href: "/mandi",
     icon: Coins,
-    badge: undefined,
+    badgeKey: undefined,
   },
   {
     name: "Schemes",
+    labelKey: "nav.schemes",
     href: "/schemes",
     icon: Landmark,
-    badge: undefined,
+    badgeKey: undefined,
   },
   {
     name: "Crop Guide",
+    labelKey: "nav.cropGuide",
     href: "/crop-guide",
     icon: Compass,
-    badge: undefined,
+    badgeKey: undefined,
   },
   {
     name: "AI Assistant",
+    labelKey: "nav.assistant",
     href: "/assistant",
     icon: BotMessageSquare,
-    badge: "AI",
+    badgeKey: "nav.aiBadge",
   },
 ];
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const pathname = usePathname();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -102,7 +112,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         <div className="flex-1 overflow-y-auto px-3.5 py-5">
           <div className="mb-3 px-3">
             <span className="text-[11px] font-extrabold uppercase tracking-wider text-brand-text-secondary">
-              Navigation
+              {t("nav.navigation")}
             </span>
           </div>
 
@@ -115,7 +125,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
               return (
                 <Link
-                  key={item.name}
+                  key={item.href}
                   href={item.href}
                   onClick={onClose}
                   className={twMerge(
@@ -138,11 +148,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                         )
                       )}
                     />
-                    <span>{item.name}</span>
+                    <span>{t(item.labelKey)}</span>
                   </div>
 
                   <div className="flex items-center gap-1.5">
-                    {item.badge && (
+                    {item.badgeKey && (
                       <span
                         className={twMerge(
                           clsx(
@@ -153,7 +163,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                           )
                         )}
                       >
-                        {item.badge}
+                        {t(item.badgeKey)}
                       </span>
                     )}
                     <ChevronRight

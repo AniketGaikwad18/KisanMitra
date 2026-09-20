@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import {
@@ -22,49 +24,59 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Navbar } from "@/components/layout/Navbar";
+import { useTranslation } from "@/lib/i18n";
 
 export default function LandingPage() {
+  const { t } = useTranslation();
+
   const features = [
     {
       icon: <Stethoscope className="w-6 h-6 text-brand-green" />,
-      title: "Crop Health",
-      desc: "Upload leaf photos to detect diseases early, understand symptoms, and get preventive treatment steps.",
-      badge: "AI Vision",
+      title: t("landing.featureCropDoctorTitle"),
+      desc: t("landing.featureCropDoctorDesc"),
+      badge: t("nav.aiVisionBadge"),
       href: "/crop-doctor",
     },
     {
       icon: <FlaskConical className="w-6 h-6 text-brand-green" />,
-      title: "Soil Health",
-      desc: "Evaluate pH, Nitrogen, Phosphorus, and Potassium levels to balance fertilizer use and maintain fertile soil.",
-      badge: "Nutrient Care",
+      title: t("landing.featureSoilTitle"),
+      desc: t("landing.featureSoilDesc"),
+      badge: t("nav.soilHealth"),
       href: "/soil",
     },
     {
       icon: <CloudSun className="w-6 h-6 text-brand-green" />,
-      title: "Weather Intelligence",
-      desc: "Hyperlocal weather forecasts that explain what upcoming weather means for your daily farm activities.",
-      badge: "Farm Advisory",
+      title: t("landing.featureWeatherTitle"),
+      desc: t("landing.featureWeatherDesc"),
+      badge: t("nav.categoryForecast"),
       href: "/weather",
     },
     {
       icon: <Coins className="w-6 h-6 text-brand-green" />,
-      title: "Mandi Prices",
-      desc: "Compare real APMC market rates across nearby mandis to make informed crop selling decisions.",
-      badge: "Market Discovery",
+      title: t("landing.featureMandiTitle"),
+      desc: t("landing.featureMandiDesc"),
+      badge: t("nav.categoryMarketRates"),
       href: "/mandi",
     },
     {
       icon: <Landmark className="w-6 h-6 text-brand-green" />,
-      title: "Government Schemes",
-      desc: "Explore Central and State agricultural subsidy programs with clear eligibility guidelines and application steps.",
-      badge: "Subsidies",
+      title: t("landing.featureSchemesTitle"),
+      desc: t("landing.featureSchemesDesc"),
+      badge: t("nav.categorySupport"),
       href: "/schemes",
     },
     {
+      icon: <Compass className="w-6 h-6 text-brand-green" />,
+      title: t("landing.featureCropGuideTitle"),
+      desc: t("landing.featureCropGuideDesc"),
+      badge: t("nav.cropGuide"),
+      href: "/crop-guide",
+    },
+    {
       icon: <BotMessageSquare className="w-6 h-6 text-brand-green" />,
-      title: "AI Assistant",
-      desc: "Ask natural-language agricultural questions in regional Indian languages with full context of your farm.",
-      badge: "Multilingual",
+      title: t("landing.featureAssistantTitle"),
+      desc: t("landing.featureAssistantDesc"),
+      badge: t("nav.aiBadge"),
       href: "/assistant",
     },
   ];
@@ -72,23 +84,23 @@ export default function LandingPage() {
   const workflowSteps = [
     {
       step: "01",
-      title: "Tell us about your farm",
-      desc: "Provide your location, soil type, and target crops to establish your localized farm profile.",
+      title: t("landing.step1Title"),
+      desc: t("landing.step1Desc"),
     },
     {
       step: "02",
-      title: "Understand your farm",
-      desc: "Get holistic visibility into soil nutrients, upcoming weather risks, and crop health status.",
+      title: t("landing.step2Title"),
+      desc: t("landing.step2Desc"),
     },
     {
       step: "03",
-      title: "Get useful insights",
-      desc: "Receive actionable advisories on sowing, spraying windows, pest remedies, and mandi prices.",
+      title: t("landing.step3Title"),
+      desc: t("landing.step3Desc"),
     },
     {
       step: "04",
-      title: "Make better decisions",
-      desc: "Protect your harvest, reduce input costs, and secure better market returns for your produce.",
+      title: t("landing.step4Title"),
+      desc: t("landing.step4Desc"),
     },
   ];
 
@@ -104,22 +116,21 @@ export default function LandingPage() {
             {/* Hackathon Badge */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-yellow/30 border border-[#E8C238]/60 mb-6 shadow-subtle">
               <span className="text-xs sm:text-sm font-bold text-[#7D6008]">
-                🌾 HACKDAY 1.0 — Tech for a Better Tomorrow
+                {t("landing.heroBadge")}
               </span>
             </div>
 
             {/* Main Hero Heading */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-brand-text leading-[1.15]">
-              Smarter Decisions. <br className="hidden sm:inline" />
+              {t("landing.heroTitle1")} <br className="hidden sm:inline" />
               <span className="text-brand-green underline decoration-brand-yellow decoration-4 underline-offset-8">
-                Healthier Farms.
+                {t("landing.heroTitle2")}
               </span>
             </h1>
 
             {/* Supporting Copy */}
             <p className="mt-6 text-lg sm:text-xl text-brand-text-secondary leading-relaxed max-w-2xl mx-auto">
-              One simple platform for crop health, soil insights, weather intelligence,
-              market information and agricultural support.
+              {t("landing.heroSubtitle")}
             </p>
 
             {/* Action Buttons */}
@@ -131,14 +142,14 @@ export default function LandingPage() {
                   className="w-full sm:w-auto shadow-md glow-warm font-bold"
                   rightIcon={<ArrowRight className="w-5 h-5" />}
                 >
-                  Explore KisanMitra
+                  {t("landing.ctaDashboard")}
                 </Button>
               </Link>
-              <a href="#why-kisanmitra" className="w-full sm:w-auto">
+              <Link href="/crop-doctor" className="w-full sm:w-auto">
                 <Button size="lg" variant="outline" className="w-full sm:w-auto font-semibold">
-                  How KisanMitra Helps
+                  {t("landing.ctaExplore")}
                 </Button>
-              </a>
+              </Link>
             </div>
 
             {/* Trust Badges */}
@@ -153,7 +164,7 @@ export default function LandingPage() {
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-brand-green flex-shrink-0" />
-                <span className="text-xs font-semibold text-brand-text-secondary">Multilingual (5 Languages)</span>
+                <span className="text-xs font-semibold text-brand-text-secondary">5 Indian Languages</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-brand-green flex-shrink-0" />
@@ -169,13 +180,13 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <Badge variant="brand" className="mb-3">
-              The Agricultural Challenge
+              {t("landing.whyKisanMitraSub")}
             </Badge>
             <h2 className="text-3xl font-extrabold text-brand-text">
-              Why KisanMitra?
+              {t("landing.whyKisanMitra")}
             </h2>
             <p className="mt-3 text-base text-brand-text-secondary leading-relaxed">
-              Every season, farmers must make critical decisions on diseases, weather, soil nutrients, prices, and government schemes. Yet, vital agricultural knowledge is scattered across fragmented apps, complex portals, and unverified groups.
+              {t("landing.heroSubtitle")}
             </p>
           </div>
 
@@ -186,14 +197,14 @@ export default function LandingPage() {
                   <Layers className="w-6 h-6" />
                 </div>
                 <h3 className="text-lg font-bold text-brand-text mb-2">
-                  Fragmented Sources
+                  {t("landing.step1Title")}
                 </h3>
                 <p className="text-xs sm:text-sm text-brand-text-secondary leading-relaxed">
-                  Weather in one app, mandi rates in another, and disease guides elsewhere create confusion and delayed farm responses.
+                  {t("landing.step1Desc")}
                 </p>
               </div>
               <div className="mt-4 pt-3 border-t border-brand-border/60 text-xs font-semibold text-brand-green">
-                KisanMitra Solution: Unified Platform
+                KisanMitra: Unified Platform
               </div>
             </div>
 
@@ -203,14 +214,14 @@ export default function LandingPage() {
                   <HelpCircle className="w-6 h-6" />
                 </div>
                 <h3 className="text-lg font-bold text-brand-text mb-2">
-                  Raw Data Without Action
+                  {t("landing.step2Title")}
                 </h3>
                 <p className="text-xs sm:text-sm text-brand-text-secondary leading-relaxed">
-                  Displaying raw numbers like 28°C or 70% humidity isn&apos;t enough—farmers need to know: <em>&quot;What does this weather mean for my crop today?&quot;</em>
+                  {t("landing.step2Desc")}
                 </p>
               </div>
               <div className="mt-4 pt-3 border-t border-brand-border/60 text-xs font-semibold text-brand-green">
-                KisanMitra Solution: Actionable Advisories
+                KisanMitra: Actionable Advisories
               </div>
             </div>
 
@@ -220,32 +231,32 @@ export default function LandingPage() {
                   <ShieldCheck className="w-6 h-6" />
                 </div>
                 <h3 className="text-lg font-bold text-brand-text mb-2">
-                  Unverified Guidance
+                  {t("landing.step3Title")}
                 </h3>
                 <p className="text-xs sm:text-sm text-brand-text-secondary leading-relaxed">
-                  Generic chatbots often invent schemes or provide inaccurate diagnoses without transparent confidence ratings.
+                  {t("landing.step3Desc")}
                 </p>
               </div>
               <div className="mt-4 pt-3 border-t border-brand-border/60 text-xs font-semibold text-brand-green">
-                KisanMitra Solution: Verified Decision Support
+                KisanMitra: Verified Decision Support
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 3. WHAT KISANMITRA PROVIDES (Six Feature Previews) */}
+      {/* 3. WHAT KISANMITRA PROVIDES (Feature Cards) */}
       <section className="py-16 md:py-24 bg-brand-bg border-b border-brand-border/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
             <Badge variant="brand" className="mb-3">
-              Full Suite Capabilities
+              KisanMitra Decision Suite
             </Badge>
             <h2 className="text-3xl font-extrabold text-brand-text">
-              What KisanMitra Provides
+              {t("landing.whyKisanMitra")}
             </h2>
             <p className="mt-3 text-base text-brand-text-secondary">
-              Six core decision-support modules designed specifically for Indian agriculture.
+              {t("landing.whyKisanMitraSub")}
             </p>
           </div>
 
@@ -275,7 +286,7 @@ export default function LandingPage() {
                   </div>
 
                   <div className="mt-6 pt-3 border-t border-brand-border/60 flex items-center justify-between text-xs font-bold text-brand-green">
-                    <span>Explore module</span>
+                    <span>{t("common.open")}</span>
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </Card>
@@ -290,13 +301,13 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <Badge variant="success" className="mb-3">
-              Simple 4-Step Process
+              {t("landing.howItWorksTitle")}
             </Badge>
             <h2 className="text-3xl font-extrabold text-brand-text">
-              How It Works
+              {t("landing.howItWorksTitle")}
             </h2>
             <p className="mt-3 text-base text-brand-text-secondary">
-              From understanding your field to harvesting with confidence.
+              {t("landing.howItWorksSub")}
             </p>
           </div>
 
@@ -336,16 +347,16 @@ export default function LandingPage() {
             </div>
 
             <h3 className="text-2xl sm:text-3xl font-extrabold text-brand-text tracking-tight mb-3">
-              Built to make agricultural information simpler and more accessible.
+              {t("landing.ctaReadyTitle")}
             </h3>
 
             <p className="text-sm sm:text-base text-brand-text-secondary max-w-xl mx-auto mb-8 leading-relaxed">
-              Empowering Indian farmers with clear, connected, and actionable decision support for every stage of the farming cycle.
+              {t("landing.ctaReadySubtitle")}
             </p>
 
             <Link href="/dashboard">
               <Button size="lg" variant="primary" className="font-bold px-8 shadow-md glow-warm">
-                Explore KisanMitra →
+                {t("landing.ctaDashboard")} →
               </Button>
             </Link>
           </div>
@@ -358,7 +369,7 @@ export default function LandingPage() {
           <div className="flex items-center gap-2">
             <span className="text-xl">🌾</span>
             <span className="font-bold text-brand-text">KisanMitra</span>
-            <span className="text-xs text-brand-text-secondary hidden sm:inline">— Smarter Decisions. Healthier Farms.</span>
+            <span className="text-xs text-brand-text-secondary hidden sm:inline">— {t("common.brandTagline")}</span>
           </div>
           <p className="text-xs">
             Built for <span className="font-bold text-brand-text">HACKDAY 1.0</span> (Tech for a Better Tomorrow)
@@ -368,3 +379,4 @@ export default function LandingPage() {
     </div>
   );
 }
+

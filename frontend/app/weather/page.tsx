@@ -14,6 +14,7 @@ import { FarmOutlookCard } from "@/components/weather/FarmOutlookCard";
 import { AgriculturalAlertsList } from "@/components/weather/AgriculturalAlertsList";
 import { ForecastTimeline } from "@/components/weather/ForecastTimeline";
 import { LocationSelectorModal } from "@/components/weather/LocationSelectorModal";
+import { useTranslation } from "@/lib/i18n";
 
 const DEFAULT_LOCATION: WeatherLocation = {
   name: "Pune",
@@ -26,6 +27,7 @@ const DEFAULT_LOCATION: WeatherLocation = {
 const STORAGE_KEY = "kisanmitra_weather_location";
 
 export default function WeatherPage() {
+  const { t } = useTranslation();
   const [location, setLocation] = useState<WeatherLocation>(DEFAULT_LOCATION);
   const [weatherData, setWeatherData] = useState<WeatherResponse | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -104,25 +106,25 @@ export default function WeatherPage() {
   return (
     <AppShell>
       <PageHeader
-        title="Weather Intelligence"
-        description="Understand what today's weather means for your farm."
+        title={t("weather.title")}
+        description={t("weather.subtitle")}
         icon={<CloudSun className="w-6 h-6 text-brand-green" />}
-        badge={<Badge variant="brand">Hyperlocal Forecasts</Badge>}
+        badge={<Badge variant="brand">{t("nav.categoryForecast")}</Badge>}
       />
 
       <div className="max-w-5xl mx-auto space-y-6 pb-12">
         {/* Loading State */}
         {isLoading && !weatherData && (
           <LoadingState
-            message="Getting the latest weather..."
-            description={`Connecting to weather service for ${location.name}...`}
+            message={t("common.loading")}
+            description={t("weather.subtitle")}
           />
         )}
 
         {/* Error State */}
         {error && !weatherData && (
           <ErrorState
-            title="Weather Unavailable"
+            title={t("common.error")}
             message={error}
             onRetry={handleRefresh}
           />
@@ -153,9 +155,9 @@ export default function WeatherPage() {
               <ShieldCheck className="w-5 h-5 text-brand-green flex-shrink-0 mt-0.5" />
               <div className="text-xs text-brand-text-secondary leading-relaxed">
                 <strong className="text-brand-text block mb-0.5">
-                  Advisory Note for Farmers:
+                  {t("common.trustNotice")}:
                 </strong>
-                Weather forecasts and agricultural impact recommendations are guidance models designed to assist farm planning. Local field microclimates, soil moisture saturation, and crop growth stages should always be taken into account before critical field operations.
+                {t("weather.disclaimer")}
               </div>
             </div>
           </div>

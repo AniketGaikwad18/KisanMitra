@@ -1,6 +1,9 @@
+"use client";
+
 import React from "react";
 import { ExternalLink, ShieldCheck, AlertCircle } from "lucide-react";
 import { MandiSource } from "@/types";
+import { useTranslation } from "@/lib/i18n";
 
 interface SourceAttributionCardProps {
   source: MandiSource;
@@ -13,6 +16,8 @@ export const SourceAttributionCard: React.FC<SourceAttributionCardProps> = ({
   dataStatus,
   isDemo,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="bg-brand-surface rounded-2xl border border-brand-border p-5 shadow-card space-y-3">
       <div className="flex items-start justify-between gap-3 flex-wrap">
@@ -22,7 +27,7 @@ export const SourceAttributionCard: React.FC<SourceAttributionCardProps> = ({
           </div>
           <div>
             <h4 className="text-xs font-extrabold uppercase tracking-wider text-brand-text">
-              Data Source & Attribution
+              {t("common.officialSource")}
             </h4>
             <p className="text-xs text-brand-text-secondary mt-0.5 font-medium">
               {source.name}
@@ -37,7 +42,7 @@ export const SourceAttributionCard: React.FC<SourceAttributionCardProps> = ({
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 text-xs font-bold text-brand-green hover:underline bg-brand-green/10 px-2.5 py-1 rounded-lg border border-brand-green/20"
           >
-            <span>Open Government Dataset</span>
+            <span>{t("schemes.officialSource")}</span>
             <ExternalLink className="w-3 h-3" />
           </a>
         )}
@@ -48,7 +53,7 @@ export const SourceAttributionCard: React.FC<SourceAttributionCardProps> = ({
           {source.description}
         </p>
         <p className="text-[11px] text-brand-text-secondary/80 italic">
-          <strong>Advisory Notice for Farmers:</strong> KisanMitra displays official wholesale market arrival records to help farmers benchmark and compare pricing across APMC markets. Actual transaction prices at the mandi yard depend on crop moisture levels, physical grain quality, grading, and prevailing daily auction demand.
+          <strong>{t("common.trustNotice")}:</strong> {t("mandi.disclaimer")}
         </p>
       </div>
     </div>

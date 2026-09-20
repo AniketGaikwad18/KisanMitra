@@ -1,6 +1,9 @@
+"use client";
+
 import React from "react";
 import { Badge } from "@/components/ui/Badge";
 import { SoilParameterResult } from "@/types";
+import { useTranslation } from "@/lib/i18n";
 
 export interface ParameterCardProps {
   label: string;
@@ -15,17 +18,19 @@ export const ParameterCard: React.FC<ParameterCardProps> = ({
   result,
   description,
 }) => {
+  const { t, formatNumber } = useTranslation();
+
   const getStatusBadge = (status: string, severity: string) => {
     switch (status.toLowerCase()) {
       case "low":
-        return <Badge variant="warning" size="sm">Low</Badge>;
+        return <Badge variant="warning" size="sm">{status}</Badge>;
       case "medium":
       case "near neutral":
       case "slightly acidic":
       case "slightly alkaline":
         return <Badge variant="success" size="sm">{status}</Badge>;
       case "high":
-        return <Badge variant="brand" size="sm">High</Badge>;
+        return <Badge variant="brand" size="sm">{status}</Badge>;
       case "strongly acidic":
       case "strongly alkaline":
         return <Badge variant="danger" size="sm">{status}</Badge>;
@@ -53,7 +58,7 @@ export const ParameterCard: React.FC<ParameterCardProps> = ({
 
         <div className="flex items-baseline gap-1.5 my-2">
           <span className="text-2xl sm:text-3xl font-black text-brand-text tracking-tight">
-            {result.value}
+            {formatNumber(result.value)}
           </span>
           <span className="text-xs font-bold text-brand-text-secondary">
             {result.unit}
@@ -68,7 +73,7 @@ export const ParameterCard: React.FC<ParameterCardProps> = ({
       </div>
 
       <div className="mt-3 pt-2.5 border-t border-brand-border/50 flex items-center justify-between text-[11px] text-brand-text-secondary">
-        <span>Assessed Status</span>
+        <span>{t("common.disclaimer")}</span>
         <span className="font-bold text-brand-text">{result.status}</span>
       </div>
     </div>

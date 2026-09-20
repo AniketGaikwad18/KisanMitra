@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Search, Filter, RotateCcw, Landmark, MapPin } from "lucide-react";
+import { useTranslation } from "@/lib/i18n";
 
 interface SchemeFilterBarProps {
   searchQuery: string;
@@ -30,6 +31,7 @@ export const SchemeFilterBar: React.FC<SchemeFilterBarProps> = ({
   filteredCount,
   onReset,
 }) => {
+  const { t } = useTranslation();
   const hasActiveFilters = searchQuery !== "" || selectedCategory !== "" || selectedState !== "";
 
   return (
@@ -45,7 +47,7 @@ export const SchemeFilterBar: React.FC<SchemeFilterBarProps> = ({
             type="text"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Search schemes (e.g. insurance, loan, soil, irrigation)..."
+            placeholder={t("schemes.searchPlaceholder")}
             className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-brand-border bg-brand-bg text-sm text-brand-text placeholder:text-brand-text-muted focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all"
           />
         </div>
@@ -58,7 +60,7 @@ export const SchemeFilterBar: React.FC<SchemeFilterBarProps> = ({
               onChange={(e) => onCategoryChange(e.target.value)}
               className="w-full px-3.5 py-2.5 rounded-xl border border-brand-border bg-brand-bg text-sm font-medium text-brand-text focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all cursor-pointer"
             >
-              <option value="">All Categories</option>
+              <option value="">{t("schemes.allCategories")}</option>
               {availableCategories.map((cat) => (
                 <option key={cat} value={cat}>
                   {cat}
@@ -76,7 +78,7 @@ export const SchemeFilterBar: React.FC<SchemeFilterBarProps> = ({
               onChange={(e) => onStateChange(e.target.value)}
               className="w-full px-3.5 py-2.5 rounded-xl border border-brand-border bg-brand-bg text-sm font-medium text-brand-text focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all cursor-pointer"
             >
-              <option value="">All States / All India</option>
+              <option value="">{t("schemes.allStates")}</option>
               {availableStates.map((st) => (
                 <option key={st} value={st}>
                   {st}
@@ -92,7 +94,7 @@ export const SchemeFilterBar: React.FC<SchemeFilterBarProps> = ({
         <div className="flex flex-wrap items-center gap-1.5 overflow-x-auto pb-1 max-w-full">
           <span className="text-xs font-bold text-brand-text-secondary mr-1 flex items-center gap-1">
             <Filter className="w-3 h-3 text-brand-green" />
-            Category:
+            {t("schemes.category")}:
           </span>
           <button
             type="button"
@@ -103,7 +105,7 @@ export const SchemeFilterBar: React.FC<SchemeFilterBarProps> = ({
                 : "bg-brand-bg text-brand-text-secondary hover:bg-brand-border/60 hover:text-brand-text"
             }`}
           >
-            All
+            {t("schemes.all")}
           </button>
           {availableCategories.slice(0, 6).map((cat) => (
             <button
@@ -124,8 +126,10 @@ export const SchemeFilterBar: React.FC<SchemeFilterBarProps> = ({
         {/* Results Counter & Reset Button */}
         <div className="flex items-center gap-3 ml-auto text-xs text-brand-text-secondary">
           <span>
-            Showing <strong className="text-brand-text">{filteredCount}</strong> of{" "}
-            {totalSchemes} schemes
+            {t("schemes.showing", {
+              filtered: filteredCount.toString(),
+              total: totalSchemes.toString(),
+            })}
           </span>
 
           {hasActiveFilters && (
@@ -135,7 +139,7 @@ export const SchemeFilterBar: React.FC<SchemeFilterBarProps> = ({
               className="inline-flex items-center gap-1 text-xs font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 px-2.5 py-1 rounded-lg transition-colors"
             >
               <RotateCcw className="w-3 h-3" />
-              Reset
+              {t("schemes.reset")}
             </button>
           )}
         </div>

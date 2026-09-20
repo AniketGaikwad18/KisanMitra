@@ -11,6 +11,7 @@ import { Alert } from "@/components/ui/Alert";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { analyzeCropImage } from "@/lib/api";
 import { CropAnalysisResult } from "@/types";
+import { useTranslation } from "@/lib/i18n";
 import {
   Stethoscope,
   UploadCloud,
@@ -31,6 +32,7 @@ import {
 } from "lucide-react";
 
 export default function CropDoctorPage() {
+  const { t, formatNumber } = useTranslation();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [status, setStatus] = useState<
@@ -165,7 +167,7 @@ export default function CropDoctorPage() {
     switch (severity?.toLowerCase()) {
       case "healthy":
       case "good":
-        return <Badge variant="success" size="md">Healthy</Badge>;
+        return <Badge variant="success" size="md">{t("cropDoctor.healthy")}</Badge>;
       case "mild":
         return <Badge variant="brand" size="md">Mild Severity</Badge>;
       case "moderate":
@@ -180,17 +182,17 @@ export default function CropDoctorPage() {
   return (
     <AppShell>
       <PageHeader
-        title="AI Crop Doctor"
-        description="Upload a clear photo of your crop or leaf and get an AI-assisted health assessment."
+        title={t("cropDoctor.title")}
+        description={t("cropDoctor.subtitle")}
         icon={<Stethoscope className="w-6 h-6 text-brand-green" />}
-        badge={<Badge variant="brand">Gemini Vision AI</Badge>}
+        badge={<Badge variant="brand">{t("nav.aiVisionBadge")}</Badge>}
       />
 
       {/* Best Results Tip Banner */}
       <div className="mb-6 p-3.5 rounded-xl bg-brand-green/10 border border-brand-green/20 flex items-center gap-3 text-xs sm:text-sm text-brand-text">
         <Info className="w-4 h-4 text-brand-green flex-shrink-0" />
         <span>
-          <strong>Tip for best results:</strong> Upload a clear, well-lit image showing the affected part of the leaf, stem, or fruit.
+          <strong>{t("common.trustNotice")}:</strong> {t("cropDoctor.uploadDesc")}
         </span>
       </div>
 
@@ -222,11 +224,11 @@ export default function CropDoctorPage() {
             </div>
 
             <h2 className="text-xl font-extrabold text-brand-text mb-2">
-              Upload your crop image
+              {t("cropDoctor.uploadTitle")}
             </h2>
 
             <p className="text-sm text-brand-text-secondary max-w-sm mx-auto mb-6 leading-relaxed">
-              Drag &amp; drop a leaf photo or click below to select from your device.
+              {t("cropDoctor.dragDrop")}
             </p>
 
             <Button
@@ -239,11 +241,11 @@ export default function CropDoctorPage() {
                 fileInputRef.current?.click();
               }}
             >
-              Choose Image
+              {t("cropDoctor.chooseImage")}
             </Button>
 
             <div className="mt-6 text-xs text-brand-text-secondary font-medium">
-              Supported formats: <span className="font-semibold text-brand-text">JPG • PNG • WEBP</span> (Max 10 MB)
+              {t("cropDoctor.supportedFormats")}
             </div>
           </Card>
         )}
@@ -267,13 +269,13 @@ export default function CropDoctorPage() {
                 <div>
                   <div className="flex items-center justify-between">
                     <Badge variant="brand" size="sm">
-                      Ready for Diagnosis
+                      {t("common.verified")}
                     </Badge>
                     <button
                       type="button"
                       onClick={handleRemoveImage}
                       className="text-brand-text-secondary hover:text-brand-danger p-1 rounded-lg transition-colors"
-                      title="Remove image"
+                      title={t("cropDoctor.removeImage")}
                     >
                       <X className="w-5 h-5" />
                     </button>
@@ -288,7 +290,7 @@ export default function CropDoctorPage() {
                 </div>
 
                 <div className="p-3 bg-brand-bg rounded-xl border border-brand-border/60 text-xs text-brand-text-secondary">
-                  Ready to analyze symptoms with AI plant pathology models.
+                  {t("cropDoctor.uploadDesc")}
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
@@ -299,7 +301,7 @@ export default function CropDoctorPage() {
                     onClick={handleAnalyze}
                     leftIcon={<Stethoscope className="w-5 h-5" />}
                   >
-                    🔍 Analyze Crop
+                    🔍 {t("cropDoctor.analyzeButton")}
                   </Button>
 
                   <Button
@@ -308,7 +310,7 @@ export default function CropDoctorPage() {
                     className="w-full sm:w-auto"
                     onClick={handleRemoveImage}
                   >
-                    Remove
+                    {t("cropDoctor.removeImage")}
                   </Button>
                 </div>
               </div>
@@ -327,11 +329,11 @@ export default function CropDoctorPage() {
             </div>
 
             <h3 className="text-xl font-extrabold text-brand-text mb-2">
-              🌱 Analyzing your crop...
+              🌱 {t("cropDoctor.analyzingButton")}
             </h3>
 
             <p className="text-sm text-brand-text-secondary max-w-md mx-auto mb-6 leading-relaxed">
-              Our AI is examining the leaf image for disease symptoms, pest marks, and nutrient deficiencies. This may take a few seconds.
+              {t("cropDoctor.analyzingMessage")}
             </p>
 
             <div className="max-w-xs mx-auto bg-brand-border/50 h-2 rounded-full overflow-hidden">
@@ -343,8 +345,8 @@ export default function CropDoctorPage() {
         {/* 4. ERROR STATE */}
         {status === "error" && (
           <ErrorState
-            title="Analysis Could Not Proceed"
-            message={errorMessage || "Please try uploading a clear crop image again."}
+            title={t("common.error")}
+            message={errorMessage || t("cropDoctor.uploadDesc")}
             onRetry={handleRemoveImage}
           />
         )}
@@ -357,22 +359,21 @@ export default function CropDoctorPage() {
             </div>
 
             <h3 className="text-xl font-extrabold text-brand-text text-center mb-2">
-              We couldn&apos;t confidently identify a crop condition
+              {t("cropDoctor.resultTitle")}
             </h3>
 
             <p className="text-sm text-brand-text-secondary text-center max-w-lg mx-auto mb-6 leading-relaxed">
-              {result.explanation || "The image might be blurry, poorly lit, or not clearly showing recognizable plant foliage."}
+              {result.explanation || t("cropDoctor.uploadDesc")}
             </p>
 
             <div className="max-w-md mx-auto p-4 rounded-xl bg-brand-bg border border-brand-border mb-6 text-xs text-brand-text space-y-2">
               <div className="font-bold text-brand-text flex items-center gap-1.5">
                 <Lightbulb className="w-4 h-4 text-amber-600" />
-                <span>Try uploading:</span>
+                <span>{t("cropDoctor.preventionTitle")}:</span>
               </div>
               <ul className="list-disc pl-5 space-y-1 text-brand-text-secondary">
-                <li>A clearer, focused image of the affected plant</li>
-                <li>A closer photo highlighting specific leaf lesions or spots</li>
-                <li>An image taken in bright, natural daylight</li>
+                <li>{t("cropDoctor.uploadDesc")}</li>
+                <li>{t("cropDoctor.supportedFormats")}</li>
               </ul>
             </div>
 
@@ -383,7 +384,7 @@ export default function CropDoctorPage() {
                 leftIcon={<RotateCcw className="w-4 h-4" />}
                 className="font-bold"
               >
-                Upload Another Photo
+                {t("cropDoctor.scanAnother")}
               </Button>
             </div>
           </Card>
@@ -398,22 +399,22 @@ export default function CropDoctorPage() {
                 <div>
                   <div className="flex items-center gap-2 mb-2 flex-wrap">
                     <Badge variant="brand" size="sm" className="font-bold">
-                      AI-assisted prediction
+                      {t("common.disclaimer")}
                     </Badge>
                     {result.is_demo && (
                       <Badge variant="warning" size="sm" className="text-[10px] font-bold">
-                        Demo Analysis
+                        {t("common.demo")}
                       </Badge>
                     )}
                     {getSeverityBadge(result.severity)}
                   </div>
 
                   <div className="text-xs font-bold uppercase tracking-wider text-brand-text-secondary mt-1">
-                    Identified Crop: <span className="text-brand-text text-sm font-extrabold">{result.crop || "Unknown Plant"}</span>
+                    {t("cropDoctor.conditionIdentified")}: <span className="text-brand-text text-sm font-extrabold">{result.crop || "Unknown Plant"}</span>
                   </div>
 
                   <h2 className="text-2xl sm:text-3xl font-black text-brand-text mt-1">
-                    {result.possible_condition || "Condition Identified"}
+                    {result.possible_condition || t("cropDoctor.conditionIdentified")}
                   </h2>
                 </div>
 
@@ -421,10 +422,10 @@ export default function CropDoctorPage() {
                 {result.confidence !== null && result.confidence !== undefined && (
                   <div className="p-4 rounded-xl bg-brand-bg border border-brand-border text-center md:text-right flex-shrink-0">
                     <span className="text-[11px] font-bold uppercase tracking-wider text-brand-text-secondary block mb-1">
-                      AI Model Confidence
+                      {t("cropDoctor.confidence")}
                     </span>
                     <div className="text-2xl font-black text-brand-green">
-                      {result.confidence_text || `${Math.round(result.confidence * 100)}%`}
+                      {result.confidence_text || `${formatNumber(Math.round(result.confidence * 100))}%`}
                     </div>
                     {/* Confidence Visual Bar */}
                     <div className="w-36 bg-brand-border/60 h-2 rounded-full mt-2 overflow-hidden mx-auto md:ml-auto md:mr-0">
@@ -443,7 +444,7 @@ export default function CropDoctorPage() {
                   <div className="flex items-center gap-2 mb-3">
                     <Eye className="w-5 h-5 text-brand-green" />
                     <h3 className="text-base font-bold text-brand-text">
-                      What the AI observed
+                      {t("cropDoctor.observationsTitle")}
                     </h3>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -465,7 +466,7 @@ export default function CropDoctorPage() {
                 <div className="mt-6 p-4 rounded-xl bg-[#FAF8EE] border border-[#E9E3C8] text-xs sm:text-sm text-brand-text">
                   <div className="flex items-center gap-2 font-bold mb-1.5 text-[#7A610A]">
                     <Lightbulb className="w-4 h-4" />
-                    <span>What this may mean</span>
+                    <span>{t("cropDoctor.explanationTitle")}</span>
                   </div>
                   <p className="leading-relaxed text-brand-text-secondary">
                     {result.explanation}
@@ -482,7 +483,7 @@ export default function CropDoctorPage() {
                   <div className="flex items-center gap-2 mb-3 pb-2 border-b border-brand-border">
                     <Activity className="w-5 h-5 text-brand-green" />
                     <h3 className="text-base font-bold text-brand-text">
-                      What you can consider doing
+                      {t("cropDoctor.recommendationsTitle")}
                     </h3>
                   </div>
 
@@ -499,13 +500,13 @@ export default function CropDoctorPage() {
                     </ul>
                   ) : (
                     <p className="text-xs text-brand-text-secondary">
-                      Maintain regular crop monitoring and consultation.
+                      {t("cropDoctor.subtitle")}
                     </p>
                   )}
                 </div>
 
                 <div className="mt-4 pt-3 border-t border-brand-border/60 text-[11px] text-brand-text-secondary">
-                  General cultural advice. Avoid unverified chemical applications.
+                  {t("common.trustAdvisory")}: {t("common.curatedGovt")}
                 </div>
               </Card>
 
@@ -515,7 +516,7 @@ export default function CropDoctorPage() {
                   <div className="flex items-center gap-2 mb-3 pb-2 border-b border-brand-border">
                     <ShieldCheck className="w-5 h-5 text-brand-green" />
                     <h3 className="text-base font-bold text-brand-text">
-                      Prevention & Long-term Care
+                      {t("cropDoctor.preventionTitle")}
                     </h3>
                   </div>
 
@@ -530,13 +531,13 @@ export default function CropDoctorPage() {
                     </ul>
                   ) : (
                     <p className="text-xs text-brand-text-secondary">
-                      Practice standard crop rotation and clean field sanitation.
+                      {t("cropDoctor.preventionTitle")}
                     </p>
                   )}
                 </div>
 
                 <div className="mt-4 pt-3 border-t border-brand-border/60 text-[11px] text-brand-text-secondary">
-                  Protective measures to stop disease spread across seasons.
+                  {t("cropGuide.preventionTitle")}
                 </div>
               </Card>
             </div>
@@ -547,7 +548,7 @@ export default function CropDoctorPage() {
                 <FileCheck className="w-4 h-4 text-brand-green flex-shrink-0 mt-0.5" />
                 <div>
                   <strong className="text-brand-text block mb-1">
-                    Helpful variables for deeper diagnosis:
+                    {t("cropDoctor.explanationTitle")}:
                   </strong>
                   <div className="flex flex-wrap gap-2 mt-1">
                     {result.additional_information_needed.map((infoItem, i) => (
@@ -572,7 +573,7 @@ export default function CropDoctorPage() {
                 onClick={handleRemoveImage}
                 leftIcon={<RotateCcw className="w-4 h-4" />}
               >
-                Scan Another Crop Image
+                {t("cropDoctor.scanAnother")}
               </Button>
             </div>
 
@@ -580,9 +581,8 @@ export default function CropDoctorPage() {
             <div className="p-4 rounded-xl border border-brand-border bg-brand-surface flex items-start gap-3 shadow-subtle">
               <ShieldAlert className="w-5 h-5 text-brand-warning flex-shrink-0 mt-0.5" />
               <div className="text-xs text-brand-text-secondary leading-relaxed">
-                <strong className="text-brand-text block mb-0.5">AI-assisted assessment:</strong>
-                {result.disclaimer ||
-                  "This result is not a definitive agricultural diagnosis. Confirm important treatment decisions with a qualified agricultural professional or trusted agricultural authority."}
+                <strong className="text-brand-text block mb-0.5">{t("common.trustNotice")}:</strong>
+                {result.disclaimer || t("cropDoctor.disclaimer")}
               </div>
             </div>
           </div>

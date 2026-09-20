@@ -22,9 +22,11 @@ import { getSchemeById } from "@/lib/api";
 import { SchemeDetail } from "@/types";
 import { LoadingState } from "@/components/ui/LoadingState";
 import { ErrorState } from "@/components/ui/ErrorState";
+import { useTranslation } from "@/lib/i18n";
 import Link from "next/link";
 
 export default function SchemeDetailPage() {
+  const { t } = useTranslation();
   const params = useParams();
   const router = useRouter();
   const schemeId = params?.id as string;
@@ -58,16 +60,16 @@ export default function SchemeDetailPage() {
           className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-text-secondary hover:text-brand-green transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to All Schemes</span>
+          <span>{t("schemes.backToAll")}</span>
         </Link>
       </div>
 
       {isLoading ? (
-        <LoadingState message="Loading official scheme details..." />
+        <LoadingState message={t("schemes.loadingDetails")} />
       ) : error || !scheme ? (
         <ErrorState
-          title="Scheme Not Found"
-          message={error || "The requested government scheme could not be found."}
+          title={t("schemes.schemeNotFound")}
+          message={error || t("schemes.schemeNotFoundDesc")}
           onRetry={() => router.push("/schemes")}
         />
       ) : (
@@ -82,7 +84,7 @@ export default function SchemeDetailPage() {
               {scheme.last_verified && (
                 <span className="text-xs text-brand-text-muted flex items-center gap-1">
                   <Clock className="w-3.5 h-3.5 text-brand-green" />
-                  Verified: {scheme.last_verified}
+                  {t("schemes.verified", { date: scheme.last_verified })}
                 </span>
               )}
             </div>
@@ -100,7 +102,7 @@ export default function SchemeDetailPage() {
           <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-start gap-3">
             <ShieldAlert className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
             <div className="text-xs sm:text-sm text-amber-900 leading-relaxed font-medium">
-              <strong>Official Notice:</strong> Scheme information can change. Always verify eligibility and application details on the official government website before applying.
+              {t("schemes.officialNotice")}
             </div>
           </div>
 
@@ -108,7 +110,7 @@ export default function SchemeDetailPage() {
           <div className="bg-brand-surface rounded-3xl border border-brand-border p-6 sm:p-8 shadow-card">
             <h2 className="text-base font-bold uppercase tracking-wider text-brand-text-secondary mb-4 flex items-center gap-2">
               <Gift className="w-5 h-5 text-brand-green" />
-              Key Benefits & Financial Assistance
+              {t("schemes.keyBenefits")}
             </h2>
             <div className="bg-emerald-500/5 rounded-2xl border border-emerald-500/20 p-5 space-y-3">
               {scheme.benefits && scheme.benefits.length > 0 ? (
@@ -120,7 +122,7 @@ export default function SchemeDetailPage() {
                 ))
               ) : (
                 <p className="text-xs text-brand-text-muted italic">
-                  Information available on official portal.
+                  {t("schemes.infoOnPortal")}
                 </p>
               )}
             </div>
@@ -131,7 +133,7 @@ export default function SchemeDetailPage() {
             <div>
               <h2 className="text-base font-bold uppercase tracking-wider text-brand-text-secondary mb-3 flex items-center gap-2">
                 <Layers className="w-5 h-5 text-brand-green" />
-                Target Beneficiaries
+                {t("schemes.targetGroup")}
               </h2>
               <div className="flex flex-wrap gap-2">
                 {scheme.target_group.map((tg, idx) => (
@@ -148,7 +150,7 @@ export default function SchemeDetailPage() {
             <div>
               <h2 className="text-base font-bold uppercase tracking-wider text-brand-text-secondary mb-3 flex items-center gap-2">
                 <Info className="w-5 h-5 text-brand-green" />
-                Eligibility Criteria
+                {t("schemes.eligibilityCriteria")}
               </h2>
               <div className="bg-brand-bg/60 rounded-2xl border border-brand-border p-5 space-y-2.5">
                 {scheme.eligibility.map((item, idx) => (
@@ -165,7 +167,7 @@ export default function SchemeDetailPage() {
           <div className="bg-brand-surface rounded-3xl border border-brand-border p-6 sm:p-8 shadow-card">
             <h2 className="text-base font-bold uppercase tracking-wider text-brand-text-secondary mb-4 flex items-center gap-2">
               <FileText className="w-5 h-5 text-brand-green" />
-              Required Documentation
+              {t("schemes.requiredDocuments")}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {scheme.documents.map((doc, idx) => (
@@ -184,7 +186,7 @@ export default function SchemeDetailPage() {
           <div className="bg-brand-surface rounded-3xl border border-brand-border p-6 sm:p-8 shadow-card">
             <h2 className="text-base font-bold uppercase tracking-wider text-brand-text-secondary mb-4 flex items-center gap-2">
               <HelpCircle className="w-5 h-5 text-brand-green" />
-              How to Apply
+              {t("schemes.howToApply")}
             </h2>
             <div className="p-5 rounded-2xl bg-blue-500/5 border border-blue-500/20 text-sm sm:text-base text-brand-text leading-relaxed font-medium">
               {scheme.application_method}
@@ -196,10 +198,10 @@ export default function SchemeDetailPage() {
             <div>
               <div className="flex items-center gap-2 text-xs font-bold text-brand-green uppercase tracking-wider mb-1">
                 <Landmark className="w-4 h-4" />
-                <span>Authoritative Source: {scheme.source_name}</span>
+                <span>{t("schemes.authoritativeSource", { source: scheme.source_name })}</span>
               </div>
               <p className="text-xs text-brand-text-secondary">
-                Curated directly from verified Government portals. Do not rely on unverified third parties.
+                {t("schemes.curatedNotice")}
               </p>
             </div>
 
@@ -210,7 +212,7 @@ export default function SchemeDetailPage() {
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl bg-brand-green hover:bg-brand-green-dark text-white font-bold shadow-md hover:shadow-lg transition-all text-sm flex-shrink-0"
               >
-                <span>View Official Information</span>
+                <span>{t("schemes.viewOfficialInfo")}</span>
                 <ExternalLink className="w-4 h-4" />
               </a>
             )}

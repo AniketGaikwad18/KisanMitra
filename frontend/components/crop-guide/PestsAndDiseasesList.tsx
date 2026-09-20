@@ -3,16 +3,19 @@
 import React from "react";
 import { Bug, AlertCircle, ShieldAlert, CheckCircle2 } from "lucide-react";
 import { CropPestDisease } from "@/types";
+import { useTranslation } from "@/lib/i18n";
 
 interface PestsAndDiseasesListProps {
   items: CropPestDisease[];
 }
 
 export const PestsAndDiseasesList: React.FC<PestsAndDiseasesListProps> = ({ items }) => {
+  const { t } = useTranslation();
+
   if (!items || items.length === 0) {
     return (
       <div className="text-sm text-brand-text-muted italic p-4 bg-brand-bg rounded-xl border border-brand-border">
-        No major pest profiles recorded for this crop.
+        {t("cropGuide.noPests")}
       </div>
     );
   }
@@ -41,7 +44,7 @@ export const PestsAndDiseasesList: React.FC<PestsAndDiseasesListProps> = ({ item
             {item.symptoms && (
               <div className="mb-3 p-3 rounded-xl bg-amber-500/5 border border-amber-500/15">
                 <span className="text-xs font-bold text-amber-900 block mb-1">
-                  Identified Symptoms:
+                  {t("cropGuide.symptoms")}
                 </span>
                 <p className="text-xs text-brand-text leading-relaxed">{item.symptoms}</p>
               </div>
@@ -54,7 +57,7 @@ export const PestsAndDiseasesList: React.FC<PestsAndDiseasesListProps> = ({ item
                 <CheckCircle2 className="w-4 h-4 text-brand-green flex-shrink-0 mt-0.5" />
                 <div>
                   <span className="text-xs font-bold text-brand-green-dark block mb-0.5">
-                    Safe IPM Guidance:
+                    {t("cropGuide.ipmGuidance")}
                   </span>
                   <p className="text-xs text-brand-text-secondary leading-relaxed">
                     {item.management}

@@ -4,6 +4,7 @@ import React from "react";
 import { Search, RotateCcw, Filter, MapPin, Sprout, Store } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { MandiFilterOptions } from "@/types";
+import { useTranslation } from "@/lib/i18n";
 
 interface MandiFilterPanelProps {
   commodity: string;
@@ -64,6 +65,8 @@ export const MandiFilterPanel: React.FC<MandiFilterPanelProps> = ({
   onSearch,
   onReset,
 }) => {
+  const { t } = useTranslation();
+
   const commoditiesList = filterOptions?.commodities?.length
     ? filterOptions.commodities
     : DEFAULT_COMMODITIES;
@@ -104,10 +107,10 @@ export const MandiFilterPanel: React.FC<MandiFilterPanelProps> = ({
           </div>
           <div>
             <h3 className="text-sm font-extrabold text-brand-text">
-              Market Price Search & Filters
+              {t("mandi.filterTitle")}
             </h3>
             <p className="text-[11px] text-brand-text-secondary">
-              Select commodity, state, and district to query reported APMC arrivals
+              {t("mandi.subtitle")}
             </p>
           </div>
         </div>
@@ -119,7 +122,7 @@ export const MandiFilterPanel: React.FC<MandiFilterPanelProps> = ({
           <div>
             <label className="block text-xs font-bold text-brand-text mb-1 flex items-center gap-1">
               <Sprout className="w-3.5 h-3.5 text-brand-green" />
-              Crop / Commodity
+              {t("mandi.commodityLabel")}
             </label>
             <select
               value={commodity}
@@ -138,7 +141,7 @@ export const MandiFilterPanel: React.FC<MandiFilterPanelProps> = ({
           <div>
             <label className="block text-xs font-bold text-brand-text mb-1 flex items-center gap-1">
               <MapPin className="w-3.5 h-3.5 text-brand-green" />
-              State
+              {t("mandi.stateLabel")}
             </label>
             <select
               value={state}
@@ -157,14 +160,14 @@ export const MandiFilterPanel: React.FC<MandiFilterPanelProps> = ({
           <div>
             <label className="block text-xs font-bold text-brand-text mb-1 flex items-center gap-1">
               <MapPin className="w-3.5 h-3.5 text-brand-green" />
-              District
+              {t("mandi.districtLabel")}
             </label>
             <select
               value={district}
               onChange={(e) => setDistrict(e.target.value)}
               className="w-full px-3 py-2 rounded-xl border border-brand-border bg-white text-sm text-brand-text focus:outline-none focus:ring-2 focus:ring-brand-green/30 focus:border-brand-green transition-all"
             >
-              <option value="">All Districts in State</option>
+              <option value="">{t("mandi.allDistricts")}</option>
               {districtsList.map((d) => (
                 <option key={d} value={d}>
                   {d}
@@ -177,7 +180,7 @@ export const MandiFilterPanel: React.FC<MandiFilterPanelProps> = ({
           <div>
             <label className="block text-xs font-bold text-brand-text mb-1 flex items-center gap-1">
               <Store className="w-3.5 h-3.5 text-brand-green" />
-              Specific Mandi (Optional)
+              {t("mandi.marketLabel")}
             </label>
             <input
               type="text"
@@ -199,7 +202,7 @@ export const MandiFilterPanel: React.FC<MandiFilterPanelProps> = ({
             disabled={isLoading}
             leftIcon={<RotateCcw className="w-3.5 h-3.5" />}
           >
-            Reset Filters
+            {t("common.reset")}
           </Button>
 
           <Button
@@ -210,7 +213,7 @@ export const MandiFilterPanel: React.FC<MandiFilterPanelProps> = ({
             disabled={isLoading}
             leftIcon={<Search className="w-4 h-4" />}
           >
-            Check Prices
+            {t("mandi.checkPrices")}
           </Button>
         </div>
       </form>

@@ -18,10 +18,12 @@ import { MandiFilterPanel } from "@/components/mandi/MandiFilterPanel";
 import { MandiPriceCard } from "@/components/mandi/MandiPriceCard";
 import { MandiComparisonTable } from "@/components/mandi/MandiComparisonTable";
 import { SourceAttributionCard } from "@/components/mandi/SourceAttributionCard";
+import { useTranslation } from "@/lib/i18n";
 
 const STORAGE_KEY = "kisanmitra_mandi_filters";
 
 export default function MandiPage() {
+  const { t } = useTranslation();
   const [commodity, setCommodity] = useState<string>("Soybean");
   const [state, setState] = useState<string>("Maharashtra");
   const [district, setDistrict] = useState<string>("Pune");
@@ -120,10 +122,10 @@ export default function MandiPage() {
   return (
     <AppShell>
       <PageHeader
-        title="Mandi Prices"
-        description="Check reported market prices before making selling decisions."
+        title={t("mandi.title")}
+        description={t("mandi.subtitle")}
         icon={<Coins className="w-6 h-6 text-brand-green" />}
-        badge={<Badge variant="brand">APMC Market Intelligence</Badge>}
+        badge={<Badge variant="brand">{t("nav.categoryMarketRates")}</Badge>}
       />
 
       <div className="max-w-5xl mx-auto space-y-6 pb-12">
@@ -146,15 +148,15 @@ export default function MandiPage() {
         {/* 2. Loading State */}
         {isLoading && !priceData && (
           <LoadingState
-            message="Checking market prices..."
-            description={`Retrieving APMC market arrival reports for ${commodity} in ${district || state}...`}
+            message={t("common.loading")}
+            description={t("mandi.subtitle")}
           />
         )}
 
         {/* 3. Error State */}
         {error && !priceData && (
           <ErrorState
-            title="Market Data Temporarily Unavailable"
+            title={t("mandi.statusUnavailable")}
             message={error}
             onRetry={() => fetchPrices(commodity, state, district, market)}
           />
@@ -186,12 +188,10 @@ export default function MandiPage() {
                   <Store className="w-6 h-6" />
                 </div>
                 <h3 className="text-base font-bold text-brand-text">
-                  No Market Records Found
+                  {t("mandi.statusUnavailable")}
                 </h3>
                 <p className="text-xs text-brand-text-secondary max-w-md mx-auto">
-                  No arrival records were reported for <strong>{commodity}</strong> in{" "}
-                  <strong>{district ? `${district}, ` : ""}{state}</strong> on recent trading dates.
-                  Try searching for a neighboring district or resetting filters.
+                  {t("mandi.disclaimer")}
                 </p>
               </div>
             )}

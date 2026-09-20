@@ -2,6 +2,7 @@ import React from "react";
 import { Loader2, Sprout } from "lucide-react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { useTranslation } from "@/lib/i18n";
 
 export interface LoadingStateProps {
   message?: string;
@@ -10,10 +11,15 @@ export interface LoadingStateProps {
 }
 
 export const LoadingState: React.FC<LoadingStateProps> = ({
-  message = "Loading farm information...",
-  description = "Gathering agricultural data and recommendations",
+  message,
+  description,
   className,
 }) => {
+  const { t } = useTranslation();
+
+  const displayMessage = message || t("common.loading");
+  const displayDescription = description;
+
   return (
     <div
       className={twMerge(
@@ -31,10 +37,10 @@ export const LoadingState: React.FC<LoadingStateProps> = ({
           <Loader2 className="w-4 h-4 animate-spin text-brand-green" />
         </div>
       </div>
-      <h4 className="text-base font-bold text-brand-text mb-1">{message}</h4>
-      {description && (
+      <h4 className="text-base font-bold text-brand-text mb-1">{displayMessage}</h4>
+      {displayDescription && (
         <p className="text-xs sm:text-sm text-brand-text-secondary max-w-sm leading-relaxed">
-          {description}
+          {displayDescription}
         </p>
       )}
     </div>

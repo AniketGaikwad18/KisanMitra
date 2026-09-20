@@ -9,14 +9,17 @@ import { DashboardQuickActions } from "@/components/dashboard/DashboardQuickActi
 import { CropOverviewCard } from "@/components/dashboard/CropOverviewCard";
 import { FarmInsights } from "@/components/dashboard/FarmInsights";
 import { SystemHealthIndicator } from "@/components/dashboard/SystemHealthIndicator";
+import { useTranslation } from "@/lib/i18n";
 
 export default function DashboardPage() {
+  const { t } = useTranslation();
+
   return (
     <AppShell>
       {/* Top Health Status Bar */}
       <div className="mb-4 flex items-center justify-between">
         <div className="text-xs font-bold uppercase tracking-wider text-brand-text-secondary">
-          Farmer Overview
+          {t("dashboard.overview")}
         </div>
         <SystemHealthIndicator />
       </div>

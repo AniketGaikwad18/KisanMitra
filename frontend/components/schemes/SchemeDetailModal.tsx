@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { SchemeDetail } from "@/types";
+import { useTranslation } from "@/lib/i18n";
 
 interface SchemeDetailModalProps {
   scheme: SchemeDetail | null;
@@ -29,6 +30,8 @@ export const SchemeDetailModal: React.FC<SchemeDetailModalProps> = ({
   isOpen,
   onClose,
 }) => {
+  const { t } = useTranslation();
+
   // Handle ESC key press
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -75,7 +78,7 @@ export const SchemeDetailModal: React.FC<SchemeDetailModalProps> = ({
               {scheme.last_verified && (
                 <span className="text-[11px] text-brand-text-muted flex items-center gap-1">
                   <Clock className="w-3 h-3 text-brand-green" />
-                  Verified: {scheme.last_verified}
+                  {t("schemes.verified", { date: scheme.last_verified })}
                 </span>
               )}
             </div>
@@ -91,7 +94,7 @@ export const SchemeDetailModal: React.FC<SchemeDetailModalProps> = ({
             type="button"
             onClick={onClose}
             className="p-2 rounded-xl text-brand-text-secondary hover:text-brand-text hover:bg-brand-border/40 focus:outline-none focus:ring-2 focus:ring-brand-green transition-colors"
-            aria-label="Close modal"
+            aria-label={t("common.close")}
           >
             <X className="w-5 h-5" />
           </button>
@@ -103,7 +106,7 @@ export const SchemeDetailModal: React.FC<SchemeDetailModalProps> = ({
           <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-start gap-3">
             <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
             <div className="text-xs text-amber-900 leading-relaxed font-medium">
-              <strong>Official Notice:</strong> Scheme information can change. Always verify eligibility and application details on the official government website before applying.
+              {t("schemes.officialNotice")}
             </div>
           </div>
 
@@ -111,7 +114,7 @@ export const SchemeDetailModal: React.FC<SchemeDetailModalProps> = ({
           <div>
             <h3 className="text-sm font-bold uppercase tracking-wider text-brand-text-secondary mb-2 flex items-center gap-2">
               <Info className="w-4 h-4 text-brand-green" />
-              About the Scheme
+              {t("schemes.aboutScheme")}
             </h3>
             <p className="text-sm sm:text-base text-brand-text leading-relaxed bg-brand-bg/40 p-4 rounded-xl border border-brand-border/60">
               {scheme.short_description}
@@ -123,7 +126,7 @@ export const SchemeDetailModal: React.FC<SchemeDetailModalProps> = ({
             <div>
               <h3 className="text-sm font-bold uppercase tracking-wider text-brand-text-secondary mb-2 flex items-center gap-2">
                 <Layers className="w-4 h-4 text-brand-green" />
-                Target Beneficiaries
+                {t("schemes.targetGroup")}
               </h3>
               <div className="flex flex-wrap gap-2">
                 {scheme.target_group.map((tg, idx) => (
@@ -142,7 +145,7 @@ export const SchemeDetailModal: React.FC<SchemeDetailModalProps> = ({
           <div>
             <h3 className="text-sm font-bold uppercase tracking-wider text-brand-text-secondary mb-2.5 flex items-center gap-2">
               <Gift className="w-4 h-4 text-brand-green" />
-              Key Benefits & Assistance
+              {t("schemes.keyBenefits")}
             </h3>
             <div className="bg-emerald-500/5 rounded-xl border border-emerald-500/20 p-4 space-y-2">
               {scheme.benefits && scheme.benefits.length > 0 ? (
@@ -154,7 +157,7 @@ export const SchemeDetailModal: React.FC<SchemeDetailModalProps> = ({
                 ))
               ) : (
                 <p className="text-xs text-brand-text-muted italic">
-                  Information available on the official portal.
+                  {t("schemes.infoOnPortal")}
                 </p>
               )}
             </div>
@@ -164,7 +167,7 @@ export const SchemeDetailModal: React.FC<SchemeDetailModalProps> = ({
           <div>
             <h3 className="text-sm font-bold uppercase tracking-wider text-brand-text-secondary mb-2.5 flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-brand-green" />
-              Who May Be Eligible
+              {t("schemes.whoMayBeEligible")}
             </h3>
             <div className="bg-brand-bg/60 rounded-xl border border-brand-border p-4 space-y-2">
               {scheme.eligibility && scheme.eligibility.length > 0 ? (
@@ -176,7 +179,7 @@ export const SchemeDetailModal: React.FC<SchemeDetailModalProps> = ({
                 ))
               ) : (
                 <p className="text-xs text-brand-text-muted italic">
-                  Eligibility guidelines available on official portal.
+                  {t("schemes.infoOnPortal")}
                 </p>
               )}
             </div>
@@ -186,7 +189,7 @@ export const SchemeDetailModal: React.FC<SchemeDetailModalProps> = ({
           <div>
             <h3 className="text-sm font-bold uppercase tracking-wider text-brand-text-secondary mb-2.5 flex items-center gap-2">
               <FileText className="w-4 h-4 text-brand-green" />
-              Required Documents
+              {t("schemes.requiredDocuments")}
             </h3>
             <div className="bg-brand-bg/60 rounded-xl border border-brand-border p-4">
               {scheme.documents && scheme.documents.length > 0 ? (
@@ -203,7 +206,7 @@ export const SchemeDetailModal: React.FC<SchemeDetailModalProps> = ({
                 </div>
               ) : (
                 <p className="text-xs text-brand-text-muted italic">
-                  Documents required as per official notification.
+                  {t("schemes.infoOnPortal")}
                 </p>
               )}
             </div>
@@ -213,7 +216,7 @@ export const SchemeDetailModal: React.FC<SchemeDetailModalProps> = ({
           <div>
             <h3 className="text-sm font-bold uppercase tracking-wider text-brand-text-secondary mb-2 flex items-center gap-2">
               <HelpCircle className="w-4 h-4 text-brand-green" />
-              How to Apply
+              {t("schemes.howToApply")}
             </h3>
             <div className="p-4 rounded-xl bg-blue-500/5 border border-blue-500/20 text-sm text-brand-text leading-relaxed">
               {scheme.application_method}
@@ -225,11 +228,11 @@ export const SchemeDetailModal: React.FC<SchemeDetailModalProps> = ({
             <div className="flex items-center gap-2">
               <Landmark className="w-4 h-4 text-brand-green" />
               <span>
-                Source: <strong className="text-brand-text">{scheme.source_name}</strong>
+                {t("mandi.source")}: <strong className="text-brand-text">{scheme.source_name}</strong>
               </span>
             </div>
             <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-brand-surface border border-brand-border">
-              Curated from official government sources
+              {t("schemes.curatedFromGovt")}
             </span>
           </div>
         </div>
@@ -241,7 +244,7 @@ export const SchemeDetailModal: React.FC<SchemeDetailModalProps> = ({
             onClick={onClose}
             className="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-brand-border text-sm font-semibold text-brand-text hover:bg-brand-surface transition-colors"
           >
-            Close
+            {t("common.close")}
           </button>
 
           {scheme.official_url && (
@@ -251,7 +254,7 @@ export const SchemeDetailModal: React.FC<SchemeDetailModalProps> = ({
               rel="noopener noreferrer"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-brand-green hover:bg-brand-green-dark text-white text-sm font-bold shadow-md hover:shadow-lg transition-all"
             >
-              <span>View Official Information</span>
+              <span>{t("schemes.viewOfficialInfo")}</span>
               <ExternalLink className="w-4 h-4" />
             </a>
           )}

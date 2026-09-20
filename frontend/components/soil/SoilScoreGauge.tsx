@@ -1,6 +1,9 @@
+"use client";
+
 import React from "react";
 import { Badge } from "@/components/ui/Badge";
 import { Sparkles, CheckCircle2, AlertTriangle, AlertCircle } from "lucide-react";
+import { useTranslation } from "@/lib/i18n";
 
 export interface SoilScoreGaugeProps {
   score: number;
@@ -8,6 +11,8 @@ export interface SoilScoreGaugeProps {
 }
 
 export const SoilScoreGauge: React.FC<SoilScoreGaugeProps> = ({ score, rating }) => {
+  const { t, formatNumber } = useTranslation();
+
   const getRatingTheme = (scoreVal: number) => {
     if (scoreVal < 40) {
       return {
@@ -57,7 +62,7 @@ export const SoilScoreGauge: React.FC<SoilScoreGaugeProps> = ({ score, rating })
       <div className="flex items-center gap-5">
         <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-white border border-brand-border flex flex-col items-center justify-center shadow-subtle flex-shrink-0">
           <span className={`text-3xl sm:text-4xl font-black ${theme.textColor} tracking-tight leading-none`}>
-            {score}
+            {formatNumber(score)}
           </span>
           <span className="text-[11px] font-bold text-brand-text-secondary mt-1">
             / 100
@@ -67,7 +72,7 @@ export const SoilScoreGauge: React.FC<SoilScoreGaugeProps> = ({ score, rating })
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xs font-bold uppercase tracking-wider text-brand-text-secondary">
-              Advisory Soil Health Score
+              {t("soil.scoreTitle")}
             </span>
             <Badge variant={theme.badgeVariant} size="sm" className="font-bold">
               {rating}
@@ -75,11 +80,11 @@ export const SoilScoreGauge: React.FC<SoilScoreGaugeProps> = ({ score, rating })
           </div>
 
           <h3 className="text-xl sm:text-2xl font-extrabold text-brand-text">
-            Overall Fertility Index
+            {t("soil.scoreTitle")}
           </h3>
 
           <p className="text-xs sm:text-sm text-brand-text-secondary mt-0.5 max-w-sm">
-            Composite evaluation of pH balance and balanced N, P, K nutrient availability.
+            {t("soil.scoreSub")}
           </p>
         </div>
       </div>
@@ -87,8 +92,8 @@ export const SoilScoreGauge: React.FC<SoilScoreGaugeProps> = ({ score, rating })
       {/* Right Progress Bar & Legend */}
       <div className="w-full md:w-72 flex-shrink-0 space-y-2">
         <div className="flex justify-between text-xs font-semibold text-brand-text">
-          <span>Soil Condition</span>
-          <span className={theme.textColor}>{rating} ({score}%)</span>
+          <span>{t("dashboard.cropHealthStatus")}</span>
+          <span className={theme.textColor}>{rating} ({formatNumber(score)}%)</span>
         </div>
 
         {/* Visual Progress Bar */}
@@ -101,10 +106,10 @@ export const SoilScoreGauge: React.FC<SoilScoreGaugeProps> = ({ score, rating })
 
         {/* Rating Bands Guide */}
         <div className="flex justify-between text-[10px] text-brand-text-secondary px-0.5 pt-0.5">
-          <span className="text-red-600">0–39 Needs Attn</span>
-          <span className="text-amber-600">40–59 Fair</span>
-          <span className="text-emerald-600">60–79 Good</span>
-          <span className="text-green-800 font-semibold">80+ Very Good</span>
+          <span className="text-red-600">0–39 {t("soil.ratingNeedsAttention")}</span>
+          <span className="text-amber-600">40–59 {t("soil.ratingFair")}</span>
+          <span className="text-emerald-600">60–79 {t("soil.ratingGood")}</span>
+          <span className="text-green-800 font-semibold">80+ {t("soil.ratingVeryGood")}</span>
         </div>
       </div>
     </div>
