@@ -8,6 +8,11 @@ import {
   MandiQuery,
   MandiPriceResponse,
   MandiFilterOptions,
+  SchemeResponse,
+  SchemeDetail,
+  SchemeFilterMeta,
+  CropGuideResponse,
+  CropListResponse,
 } from "@/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -212,6 +217,85 @@ export async function getMandiFilters(): Promise<ApiResponse<MandiFilterOptions>
   return fetchApi<MandiFilterOptions>("/api/mandi/filters");
 }
 
+/**
+ * Fetch verified government agricultural schemes
+ */
+export async function getSchemes(params?: {
+  category?: string;
+  state?: string;
+  search?: string;
+}): Promise<ApiResponse<SchemeResponse>> {
+  const queryParts: string[] = [];
+  if (params?.category) {
+    queryParts.push(`category=${encodeURIComponent(params.category)}`);
+  }
+  if (params?.state) {
+    queryParts.push(`state=${encodeURIComponent(params.state)}`);
+  }
+  if (params?.search) {
+    queryParts.push(`search=${encodeURIComponent(params.search)}`);
+  }
+
+  const query = queryParts.length > 0 ? `?${queryParts.join("&")}` : "";
+  return fetchApi<SchemeResponse>(`/api/schemes${query}`);
+}
+
+/**
+ * Fetch scheme metadata filters (categories & states)
+ */
+export async function getSchemeFilters(): Promise<ApiResponse<SchemeFilterMeta>> {
+  return fetchApi<SchemeFilterMeta>("/api/schemes/meta/filters");
+}
+
+/**
+ * Fetch detailed scheme info by ID
+ */
+export async function getSchemeById(
+  id: string
+): Promise<ApiResponse<SchemeDetail>> {
+  return fetchApi<SchemeDetail>(`/api/schemes/${encodeURIComponent(id)}`);
+}
+
+/**
+ * Fetch list of all supported crop profiles
+ */
+export async function getCropGuideList(): Promise<ApiResponse<CropListResponse>> {
+  return fetchApi<CropListResponse>("/api/crop-guide/crops");
+}
+
+/**
+ * Fetch comprehensive agronomic crop guide
+ */
+export async function getCropGuide(params?: {
+  crop?: string;
+  location?: string;
+}): Promise<ApiResponse<CropGuideResponse>> {
+  const queryParts: string[] = [];
+  if (params?.crop) {
+    queryParts.push(`crop=${encodeURIComponent(params.crop)}`);
+  }
+  if (params?.location) {
+    queryParts.push(`location=${encodeURIComponent(params.location)}`);
+  }
+
+  const query = queryParts.length > 0 ? `?${queryParts.join("&")}` : "";
+  return fetchApi<CropGuideResponse>(`/api/crop-guide${query}`);
+}
+
+/**
+ * Fetch crop guide by crop slug ID
+ */
+export async function getCropGuideById(
+  id: string,
+  location?: string
+): Promise<ApiResponse<CropGuideResponse>> {
+  const query = location ? `?location=${encodeURIComponent(location)}` : "";
+  return fetchApi<CropGuideResponse>(
+    `/api/crop-guide/${encodeURIComponent(id)}${query}`
+  );
+}
+
 export { API_BASE_URL };
+
 
 

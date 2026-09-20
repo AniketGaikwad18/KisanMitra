@@ -6,6 +6,8 @@ from app.api.crop import router as crop_router
 from app.api.soil import router as soil_router
 from app.api.weather import router as weather_router
 from app.api.mandi import router as mandi_router
+from app.api.schemes import router as schemes_router
+from app.api.crop_guide import router as crop_guide_router
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -30,6 +32,8 @@ app.include_router(crop_router, prefix="/api", tags=["AI Crop Doctor"])
 app.include_router(soil_router, prefix="/api", tags=["Soil Health Intelligence"])
 app.include_router(weather_router, prefix="/api", tags=["Weather Intelligence"])
 app.include_router(mandi_router, prefix="/api", tags=["Mandi Price Intelligence"])
+app.include_router(schemes_router, prefix="/api", tags=["Government Schemes"])
+app.include_router(crop_guide_router, prefix="/api", tags=["Location-Based Crop Guide"])
 
 @app.get("/", tags=["Root"])
 async def root():
@@ -46,9 +50,13 @@ async def root():
             "weather": "/api/weather [GET]",
             "weather_search": "/api/weather/search [GET]",
             "mandi_prices": "/api/mandi/prices [GET]",
-            "mandi_filters": "/api/mandi/filters [GET]"
+            "mandi_filters": "/api/mandi/filters [GET]",
+            "schemes": "/api/schemes [GET]",
+            "crop_guide": "/api/crop-guide [GET]",
+            "crop_guide_crops": "/api/crop-guide/crops [GET]"
         }
     }
+
 
 
 if __name__ == "__main__":

@@ -233,3 +233,111 @@ export interface FarmAlertItem {
   time: string;
   isDemo: boolean;
 }
+
+// Government Schemes Types
+export interface SchemeSummary {
+  id: string;
+  name: string;
+  short_description: string;
+  category: string;
+  state: string;
+  target_group: string[];
+  official_url: string;
+  source_name: string;
+  last_verified: string;
+}
+
+export interface SchemeDetail extends SchemeSummary {
+  eligibility: string[];
+  benefits: string[];
+  documents: string[];
+  application_method: string;
+  disclaimer?: string;
+}
+
+export interface SchemeResponse {
+  total: number;
+  categories: string[];
+  states: string[];
+  schemes: SchemeSummary[];
+}
+
+export interface SchemeFilterMeta {
+  categories: string[];
+  states: string[];
+}
+
+// Crop Guide Types
+export interface CropSoilInfo {
+  preferred_ph: string;
+  soil_type: string[];
+  drainage: string;
+}
+
+export interface CropSowingInfo {
+  general_window: string;
+  seed_rate: string;
+  spacing: string;
+  depth: string;
+  notes: string[];
+}
+
+export interface CropWaterInfo {
+  requirements: string;
+  critical_stages: string[];
+  irrigation_methods: string[];
+  notes: string[];
+}
+
+export interface CropNutritionInfo {
+  general_considerations: string[];
+  organic_practices: string[];
+}
+
+export interface CropPestDisease {
+  name: string;
+  type: "pest" | "disease" | "fungal" | string;
+  description?: string;
+  symptoms: string;
+  management: string;
+}
+
+export interface CropHarvestInfo {
+  maturity_signs: string;
+  general_guidance: string;
+  post_harvest: string;
+}
+
+export interface CropSummary {
+  id: string;
+  name: string;
+  scientific_name: string;
+  season: string;
+  duration_days: string;
+  preferred_ph: string;
+}
+
+export interface CropGuideResponse {
+  id: string;
+  name: string;
+  scientific_name: string;
+  season: string;
+  duration_days: string;
+  overview: string;
+  soil: CropSoilInfo;
+  sowing: CropSowingInfo;
+  water: CropWaterInfo;
+  nutrition: CropNutritionInfo;
+  pests_and_diseases: CropPestDisease[];
+  prevention: string[];
+  harvest: CropHarvestInfo;
+  sources: string[];
+  location_context?: string | null;
+  advisory_notice: string;
+}
+
+export interface CropListResponse {
+  total: number;
+  crops: CropSummary[];
+}
+

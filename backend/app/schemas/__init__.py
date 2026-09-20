@@ -26,11 +26,27 @@ from app.schemas.mandi import (
     MandiPriceResponse,
     MandiFilterOptions,
 )
+from app.schemas.scheme import (
+    SchemeSummary,
+    SchemeDetail,
+    SchemeResponse,
+    SchemeFilterMeta,
+)
+from app.schemas.crop_guide import (
+    CropSoilInfo,
+    CropSowingInfo,
+    CropWaterInfo,
+    CropNutritionInfo,
+    CropPestDisease,
+    CropHarvestInfo,
+    CropSummary,
+    CropGuideResponse,
+    CropListResponse,
+)
 
 __all__ = [
     "HealthResponse",
     "CropAnalysisResponse",
-
     "SoilAnalysisRequest",
     "SoilAnalysisResponse",
     "SoilParameters",
@@ -50,4 +66,18 @@ __all__ = [
     "MandiSummary",
     "MandiPriceResponse",
     "MandiFilterOptions",
+    "SchemeSummary",
+    "SchemeDetail",
+    "SchemeResponse",
+    "SchemeFilterMeta",
+    "CropSoilInfo",
+    "CropSowingInfo",
+    "CropWaterInfo",
+    "CropNutritionInfo",
+    "CropPestDisease",
+    "CropHarvestInfo",
+    "CropSummary",
+    "CropGuideResponse",
+    "CropListResponse",
 ]
+

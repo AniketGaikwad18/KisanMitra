@@ -5,6 +5,8 @@ import {
   FlaskConical,
   CloudSun,
   Coins,
+  Compass,
+  Landmark,
   ArrowRight,
 } from "lucide-react";
 
@@ -15,28 +17,36 @@ export const DashboardQuickActions: React.FC = () => {
       subtitle: "AI leaf photo diagnosis",
       href: "/crop-doctor",
       icon: <Stethoscope className="w-6 h-6 text-brand-green" />,
-      accentColor: "hover:border-brand-green group-hover:bg-brand-yellow/30",
     },
     {
       label: "Analyze Soil",
       subtitle: "NPK & nutrient test",
       href: "/soil",
       icon: <FlaskConical className="w-6 h-6 text-brand-green" />,
-      accentColor: "hover:border-brand-green group-hover:bg-brand-yellow/30",
     },
     {
       label: "Check Weather",
       subtitle: "Forecast & spray advisory",
       href: "/weather",
       icon: <CloudSun className="w-6 h-6 text-brand-green" />,
-      accentColor: "hover:border-brand-green group-hover:bg-brand-yellow/30",
     },
     {
       label: "Check Mandi",
       subtitle: "Live APMC market rates",
       href: "/mandi",
       icon: <Coins className="w-6 h-6 text-brand-green" />,
-      accentColor: "hover:border-brand-green group-hover:bg-brand-yellow/30",
+    },
+    {
+      label: "Crop Guide",
+      subtitle: "Agronomic decision support",
+      href: "/crop-guide",
+      icon: <Compass className="w-6 h-6 text-brand-green" />,
+    },
+    {
+      label: "Govt Schemes",
+      subtitle: "Verified subsidies & loans",
+      href: "/schemes",
+      icon: <Landmark className="w-6 h-6 text-brand-green" />,
     },
   ];
 
@@ -51,7 +61,7 @@ export const DashboardQuickActions: React.FC = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
         {actions.map((act) => (
           <Link key={act.label} href={act.href} className="block group">
             <div className="h-full p-4 sm:p-5 rounded-2xl border border-brand-border bg-brand-surface hover:border-brand-green/50 hover:shadow-card hover:-translate-y-0.5 active:scale-[0.99] transition-all flex flex-col justify-between">

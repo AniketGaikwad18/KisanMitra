@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Stethoscope, FlaskConical, CloudSun, Coins } from "lucide-react";
+import { Stethoscope, FlaskConical, CloudSun, Coins, Compass, Landmark } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 export const QuickActions: React.FC = () => {
@@ -33,10 +33,24 @@ export const QuickActions: React.FC = () => {
       description: "Market price discovery",
       variant: "outline" as const,
     },
+    {
+      label: "Crop Guide",
+      href: "/crop-guide",
+      icon: <Compass className="w-5 h-5 text-brand-green" />,
+      description: "Agronomic advisories",
+      variant: "outline" as const,
+    },
+    {
+      label: "Govt Schemes",
+      href: "/schemes",
+      icon: <Landmark className="w-5 h-5 text-brand-green" />,
+      description: "Subsidies & welfare",
+      variant: "outline" as const,
+    },
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
       {actions.map((action) => (
         <Link key={action.label} href={action.href} className="block group">
           <div className="h-full p-4 rounded-xl border border-brand-border bg-brand-surface hover:border-brand-green/50 hover:shadow-card hover:-translate-y-0.5 transition-all flex flex-col justify-between">

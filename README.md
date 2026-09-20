@@ -207,6 +207,79 @@ KisanMitra presents neutral statistical summaries (e.g. *"Among the returned rec
 
 ---
 
+## 🏛️ Government Schemes Module Details
+
+### What It Does
+The Government Schemes module connects farmers with official Central and State agricultural support programs without fake application workflows or invented criteria. It provides a searchable, category-filtered, and state-specific directory containing:
+* **Official Scheme Name & Ministry Source**
+* **Target Beneficiaries & Focus Areas**
+* **Detailed Eligibility Guidelines**
+* **Specific Financial & In-Kind Benefits**
+* **Required Documentation Checklist**
+* **Legitimate Application Procedure**
+* **Verified Official Portal Link** (Primary CTA opening the genuine government portal in a secure new tab)
+* **Last Verification Date & Trust Advisory**
+
+### Official Data Source & Verification Strategy
+* **Authoritative Portals:** Ministry of Agriculture & Farmers Welfare, PM-KISAN Portal (`pmkisan.gov.in`), PMFBY Portal (`pmfby.gov.in`), myScheme (`myscheme.gov.in`), and State Agriculture Departments.
+* **Zero Fabrication Policy:** Benefit amounts, eligibility thresholds, and application links are never estimated or fabricated.
+* **Curated Knowledge Layer:** Stored in `backend/app/core/scheme_constants.py`, easily auditable and maintainable.
+
+### Backend API Endpoints
+1. **List & Filter Schemes:**
+   ```http
+   GET /api/schemes?category=Crop%20Insurance&state=Maharashtra&search=pmfby
+   ```
+2. **Get Scheme Details by ID:**
+   ```http
+   GET /api/schemes/{scheme_id}
+   ```
+3. **Get Available Filter Options:**
+   ```http
+   GET /api/schemes/meta/filters
+   ```
+
+### Trust Notice & Limitations
+> **Official Notice:** Scheme guidelines, budgetary outlays, and eligibility rules can change over time. Farmers are always advised to verify exact terms and apply exclusively through authorized government portals or Common Service Centers (CSC).
+
+---
+
+## 🌾 Crop Guide & Agronomic Decision Support Details
+
+### What It Does
+The Crop Guide serves as an educational decision-support handbook for 8 major Indian crops: **Soybean, Wheat, Rice, Cotton, Maize, Sugarcane, Tomato, and Onion**. It organizes scientific crop management practices into intuitive visual sections:
+1. **Crop Overview & Phenology:** Botanical name, duration, and primary growing season.
+2. **🌱 Soil & pH:** Optimal pH ranges, suitable soil textures, and drainage sensitivity.
+3. **🌾 Sowing & Planting:** Recommended seasonal window, seed rate, spacing, depth, and seed treatment culture.
+4. **💧 Water Management:** Water lifecycle budget, critical moisture stress stages, and irrigation layout methods.
+5. **🧪 Nutrition & Fertility:** Macronutrient timing, organic manures, bio-fertilizers, and green manuring.
+6. **🐛 Pests, Diseases & Safe IPM:** Visual symptoms and safe Integrated Pest Management practices.
+7. **🛡 Preventive Agronomy:** Sanitation, crop rotation, and cultural disease prevention.
+8. **🌾 Harvest & Post-Harvest:** Visual maturity indicators, harvesting methods, and moisture-controlled storage.
+
+### Agronomic Sources & Safety Policy
+* **Knowledge Sources:** Indian Council of Agricultural Research (ICAR), Indian Agricultural Research Institute (IARI), Central Institutes (CICR, CRRI, IIOR), and State Agricultural Universities (MPKV, PAU).
+* **Safety & Caution Guardrails:**
+  * No dangerous chemical mixing instructions.
+  * No unverified pesticide prescriptions or dosage claims.
+  * General educational guidance designed to support planning, emphasizing consultation with local Krishi Vigyan Kendras (KVK).
+
+### Backend API Endpoints
+1. **List Supported Crops:**
+   ```http
+   GET /api/crop-guide/crops
+   ```
+2. **Fetch Crop Guide by ID:**
+   ```http
+   GET /api/crop-guide/{crop_id}
+   ```
+3. **Fetch Crop Guide with Location Context:**
+   ```http
+   GET /api/crop-guide?crop=soybean&location=Pune,%20Maharashtra
+   ```
+
+---
+
 ## 🎨 Visual Identity & Design System
 
 * **Primary Brand Yellow:** `#F4D35E` — Key CTAs, active navigations, and indicators.
@@ -230,6 +303,8 @@ python -m uvicorn app.main:app --reload --port 8000
 
 Verify backend endpoints:
 * Health: [http://localhost:8000/api/health](http://localhost:8000/api/health)
+* Schemes: [http://localhost:8000/api/schemes](http://localhost:8000/api/schemes)
+* Crop Guide: [http://localhost:8000/api/crop-guide/crops](http://localhost:8000/api/crop-guide/crops)
 * Weather: [http://localhost:8000/api/weather](http://localhost:8000/api/weather)
 * Mandi Prices: [http://localhost:8000/api/mandi/prices](http://localhost:8000/api/mandi/prices)
 * Swagger UI Docs: [http://localhost:8000/docs](http://localhost:8000/docs)
@@ -252,9 +327,6 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 - [x] **Phase 4: Soil Health Intelligence (Deterministic ICAR Engine)**
 - [x] **Phase 5: Weather Intelligence & Farm Alerts**
 - [x] **Phase 6: Mandi & Real Market Price Discovery**
-- [ ] **Phase 7: Government Schemes Directory**
-- [ ] **Phase 8: Location-Based Crop Guide**
-- [ ] **Phase 9: Multilingual AI Farmer Assistant**
-- [ ] **Phase 10: Final Deployment & Demo Presentation**
-
-
+- [x] **Phase 7: Government Schemes & Location-Based Crop Guide**
+- [ ] **Phase 8: Multilingual AI Farmer Assistant**
+- [ ] **Phase 9: Final Deployment & Demo Presentation**
