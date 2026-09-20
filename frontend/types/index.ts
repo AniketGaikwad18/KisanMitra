@@ -341,3 +341,96 @@ export interface CropListResponse {
   crops: CropSummary[];
 }
 
+// ---------------------------------------------------------------------------
+// Contextual AI Farmer Assistant Types
+// ---------------------------------------------------------------------------
+
+export interface LocationContext {
+  name?: string;
+  state?: string;
+  district?: string;
+}
+
+export interface CropContextInfo {
+  name?: string;
+  stage?: string;
+  sowing_date?: string;
+}
+
+export interface SoilContextInfo {
+  score?: number;
+  rating?: string;
+  ph?: number;
+  nitrogen?: string;
+  phosphorus?: string;
+  potassium?: string;
+  organic_matter?: string | number;
+  observations?: string[];
+}
+
+export interface CropHealthContextInfo {
+  crop?: string;
+  condition?: string;
+  severity?: string;
+  confidence?: number;
+  observations?: string[];
+}
+
+export interface WeatherContextInfo {
+  temperature?: number;
+  condition?: string;
+  rain_probability?: number;
+  humidity?: number;
+  alerts?: string[];
+}
+
+export interface MarketContextInfo {
+  commodity?: string;
+  market?: string;
+  modal_price?: number;
+  is_demo?: boolean;
+}
+
+export interface FarmerContext {
+  language?: string;
+  location?: LocationContext;
+  crop?: CropContextInfo;
+  soil?: SoilContextInfo;
+  crop_health?: CropHealthContextInfo;
+  weather?: WeatherContextInfo;
+  market?: MarketContextInfo;
+}
+
+export interface AssistantChatRequest {
+  message: string;
+  context?: FarmerContext;
+  language?: string;
+}
+
+export interface SourceMetadata {
+  type: string;
+  label: string;
+  url?: string | null;
+  description?: string | null;
+}
+
+export interface AssistantResponse {
+  answer: string;
+  language: string;
+  confidence: "high" | "moderate" | "limited" | string;
+  context_used: string[];
+  sources: SourceMetadata[];
+  follow_up_question?: string | null;
+  disclaimer: string;
+  is_demo: boolean;
+}
+
+export interface ChatMessage {
+  id: string;
+  sender: "user" | "assistant";
+  text: string;
+  timestamp: string;
+  responseData?: AssistantResponse;
+  isError?: boolean;
+}
+

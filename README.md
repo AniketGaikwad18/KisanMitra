@@ -62,10 +62,10 @@ Where can I sell my crop? (Mandi Prices)
 | **🧪 Soil Health Intelligence** | Deterministic agronomic interpretation of pH, N, P, K, and Organic Matter based on standard ICAR benchmarks. | **Live & Operational** |
 | **🌦 Weather Intelligence** | Hyperlocal weather forecasts translated into farm activity recommendations, spray windows, and risk alerts via Open-Meteo. | **Live & Operational** |
 | **💰 Mandi Prices** | Official APMC market rates, price comparisons, and trend discovery from GOI OGD / AGMARKNET (zero fabricated prices). | **Live & Operational** |
-| **🏛️ Govt Schemes** | Curated Central/State agricultural schemes with eligibility, documents, and application links. | *Foundation Ready* |
-| **🌾 Location-Based Crop Guide** | Agro-climatic zone advice on sowing, pest mitigation, and harvest practices. | *Foundation Ready* |
-| **🌐 Multilingual Support** | Regional language interface & responses (English, Marathi, Hindi, Tamil, Telugu). | *Foundation Ready* |
-| **🤖 AI Farmer Assistant** | Context-aware conversational AI assistant tailored to farmer profile and field data. | *Foundation Ready* |
+| **🏛️ Govt Schemes** | Curated Central/State agricultural schemes with eligibility, documents, and application links. | **Live & Operational** |
+| **🌾 Location-Based Crop Guide** | Agro-climatic zone advice on sowing, pest mitigation, and harvest practices. | **Live & Operational** |
+| **🌐 Multilingual Support** | Regional language interface & responses (English, Marathi, Hindi, Tamil, Telugu). | **Live & Operational** |
+| **🤖 AI Farmer Assistant** | Context-aware conversational AI assistant tailored to farmer profile and field data. | **Live & Operational** |
 
 
 ---
@@ -353,6 +353,7 @@ python -m uvicorn app.main:app --reload --port 8000
 
 Verify backend endpoints:
 * Health: [http://localhost:8000/api/health](http://localhost:8000/api/health)
+* Assistant: [http://localhost:8000/api/assistant/chat](http://localhost:8000/api/assistant/chat)
 * Schemes: [http://localhost:8000/api/schemes](http://localhost:8000/api/schemes)
 * Crop Guide: [http://localhost:8000/api/crop-guide/crops](http://localhost:8000/api/crop-guide/crops)
 * Weather: [http://localhost:8000/api/weather](http://localhost:8000/api/weather)
@@ -388,5 +389,5 @@ cd backend && python -m pytest tests/
 - [x] **Phase 6: Mandi & Real Market Price Discovery**
 - [x] **Phase 7: Government Schemes & Location-Based Crop Guide**
 - [x] **Phase 8: Multilingual Farmer Experience (English, Marathi, Hindi, Tamil, Telugu)**
-- [ ] **Phase 9: AI Farmer Assistant (Context-Aware Conversational Agronomy)**
-- [ ] **Phase 10: Final Polish, Verification & Deployment**
+- [x] **Phase 9: AI Farmer Assistant (Context-Aware Conversational Agronomy)**
+- [x] **Phase 10: Final Integration, Demo Hardening & Submission Readiness**

@@ -43,6 +43,18 @@ from app.schemas.crop_guide import (
     CropGuideResponse,
     CropListResponse,
 )
+from app.schemas.assistant import (
+    LocationContext,
+    CropContextInfo,
+    SoilContextInfo,
+    CropHealthContextInfo,
+    WeatherContextInfo,
+    MarketContextInfo,
+    FarmerContext,
+    AssistantChatRequest,
+    SourceMetadata,
+    AssistantResponse,
+)
 
 __all__ = [
     "HealthResponse",
@@ -79,5 +91,15 @@ __all__ = [
     "CropSummary",
     "CropGuideResponse",
     "CropListResponse",
+    "LocationContext",
+    "CropContextInfo",
+    "SoilContextInfo",
+    "CropHealthContextInfo",
+    "WeatherContextInfo",
+    "MarketContextInfo",
+    "FarmerContext",
+    "AssistantChatRequest",
+    "SourceMetadata",
+    "AssistantResponse",
 ]
 

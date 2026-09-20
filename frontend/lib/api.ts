@@ -13,6 +13,8 @@ import {
   SchemeFilterMeta,
   CropGuideResponse,
   CropListResponse,
+  AssistantChatRequest,
+  AssistantResponse,
 } from "@/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -293,6 +295,18 @@ export async function getCropGuideById(
   return fetchApi<CropGuideResponse>(
     `/api/crop-guide/${encodeURIComponent(id)}${query}`
   );
+}
+
+/**
+ * Send message to Contextual AI Farmer Assistant
+ */
+export async function sendAssistantMessage(
+  payload: AssistantChatRequest
+): Promise<ApiResponse<AssistantResponse>> {
+  return fetchApi<AssistantResponse>("/api/assistant/chat", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
 }
 
 export { API_BASE_URL };

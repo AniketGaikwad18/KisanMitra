@@ -137,6 +137,8 @@ export default function CropDoctorPage() {
                 crop: response.data.crop || "Soybean",
                 condition: response.data.possible_condition || "Healthy",
                 severity: response.data.severity || "Good",
+                confidence: response.data.confidence,
+                observations: response.data.observations,
                 timestamp: new Date().toISOString(),
               })
             );

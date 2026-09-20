@@ -8,6 +8,7 @@ from app.api.weather import router as weather_router
 from app.api.mandi import router as mandi_router
 from app.api.schemes import router as schemes_router
 from app.api.crop_guide import router as crop_guide_router
+from app.api.assistant import router as assistant_router
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -34,6 +35,7 @@ app.include_router(weather_router, prefix="/api", tags=["Weather Intelligence"])
 app.include_router(mandi_router, prefix="/api", tags=["Mandi Price Intelligence"])
 app.include_router(schemes_router, prefix="/api", tags=["Government Schemes"])
 app.include_router(crop_guide_router, prefix="/api", tags=["Location-Based Crop Guide"])
+app.include_router(assistant_router, prefix="/api", tags=["Contextual AI Farmer Assistant"])
 
 @app.get("/", tags=["Root"])
 async def root():
@@ -53,7 +55,8 @@ async def root():
             "mandi_filters": "/api/mandi/filters [GET]",
             "schemes": "/api/schemes [GET]",
             "crop_guide": "/api/crop-guide [GET]",
-            "crop_guide_crops": "/api/crop-guide/crops [GET]"
+            "crop_guide_crops": "/api/crop-guide/crops [GET]",
+            "assistant_chat": "/api/assistant/chat [POST]"
         }
     }
 

@@ -149,6 +149,12 @@ export default function SoilHealthPage() {
             JSON.stringify({
               score: response.data.overall_score,
               rating: response.data.rating,
+              ph: payload.ph,
+              nitrogen: payload.nitrogen,
+              phosphorus: payload.phosphorus,
+              potassium: payload.potassium,
+              organic_matter: payload.organic_matter,
+              observations: response.data.observations || [],
               crop: payload.crop,
               timestamp: new Date().toISOString(),
             })
