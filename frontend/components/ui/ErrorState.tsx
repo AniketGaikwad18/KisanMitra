@@ -13,7 +13,7 @@ export interface ErrorStateProps {
 
 export const ErrorState: React.FC<ErrorStateProps> = ({
   title = "Something went wrong",
-  message = "We could not load the requested information. Please check your connection and try again.",
+  message = "Please check your connection and try again.",
   onRetry,
   className,
 }) => {
@@ -21,16 +21,16 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
     <div
       className={twMerge(
         clsx(
-          "flex flex-col items-center justify-center py-12 px-4 text-center rounded-xl bg-brand-surface border border-brand-danger/20",
+          "flex flex-col items-center justify-center py-12 px-6 text-center rounded-2xl bg-brand-surface border border-brand-danger/30 shadow-card",
           className
         )
       )}
     >
-      <div className="p-3.5 bg-brand-danger-light text-brand-danger rounded-full mb-3.5">
-        <AlertCircle className="w-8 h-8" />
+      <div className="w-14 h-14 rounded-2xl bg-brand-danger-light flex items-center justify-center text-brand-danger mb-4 border border-brand-danger/20">
+        <AlertCircle className="w-7 h-7" />
       </div>
-      <h4 className="text-lg font-semibold text-brand-text mb-1">{title}</h4>
-      <p className="text-sm text-brand-text-secondary max-w-md mb-5 leading-relaxed">
+      <h4 className="text-base font-bold text-brand-text mb-1">{title}</h4>
+      <p className="text-xs sm:text-sm text-brand-text-secondary max-w-md mb-6 leading-relaxed">
         {message}
       </p>
       {onRetry && (
@@ -38,7 +38,7 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
           variant="outline"
           size="sm"
           onClick={onRetry}
-          leftIcon={<RefreshCw className="w-4 h-4" />}
+          leftIcon={<RefreshCw className="w-4 h-4 text-brand-green" />}
         >
           Try Again
         </Button>

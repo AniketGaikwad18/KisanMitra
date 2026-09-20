@@ -14,6 +14,7 @@ import {
   BotMessageSquare,
   ChevronRight,
   Sparkles,
+  Sprout,
 } from "lucide-react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -49,13 +50,13 @@ export const navigationItems = [
     badge: undefined,
   },
   {
-    name: "Mandi Prices",
+    name: "Mandi",
     href: "/mandi",
     icon: Coins,
     badge: undefined,
   },
   {
-    name: "Govt Schemes",
+    name: "Schemes",
     href: "/schemes",
     icon: Landmark,
     badge: undefined,
@@ -79,7 +80,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   return (
     <>
-      {/* Mobile Backdrop */}
+      {/* Mobile Drawer Backdrop */}
       {isOpen && (
         <div
           onClick={onClose}
@@ -88,24 +89,24 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         />
       )}
 
-      {/* Sidebar Container */}
+      {/* Sidebar Navigation Panel */}
       <aside
         className={twMerge(
           clsx(
-            "fixed inset-y-0 left-0 z-40 w-64 md:w-72 bg-brand-surface border-r border-brand-border flex flex-col justify-between transition-transform duration-200 ease-in-out lg:static lg:translate-x-0",
+            "fixed inset-y-0 left-0 z-40 w-64 md:w-68 bg-brand-surface border-r border-brand-border flex flex-col justify-between transition-transform duration-200 ease-in-out lg:static lg:translate-x-0 shadow-subtle",
             isOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full"
           )
         )}
       >
         {/* Navigation list */}
-        <div className="flex-1 overflow-y-auto px-4 py-6">
-          <div className="mb-4 px-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-brand-text-secondary">
-              Main Menu
+        <div className="flex-1 overflow-y-auto px-3.5 py-5">
+          <div className="mb-3 px-3">
+            <span className="text-[11px] font-extrabold uppercase tracking-wider text-brand-text-secondary">
+              Navigation
             </span>
           </div>
 
-          <nav className="space-y-1.5">
+          <nav className="space-y-1">
             {navigationItems.map((item) => {
               const Icon = item.icon;
               const isActive =
@@ -119,7 +120,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                   onClick={onClose}
                   className={twMerge(
                     clsx(
-                      "group flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-medium transition-all duration-150",
+                      "group flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150",
                       isActive
                         ? "bg-brand-yellow text-brand-text font-bold shadow-sm border border-[#E2BF42]"
                         : "text-brand-text hover:bg-brand-bg hover:text-brand-green"
@@ -172,17 +173,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           </nav>
         </div>
 
-        {/* Sidebar Footer Info */}
-        <div className="p-4 border-t border-brand-border bg-brand-bg/60">
+        {/* Sidebar Footer Hackathon Tag */}
+        <div className="p-3.5 border-t border-brand-border bg-brand-bg/50">
           <div className="p-3 bg-brand-surface rounded-xl border border-brand-border/80">
             <div className="flex items-center gap-2 mb-1">
-              <Sparkles className="w-4 h-4 text-brand-green" />
+              <Sprout className="w-4 h-4 text-brand-green" />
               <span className="text-xs font-bold text-brand-text">
-                HACKDAY 1.0
+                KisanMitra Decision Suite
               </span>
             </div>
             <p className="text-[11px] text-brand-text-secondary leading-snug">
-              Theme: <span className="font-semibold text-brand-green">Tech for a Better Tomorrow</span>
+              Built for Indian Farmers • <span className="font-semibold text-brand-green">HACKDAY 1.0</span>
             </p>
           </div>
         </div>

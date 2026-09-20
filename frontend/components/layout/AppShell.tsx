@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Navbar } from "./Navbar";
 import { Sidebar } from "./Sidebar";
+import { BottomNav } from "./BottomNav";
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -24,10 +25,13 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
           onClose={() => setIsSidebarOpen(false)}
         />
 
-        <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+        <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 pb-24 lg:pb-8 overflow-y-auto">
           {children}
         </main>
       </div>
+
+      {/* Mobile Bottom Navigation Bar */}
+      <BottomNav />
     </div>
   );
 };
