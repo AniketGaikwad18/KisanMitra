@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.api.health import router as health_router
+from app.api.crop import router as crop_router
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -22,6 +23,7 @@ app.add_middleware(
 
 # Include API Routers
 app.include_router(health_router, prefix="/api", tags=["Health"])
+app.include_router(crop_router, prefix="/api", tags=["AI Crop Doctor"])
 
 @app.get("/", tags=["Root"])
 async def root():
@@ -30,7 +32,11 @@ async def root():
         "tagline": "Smarter Decisions. Healthier Farms.",
         "version": settings.VERSION,
         "docs": "/docs",
-        "health": "/api/health"
+        "health": "/api/health",
+        "endpoints": {
+            "health": "/api/health",
+            "crop_analyze": "/api/crop/analyze [POST]"
+        }
     }
 
 if __name__ == "__main__":

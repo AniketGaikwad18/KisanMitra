@@ -1,4 +1,4 @@
-import { HealthResponse } from "@/types";
+import { HealthResponse, CropAnalysisResult } from "@/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -12,7 +12,7 @@ export interface ApiResponse<T> {
 }
 
 /**
- * Generic fetch wrapper for KisanMitra API
+ * Generic fetch wrapper for JSON endpoints
  */
 export async function fetchApi<T>(
   endpoint: string,
@@ -32,10 +32,17 @@ export async function fetchApi<T>(
     const status = response.status;
 
     if (!response.ok) {
-      const errorBody = await response.text();
+      let errorMsg = `API request failed with status ${status}`;
+      try {
+        const errorJson = await response.json();
+        errorMsg = errorJson.detail || errorJson.error || errorMsg;
+      } catch {
+        const text = await response.text();
+        if (text) errorMsg = text;
+      }
       return {
         data: null,
-        error: errorBody || `API request failed with status ${status}`,
+        error: errorMsg,
         status,
       };
     }
@@ -49,7 +56,7 @@ export async function fetchApi<T>(
   } catch (err: any) {
     return {
       data: null,
-      error: err.message || "Network error or server unreachable",
+      error: err.message || "Network error or backend service unreachable",
       status: 0,
     };
   }
@@ -60,6 +67,57 @@ export async function fetchApi<T>(
  */
 export async function getBackendHealth(): Promise<ApiResponse<HealthResponse>> {
   return fetchApi<HealthResponse>("/api/health");
+}
+
+/**
+ * Upload and analyze crop image via Gemini Vision endpoint
+ */
+export async function analyzeCropImage(
+  file: File
+): Promise<ApiResponse<CropAnalysisResult>> {
+  const url = `${API_BASE_URL}/api/crop/analyze`;
+
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await fetch(url, {
+      method: "POST",
+      body: formData,
+      // Note: do NOT set Content-Type header manually so the browser sets the multipart boundary
+    });
+
+    const status = response.status;
+
+    if (!response.ok) {
+      let errorMsg = `Diagnosis request failed with status ${status}`;
+      try {
+        const errorJson = await response.json();
+        errorMsg = errorJson.detail || errorJson.error || errorMsg;
+      } catch {
+        const text = await response.text();
+        if (text) errorMsg = text;
+      }
+      return {
+        data: null,
+        error: errorMsg,
+        status,
+      };
+    }
+
+    const data: CropAnalysisResult = await response.json();
+    return {
+      data,
+      error: null,
+      status,
+    };
+  } catch (err: any) {
+    return {
+      data: null,
+      error: err.message || "Could not connect to the crop diagnosis service.",
+      status: 0,
+    };
+  }
 }
 
 export { API_BASE_URL };

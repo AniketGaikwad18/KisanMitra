@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   CloudSun,
@@ -13,6 +15,35 @@ import {
 import { Badge } from "@/components/ui/Badge";
 
 export const KeyMetricCards: React.FC = () => {
+  const [cropStatus, setCropStatus] = useState<{
+    crop: string;
+    condition: string;
+    severity: string;
+    isRecent: boolean;
+  }>({
+    crop: "Soybean",
+    condition: "Healthy",
+    severity: "Good",
+    isRecent: false,
+  });
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("kisanmitra_last_crop_check");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        setCropStatus({
+          crop: parsed.crop || "Soybean",
+          condition: parsed.condition || "Healthy",
+          severity: parsed.severity || "Good",
+          isRecent: true,
+        });
+      }
+    } catch {
+      // Ignore
+    }
+  }, []);
+
   return (
     <div className="mb-8">
       <div className="flex items-center justify-between mb-4">
@@ -27,7 +58,7 @@ export const KeyMetricCards: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* CARD 1: WEATHER (Distinct sky/sun tint) */}
+        {/* CARD 1: WEATHER */}
         <div className="bg-gradient-to-b from-[#FAFDF6] to-white rounded-2xl border border-brand-border p-5 shadow-card hover:border-brand-green/40 hover:shadow-elevated transition-all flex flex-col justify-between group">
           <div>
             <div className="flex items-center justify-between mb-3">
@@ -68,7 +99,7 @@ export const KeyMetricCards: React.FC = () => {
           </div>
         </div>
 
-        {/* CARD 2: SOIL HEALTH (Visual Progress Meter/Indicator) */}
+        {/* CARD 2: SOIL HEALTH */}
         <div className="bg-gradient-to-b from-[#FDFBF7] to-white rounded-2xl border border-brand-border p-5 shadow-card hover:border-brand-green/40 hover:shadow-elevated transition-all flex flex-col justify-between group">
           <div>
             <div className="flex items-center justify-between mb-3">
@@ -95,7 +126,7 @@ export const KeyMetricCards: React.FC = () => {
               </div>
             </div>
 
-            {/* Simple Visual Progress Bar */}
+            {/* Progress Bar */}
             <div className="mt-3">
               <div className="w-full bg-brand-border/60 h-2 rounded-full overflow-hidden">
                 <div
@@ -121,7 +152,7 @@ export const KeyMetricCards: React.FC = () => {
           </div>
         </div>
 
-        {/* CARD 3: CROP HEALTH */}
+        {/* CARD 3: CROP HEALTH (Dynamic AI Scan Sync) */}
         <div className="bg-gradient-to-b from-[#F5FBF3] to-white rounded-2xl border border-brand-border p-5 shadow-card hover:border-brand-green/40 hover:shadow-elevated transition-all flex flex-col justify-between group">
           <div>
             <div className="flex items-center justify-between mb-3">
@@ -134,17 +165,19 @@ export const KeyMetricCards: React.FC = () => {
             </div>
 
             <div className="space-y-1">
-              <div className="text-3xl font-black text-brand-green tracking-tight">
-                Healthy
+              <div className="text-2xl font-black text-brand-green tracking-tight truncate" title={cropStatus.condition}>
+                {cropStatus.condition}
               </div>
-              <div className="text-sm font-bold text-brand-text">
-                Soybean
+              <div className="text-sm font-bold text-brand-text truncate">
+                {cropStatus.crop}
               </div>
             </div>
 
             <div className="mt-3 pt-3 border-t border-brand-border/60 flex items-center justify-between text-xs text-brand-text-secondary">
               <span>Last checked</span>
-              <span className="font-bold text-brand-text">Today</span>
+              <span className="font-bold text-brand-text">
+                {cropStatus.isRecent ? "Recently scanned" : "Today"}
+              </span>
             </div>
           </div>
 
@@ -159,7 +192,7 @@ export const KeyMetricCards: React.FC = () => {
           </div>
         </div>
 
-        {/* CARD 4: MANDI (EXPLICIT DEMO DATA) */}
+        {/* CARD 4: MANDI */}
         <div className="bg-gradient-to-b from-[#FEFDF8] to-white rounded-2xl border border-brand-border p-5 shadow-card hover:border-brand-green/40 hover:shadow-elevated transition-all flex flex-col justify-between group relative overflow-hidden">
           <div>
             <div className="flex items-center justify-between mb-3">

@@ -3,6 +3,23 @@ export interface HealthResponse {
   service: string;
 }
 
+export interface CropAnalysisResult {
+  is_identified: boolean;
+  crop?: string | null;
+  possible_condition?: string | null;
+  confidence?: number | null;
+  confidence_text?: string | null;
+  severity?: "Healthy" | "Mild" | "Moderate" | "Severe" | "Unknown" | string;
+  observations: string[];
+  explanation: string;
+  recommended_actions: string[];
+  preventive_guidance: string[];
+  additional_information_needed: string[];
+  disclaimer: string;
+  is_demo: boolean;
+  error?: string | null;
+}
+
 export interface NavItem {
   name: string;
   href: string;
