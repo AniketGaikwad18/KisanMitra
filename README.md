@@ -60,12 +60,69 @@ Where can I sell my crop? (Mandi Prices)
 | :--- | :--- | :--- |
 | **🌱 AI Crop Doctor** | Computer vision-based disease detection from leaf photos with confidence scoring and remedies using Gemini 1.5 Flash. | **Live & Operational** |
 | **🧪 Soil Health Intelligence** | Deterministic agronomic interpretation of pH, N, P, K, and Organic Matter based on standard ICAR benchmarks. | **Live & Operational** |
-| **🌦 Weather Intelligence** | Hyperlocal weather forecasts translated into farm activity recommendations and spray windows. | *Foundation Ready* |
+| **🌦 Weather Intelligence** | Hyperlocal weather forecasts translated into farm activity recommendations, spray windows, and risk alerts via Open-Meteo. | **Live & Operational** |
 | **💰 Mandi Prices** | Official APMC market rates, price comparisons, and trend discovery (zero fabricated prices). | *Foundation Ready* |
 | **🏛️ Govt Schemes** | Curated Central/State agricultural schemes with eligibility, documents, and application links. | *Foundation Ready* |
 | **🌾 Location-Based Crop Guide** | Agro-climatic zone advice on sowing, pest mitigation, and harvest practices. | *Foundation Ready* |
 | **🌐 Multilingual Support** | Regional language interface & responses (English, Marathi, Hindi, Tamil, Telugu). | *Foundation Ready* |
 | **🤖 AI Farmer Assistant** | Context-aware conversational AI assistant tailored to farmer profile and field data. | *Foundation Ready* |
+
+---
+
+## 🌦 Weather Intelligence Module Details
+
+### What It Does
+The Weather Intelligence module bridges raw meteorological data with agricultural decision-making. Instead of merely displaying degrees Celsius and rain percentages, KisanMitra translates weather patterns into immediate farm guidance:
+* **Foliar Spray Suitability Windows:** Calculates whether current and upcoming wind speeds, rain probabilities, and humidity levels make pesticide/fertilizer spraying safe or susceptible to drift/wash-off.
+* **Smart Irrigation Advisories:** Recommends postponing or modifying irrigation schedules based on expected precipitation volume and soil water balance.
+* **Agricultural Risk Warnings:** Proactively alerts farmers to extreme heat stress, frost hazards, gale-force winds (crop lodging risk), and high canopy humidity (fungal disease incubation risk).
+* **7-Day Agricultural Forecast:** Multi-day planning horizon for planting, weeding, spraying, and harvesting.
+
+### Weather Provider & Architecture
+* **Provider:** Open-Meteo Forecast & Geocoding APIs (FastAPI backend acts as the sole external consumer; no direct third-party calls or exposed tokens on frontend).
+* **Location Model:** Supports latitude/longitude coordinate pairs with reverse/forward geocoding and standard Indian district presets (Pune, Nashik, Nagpur, Kolhapur, etc.).
+* **Default Location:** Pune, Maharashtra (`18.5204° N, 73.8567° E`).
+
+```text
+Frontend (Next.js)
+       ↓
+FastAPI Backend (GET /api/weather)
+       ↓
+weather_service.py
+       ↓
+weather_provider.py ───> Open-Meteo Forecast API
+       ↓
+weather_analysis_engine.py (Deterministic Agricultural Rules)
+       ↓
+Structured Farm Advisory Response
+```
+
+### Backend API Endpoints
+1. **Fetch Weather & Farm Outlook:**
+   ```http
+   GET /api/weather?latitude=18.5204&longitude=73.8567&location=Pune
+   ```
+2. **Search Farm Locations / Geocoding:**
+   ```http
+   GET /api/weather/search?q=Nashik
+   ```
+
+### Agricultural Intelligence Rules
+* **Spray Suitability:**
+  * `Favorable`: Wind speed $\le 15\text{ km/h}$, Rain probability $< 30\%$, and Humidity between $45\%–80\%$.
+  * `Caution`: Intermediate wind gusts or moderate humidity.
+  * `Unfavorable`: Wind speed $> 20\text{ km/h}$, Rain probability $\ge 50\%$, or rainfall $> 1\text{ mm}$.
+* **Irrigation Guidance:**
+  * Postpone irrigation when rain probability $\ge 60\%$ or expected rainfall $\ge 5\text{ mm}$.
+  * Increase hydration during dry spells when daytime temperatures exceed $35^\circ\text{C}$.
+* **Agricultural Alerts:**
+  * Heavy Rain Warning ($\ge 15\text{ mm}$ precipitation expected).
+  * Extreme Heat Warning ($\ge 40^\circ\text{C}$ daytime maximum).
+  * High Humidity / Fungal Risk ($\ge 82\%$ canopy humidity).
+  * Strong Wind / Crop Lodging Warning ($\ge 38\text{ km/h}$ gale winds).
+
+### ⚠️ Important Agricultural Disclaimer & Limitations
+> **Advisory Nature:** Weather forecasts and agricultural impact recommendations are guidance models designed to assist farm planning. Local field microclimates, soil moisture saturation, and crop growth stages should always be taken into account before critical field operations.
 
 ---
 
@@ -109,12 +166,6 @@ Content-Type: application/json
   * `60–79`: Good
   * `80–100`: Very Good
 
-### Future Soil-Report Extraction
-The frontend includes an upload zone supporting PDF, JPG, and PNG documents. Automated OCR document parsing and field extraction are designed to plug directly into this module in a future enhancement phase.
-
-### ⚠️ Important Advisory Notice & Limitations
-> **Advisory Assessment Only:** This module provides decision-support guidance based on standard ICAR Indian agricultural interpretation benchmarks. It is **not a certified soil testing laboratory report** and does not provide exact chemical prescription dosages. Actual nutrient requirements depend on soil texture, regional rainfall, target yield, and localized agricultural university recommendations.
-
 ---
 
 ## 🎨 Visual Identity & Design System
@@ -140,6 +191,7 @@ python -m uvicorn app.main:app --reload --port 8000
 
 Verify backend endpoints:
 * Health: [http://localhost:8000/api/health](http://localhost:8000/api/health)
+* Weather: [http://localhost:8000/api/weather](http://localhost:8000/api/weather)
 * Swagger UI Docs: [http://localhost:8000/docs](http://localhost:8000/docs)
 
 ### 2. Frontend Setup
@@ -158,9 +210,10 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 - [x] **Phase 2: UI/UX Refinement & Complete Farmer Dashboard**
 - [x] **Phase 3: AI Crop Doctor (Gemini 1.5 Flash Vision Integration)**
 - [x] **Phase 4: Soil Health Intelligence (Deterministic ICAR Engine)**
-- [ ] **Phase 5: Weather Intelligence & Farm Alerts**
+- [x] **Phase 5: Weather Intelligence & Farm Alerts**
 - [ ] **Phase 6: Mandi & Real Market Price Discovery**
 - [ ] **Phase 7: Government Schemes Directory**
 - [ ] **Phase 8: Location-Based Crop Guide**
 - [ ] **Phase 9: Multilingual AI Farmer Assistant**
 - [ ] **Phase 10: Final Deployment & Demo Presentation**
+

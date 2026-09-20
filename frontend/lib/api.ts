@@ -3,6 +3,8 @@ import {
   CropAnalysisResult,
   SoilAnalysisRequest,
   SoilAnalysisResponse,
+  WeatherResponse,
+  LocationSearchResult,
 } from "@/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -136,4 +138,42 @@ export async function analyzeSoil(
   });
 }
 
+/**
+ * Fetch agricultural weather intelligence and forecasts for a location
+ */
+export async function getWeather(params?: {
+  latitude?: number;
+  longitude?: number;
+  location?: string;
+}): Promise<ApiResponse<WeatherResponse>> {
+  const queryParts: string[] = [];
+  if (params?.latitude !== undefined) {
+    queryParts.push(`latitude=${encodeURIComponent(params.latitude)}`);
+  }
+  if (params?.longitude !== undefined) {
+    queryParts.push(`longitude=${encodeURIComponent(params.longitude)}`);
+  }
+  if (params?.location) {
+    queryParts.push(`location=${encodeURIComponent(params.location)}`);
+  }
+
+  const query = queryParts.length > 0 ? `?${queryParts.join("&")}` : "";
+  return fetchApi<WeatherResponse>(`/api/weather${query}`);
+}
+
+/**
+ * Search locations/cities for weather geocoding
+ */
+export async function searchWeatherLocations(
+  query: string
+): Promise<ApiResponse<LocationSearchResult[]>> {
+  if (!query || query.trim().length < 2) {
+    return { data: [], error: null, status: 200 };
+  }
+  return fetchApi<LocationSearchResult[]>(
+    `/api/weather/search?q=${encodeURIComponent(query.trim())}`
+  );
+}
+
 export { API_BASE_URL };
+

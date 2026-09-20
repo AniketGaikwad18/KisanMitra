@@ -8,6 +8,16 @@ from app.schemas.soil import (
     SoilParameterResult,
     CropContext,
 )
+from app.schemas.weather import (
+    WeatherLocation,
+    CurrentWeather,
+    TodayWeather,
+    ForecastDay,
+    AgriculturalAlert,
+    FarmOutlook,
+    WeatherResponse,
+    LocationSearchResult,
+)
 
 __all__ = [
     "HealthResponse",
@@ -17,4 +27,12 @@ __all__ = [
     "SoilParameters",
     "SoilParameterResult",
     "CropContext",
+    "WeatherLocation",
+    "CurrentWeather",
+    "TodayWeather",
+    "ForecastDay",
+    "AgriculturalAlert",
+    "FarmOutlook",
+    "WeatherResponse",
+    "LocationSearchResult",
 ]

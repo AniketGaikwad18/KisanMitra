@@ -66,6 +66,83 @@ export interface SoilAnalysisResponse {
   disclaimer: string;
 }
 
+// Weather Intelligence Types
+export interface WeatherLocation {
+  name: string;
+  region: string;
+  country: string;
+  latitude: number;
+  longitude: number;
+}
+
+export interface CurrentWeather {
+  temperature: number;
+  feels_like: number;
+  condition: string;
+  weather_code: number;
+  humidity: number;
+  wind_speed: number;
+  precipitation: number;
+  is_day: number;
+}
+
+export interface TodayWeather {
+  rain_probability: number;
+  rainfall: number;
+  min_temperature: number;
+  max_temperature: number;
+  uv_index_max?: number | null;
+  sunrise?: string | null;
+  sunset?: string | null;
+}
+
+export interface ForecastDay {
+  date: string;
+  day_name: string;
+  condition: string;
+  weather_code: number;
+  min_temperature: number;
+  max_temperature: number;
+  rain_probability: number;
+  rainfall: number;
+  wind_speed: number;
+}
+
+export interface AgriculturalAlert {
+  type: "rain" | "temperature" | "wind" | "humidity" | "spray_window" | "irrigation" | string;
+  severity: "info" | "low" | "moderate" | "high" | string;
+  title: string;
+  message: string;
+  timestamp: string;
+}
+
+export interface FarmOutlook {
+  summary: string;
+  spray_suitability: "Favorable" | "Caution" | "Unfavorable" | string;
+  spray_recommendation: string;
+  irrigation_advice: string;
+}
+
+export interface WeatherResponse {
+  location: WeatherLocation;
+  current: CurrentWeather;
+  today: TodayWeather;
+  forecast: ForecastDay[];
+  farm_outlook: FarmOutlook;
+  agricultural_alerts: AgriculturalAlert[];
+  updated_at: string;
+  provider: string;
+  is_demo: boolean;
+}
+
+export interface LocationSearchResult {
+  name: string;
+  region: string;
+  country: string;
+  latitude: number;
+  longitude: number;
+}
+
 export interface NavItem {
   name: string;
   href: string;
@@ -79,25 +156,6 @@ export interface FarmerProfile {
   location: string;
   state: string;
   avatarText?: string;
-}
-
-export interface WeatherDemoData {
-  temp: string;
-  condition: string;
-  rainProb: string;
-  location: string;
-}
-
-export interface SoilDemoData {
-  score: number;
-  status: "Good" | "Fair" | "Needs Attention";
-  lastTested: string;
-}
-
-export interface CropHealthDemoData {
-  status: "Healthy" | "Attention" | "Diseased";
-  cropName: string;
-  lastChecked: string;
 }
 
 export interface MandiDemoData {

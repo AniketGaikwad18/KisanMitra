@@ -14,7 +14,25 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 
+import { getWeather } from "@/lib/api";
+
 export const KeyMetricCards: React.FC = () => {
+  const [weatherStatus, setWeatherStatus] = useState<{
+    temperature: number | null;
+    condition: string;
+    rainProbability: number | null;
+    locationName: string;
+    isLoading: boolean;
+    isUnavailable: boolean;
+  }>({
+    temperature: 28,
+    condition: "Partly Cloudy",
+    rainProbability: 72,
+    locationName: "Pune",
+    isLoading: true,
+    isUnavailable: false,
+  });
+
   const [cropStatus, setCropStatus] = useState<{
     crop: string;
     condition: string;
@@ -38,6 +56,62 @@ export const KeyMetricCards: React.FC = () => {
   });
 
   useEffect(() => {
+    let isMounted = true;
+
+    // Fetch live weather
+    const fetchLiveWeather = async () => {
+      try {
+        let lat = 18.5204;
+        let lon = 73.8567;
+        let locName = "Pune";
+
+        const savedLoc = localStorage.getItem("kisanmitra_weather_location");
+        if (savedLoc) {
+          const parsed = JSON.parse(savedLoc);
+          if (parsed.latitude && parsed.longitude) {
+            lat = parsed.latitude;
+            lon = parsed.longitude;
+            locName = parsed.name || locName;
+          }
+        }
+
+        const res = await getWeather({
+          latitude: lat,
+          longitude: lon,
+          location: locName,
+        });
+
+        if (!isMounted) return;
+
+        if (res.data) {
+          setWeatherStatus({
+            temperature: Math.round(res.data.current.temperature),
+            condition: res.data.current.condition,
+            rainProbability: res.data.today.rain_probability,
+            locationName: res.data.location.name,
+            isLoading: false,
+            isUnavailable: false,
+          });
+        } else {
+          setWeatherStatus((prev) => ({
+            ...prev,
+            isLoading: false,
+            isUnavailable: true,
+          }));
+        }
+      } catch {
+        if (isMounted) {
+          setWeatherStatus((prev) => ({
+            ...prev,
+            isLoading: false,
+            isUnavailable: true,
+          }));
+        }
+      }
+    };
+
+    fetchLiveWeather();
+
     try {
       // Hydrate crop scan
       const savedCrop = localStorage.getItem("kisanmitra_last_crop_check");
@@ -64,6 +138,10 @@ export const KeyMetricCards: React.FC = () => {
     } catch {
       // Ignore storage errors
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
@@ -80,33 +158,48 @@ export const KeyMetricCards: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* CARD 1: WEATHER */}
+        {/* CARD 1: WEATHER (Live API Data) */}
         <div className="bg-gradient-to-b from-[#FAFDF6] to-white rounded-2xl border border-brand-border p-5 shadow-card hover:border-brand-green/40 hover:shadow-elevated transition-all flex flex-col justify-between group">
           <div>
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs font-bold uppercase tracking-wider text-brand-text-secondary">
-                Weather
+                Weather ({weatherStatus.locationName})
               </span>
               <div className="p-2 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 group-hover:scale-105 transition-transform">
                 <CloudSun className="w-5 h-5" />
               </div>
             </div>
 
-            <div className="space-y-1">
-              <div className="text-3xl font-black text-brand-text tracking-tight">
-                28°C
+            {weatherStatus.isUnavailable ? (
+              <div className="space-y-1 py-1">
+                <div className="text-lg font-bold text-brand-danger">
+                  Weather unavailable
+                </div>
+                <div className="text-xs text-brand-text-secondary">
+                  Unable to connect to live provider
+                </div>
               </div>
-              <div className="text-sm font-bold text-brand-green">
-                Partly Cloudy
+            ) : (
+              <div className="space-y-1">
+                <div className="text-3xl font-black text-brand-text tracking-tight">
+                  {weatherStatus.temperature !== null ? `${weatherStatus.temperature}°C` : "..."}
+                </div>
+                <div className="text-sm font-bold text-brand-green truncate" title={weatherStatus.condition}>
+                  {weatherStatus.condition}
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="mt-3 pt-3 border-t border-brand-border/60 flex items-center justify-between text-xs text-brand-text-secondary">
               <span className="flex items-center gap-1">
                 <Droplets className="w-3.5 h-3.5 text-blue-500" />
                 Rain probability
               </span>
-              <span className="font-bold text-brand-text">72%</span>
+              <span className="font-bold text-brand-text">
+                {weatherStatus.isUnavailable
+                  ? "—"
+                  : `${weatherStatus.rainProbability ?? 0}%`}
+              </span>
             </div>
           </div>
 
