@@ -316,9 +316,4 @@ KisanMitra is built with **isolated deterministic fallback generators** to guara
 
 ---
 
-## 🏆 Hackathon Details
 
-* **Hackathon:** **HACKDAY 1.0**
-* **Theme:** **Tech for a Better Tomorrow**
-* **Repository:** [https://github.com/AniketGaikwad18/KisanMitra](https://github.com/AniketGaikwad18/KisanMitra)
-* **Tagline:** *"Smarter Decisions. Healthier Farms."*
